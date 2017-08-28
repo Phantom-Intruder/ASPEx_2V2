@@ -20,21 +20,24 @@
                 UpdateTargetId = "formSection"
             }))
             {
-                <fieldset>
+                if (ViewBag.Name != null)
+                { 
+                    <fieldset>
                     <legend><span class="number"></span>Product edit form</legend>
-                    @ViewBag.Message
                     <input id="name" type="text" value="@ViewBag.Name" name="nameField" placeholder="Name *" />
-                    <textarea id="description"  name="descriptionField" style="height:150px" placeholder="Description">@ViewBag.Description</textarea>
+                                      <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description">@ViewBag.Description</textarea>
+                   
                     <br />
                     <input type="file" id="fileUpload" />
                     <br />
-                    <input type="text" value="@ViewBag.FileName.Replace('\\', '/')" name="filePathField" id="filePath" />
+                    <input type="text" value="@ViewBag.FileName.Replace('\\', '/')" name="filePathField" id="filePath"  readonly/>
                     <br />
                     @{ string imageLocation = "/Filestore" + ViewBag.FileName.Replace('\\', '/');
                     <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
                     }
                     <br />
-                   
+                        <br />
+                        <input type="hidden" name="isEditField" value="true" />
                     <input id="price" type="text" value="@ViewBag.Price" name="priceField" placeholder="Price *" />
                     <label for="job">Category:</label>
                     <select id="job" name="categoryField">
@@ -46,8 +49,36 @@
                     </select>
                     <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
                 </fieldset>
+                        }
+                        else
+                        {
+                            <fieldset>
+                                <legend><span class="number"></span>Product edit form</legend>
+                                <input id="name" type="text" name="nameField" placeholder="Name *" />
+                                <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description"></textarea>
 
-            }
+                                <br />
+                                <input type="file" id="fileUpload" />
+                                <br />
+                                <input type="text"  name="filePathField" id="filePath"  readonly/>
+                                <br />
+                                <img id="imagePreview" height="42" width="42" alt="Preview" />
+                                <br />
+                                <br />
+                                <input type="hidden" name="isEditField" value="false" />
+                                <input id="price" type="text" name="priceField" placeholder="Price *" />
+                                <label for="job">Category:</label>
+                                <select id="job" name="categoryField">
+                                    <option value="1">Electronics</option>
+                                    <option value="2">Clothing</option>
+                                    <option value="3">Toys</option>
+                                    <option value="4">Home</option>
+                                    <option value="5">Beauty</option>
+                                </select>
+                                <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
+                            </fieldset>
+                                        }
+                                    }
             </div>
         </div>
     </div>

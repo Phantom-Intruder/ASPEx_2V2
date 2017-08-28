@@ -16,6 +16,8 @@
             @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "post", InsertionMode = InsertionMode.Replace,
                 UpdateTargetId = "formSection"}))
             {
+                if (ViewBag.Name != null)
+                {
             <fieldset>
                 <legend><span class="number"></span> Category edit form</legend>
                 <input id="name" type="text" value="@ViewBag.Name" name="nameField" placeholder="Name *" />
@@ -28,10 +30,32 @@
                 @{ string imageLocation = "/Filestore" + ViewBag.FileName.Replace('\\', '/');
                 <img id="imagePreview" src="@imageLocation" height="42" width="42" alt="Preview" />
                 }
+            
+                <input type="hidden" name="isEditField" value="true" />
                 <br />            
                 <input type="submit" value="Apply" id="submitBtn"/>
             </fieldset>
-            }
+                    }
+                    else
+                    {
+                        <fieldset>
+                            <legend><span class="number"></span> Category edit form</legend>
+                            <input id="name" type="text" name="nameField" placeholder="Name *" />
+                            <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description"></textarea>
+                            <br />
+                            <input type="file" id="fileUpload" />
+                            <br />
+                            <input type="text" name="filePathField" id="filePath" />
+                            <br />
+                            
+                                <img id="imagePreview" height="42" width="42" alt="Preview" />
+                            
+                            <input type="hidden" name="isEditField" value="false" />
+                            <br />
+                            <input type="submit" value="Apply" id="submitBtn" />
+                        </fieldset>
+                                    }
+                                }
         </div>
     </div>
 </div>
