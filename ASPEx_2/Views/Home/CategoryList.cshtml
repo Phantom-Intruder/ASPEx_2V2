@@ -30,7 +30,7 @@
                 @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/'); 
                 <td><img height="100" width="100" src="@filename" /></td>
                 }
-                <td><a href="EditCategoryView?id=@category.ID">Edit</a> &nbsp; <a>Delete</a></td>
+                <td><a href="EditCategoryView?id=@category.ID">Edit</a> &nbsp; <a href="DeleteCategoryView?id=@category.ID">Delete</a></td>
             </tr>
             }
         </table>

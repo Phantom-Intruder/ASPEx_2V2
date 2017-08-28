@@ -47,7 +47,6 @@ namespace ASPEx_2.Controllers
             }
             else
             {
-                //TODO: Updating
                 Category record                 = Category.ExecuteCreate(nameField, descriptionField, filePathField, 1, 50, 51);
                 record.Update(IDNew, record);
             }
@@ -70,7 +69,12 @@ namespace ASPEx_2.Controllers
             }
             else
             {
-                //TODO: updating
+                Product record                 = Product.ExecuteCreate(Int32.Parse(categoryField),
+                                                                        nameField,
+                                                                        descriptionField,
+                                                                        Decimal.Parse(priceField),
+                                                                        filePathField, 1, 50, 51);
+                record.Update(IDNew, record);
             }
             return PartialView("_AddedView");
         }
@@ -80,8 +84,8 @@ namespace ASPEx_2.Controllers
         {
             try
             {
+                IDNew                           = Int32.Parse(id);
                 Product product                 = Product.ExecuteCreate(Int32.Parse(id));
-                
                 ViewBag.Message                 = "Added " + product.Name+ " " + product.Description;
                 ViewBag.Name                    = product.Name;
                 ViewBag.Description             = product.Description;
@@ -100,7 +104,6 @@ namespace ASPEx_2.Controllers
             try
             {
                 IDNew                           = Int32.Parse(id);
-            
                 Category category               = Category.ExecuteCreate(Int32.Parse(id));
                 ViewBag.Name                    = category.Name;
                 ViewBag.Description             = category.Description;
@@ -112,7 +115,13 @@ namespace ASPEx_2.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult DeleteCategoryView(string id)
+        {
+            Category.Delete(Int32.Parse(id));
 
+            return View();
+        }
         public ActionResult EditProductView()
         {
             ViewBag.Message                     = "Your application description page.";

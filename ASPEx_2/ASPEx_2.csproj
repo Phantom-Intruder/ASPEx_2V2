@@ -287,6 +287,7 @@
     <Content Include="Views\Home\EditCategoryView.cshtml" />
     <Content Include="Views\Home\EditProductView.cshtml" />
     <Content Include="Views\Home\_AddedView.cshtml" />
+    <Content Include="Views\Home\DeleteCategoryView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
