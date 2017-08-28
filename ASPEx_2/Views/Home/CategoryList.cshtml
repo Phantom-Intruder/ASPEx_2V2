@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Category list";
+}
+
+@model ASPEx_2.Models.CategoryModels
+
+<link href="background.css" rel="stylesheet" />
+
+<div id="MainPageDiv">
+    <br />
+    <h2>Category List</h2>
+    <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "Home") + "'");" class="pull-right btn btn-info"> Create new category </button>
+    <br />
+    <div class="jumbotron">
+
+        <table id="table" class="table">
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Image</td>
+                <td>Actions</td>
+            </tr>
+            @foreach (var category in Model.CategoriesList)
+            {
+            <tr>
+                <td>@category.ID</td>
+                <td>@category.Name</td>
+                <td>@category.Description</td>
+                @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/'); 
+                <td><img height="100" width="100" src="@filename" /></td>
+                }
+                <td><a href="EditCategoryView?id=@category.ID">Edit</a> &nbsp; <a>Delete</a></td>
+            </tr>
+            }
+        </table>
+
+    </div>
+</div>

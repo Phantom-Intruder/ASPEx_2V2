@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Product List";
+}
+
+@model ASPEx_2.Models.ProductModels
+
+<link href="background.css" rel="stylesheet" />
+<br />
+<h2>Product List</h2>
+<button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "Home") + "'");" class="pull-right btn btn-info">Create new product </button>
+<br />
+<div class="jumbotron">
+
+    <table id="table" class="table">
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Image</td>
+            <td>Actions</td>
+        </tr>
+         @foreach (var product in Model.ProductsList)
+            {
+            <tr>
+                <td>@product.ID</td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
+                    <td><img height="100" width="100" src="@filename" /></td>
+                }
+                <td><a href="EditProductView?id=@product.ID">Edit</a> &nbsp; <a>Delete</a></td>
+            </tr>
+            }
+    </table>
+</div>
