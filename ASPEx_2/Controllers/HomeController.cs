@@ -122,6 +122,15 @@ namespace ASPEx_2.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public ActionResult DeleteProductView(string id)
+        {
+            Product.Delete(Int32.Parse(id));
+
+            return View();
+        }
+
         public ActionResult EditProductView()
         {
             ViewBag.Message                     = "Your application description page.";

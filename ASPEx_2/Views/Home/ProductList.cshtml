@@ -28,7 +28,7 @@
                 @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
                     <td><img height="100" width="100" src="@filename" /></td>
                 }
-                <td><a href="EditProductView?id=@product.ID">Edit</a> &nbsp; <a>Delete</a></td>
+                <td><a href="EditProductView?id=@product.ID">Edit</a> &nbsp; <a href="DeleteProductView?id=@product.ID">Delete</a></td>
             </tr>
             }
     </table>
