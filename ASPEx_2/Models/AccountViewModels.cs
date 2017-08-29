@@ -79,6 +79,43 @@ namespace ASPEx_2.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName{ get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Contact Number")]
+        public string ContactNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Shipping Address")]
+        public string ShippingAddress { get; set; }
+
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+
+        [Required]
+        [Display(Name = "Status")]
+        public int Status { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public int Role { get; set; }
+
+        [Required]
+        [Display(Name = "Created Account ID")]
+        public int CreatedAccountID { get; set; }
+
+        [Required]
+        [Display(Name = "Modified Account ID")]
+        public int ModifiedAccountID { get; set; }
+
     }
 
     public class ResetPasswordViewModel

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ASPEx_2.Models;
+using ECommerce.Tables.Active.HR;
 
 namespace ASPEx_2.Controllers
 {
@@ -152,7 +153,9 @@ namespace ASPEx_2.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                Account record = Account.ExecuteCreate("First", "Last", model.Email, model.Password, "ewqweqw", model.ContactNumber, model.ShippingAddress, model.Country, 1, model.Role, model.CreatedAccountID, model.ModifiedAccountID);
+                record.Insert();
+                /*var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -166,6 +169,9 @@ namespace ASPEx_2.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
+                */
+                return RedirectToAction("Index", "Home");
+                
             }
 
             // If we got this far, something failed, redisplay form
