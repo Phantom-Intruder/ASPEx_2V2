@@ -23,20 +23,31 @@
                 <td>Name</td>
                 <td>Description</td>
                 <td>Image</td>
-                <td>Actions</td>
+                @{  if (Session["CurrentUserRole"] != null)
+                    {
+                        <td>Actions</td>
+                    }
+                }
+                
             </tr>
             @foreach (var category in Model.CategoriesList)
             {
             <tr>
                 <td>@category.ID</td>
-                <td>@category.Name</td>
+                <td><a href="ShowCategoryView?id=@category.ID">@category.Name</td>
                 <td>@category.Description</td>
-                @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/'); 
+                @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/');
                 <td><img height="100" width="100" src="@filename" /></td>
                 }
-                <td><a href="EditCategoryView?id=@category.ID">Edit</a> &nbsp; <a href="DeleteCategoryView?id=@category.ID">Delete</a></td>
+                <td>
+                @{  if (Session["CurrentUserRole"] != null)
+                    {
+                        <a href="EditCategoryView?id=@category.ID">Edit</a>    <a href="DeleteCategoryView?id=@category.ID">Delete</a>
+                    }
+                    
+                }</td>
             </tr>
-            }
+                    }
         </table>
 
     </div>

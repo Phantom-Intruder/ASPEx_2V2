@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "ShowCategoryView";
+}
+
+@model ASPEx_2.Models.CategoryProductModels
+
+<link href="background.css" rel="stylesheet" />
+<br />
+<h2>Product List</h2>
+@{  if (Session["CurrentUserRole"] != null)
+    {
+        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "Home") + "'");" class="pull-right btn btn-info">Create new product </button>
+    }
+}
+<br />
+<div class="jumbotron">
+
+    <table id="table" class="table">
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Image</td>
+            <td>Actions</td>
+        </tr>
+        @foreach (var product in Model.listOfProductsInACategory)
+        {
+            <tr>
+
+
+                <td>@product.ID</td>
+                <td><a href="ShowProductView?id=@product.ID">@product.Name</a></td>
+                <td>@product.Description</td>
+                @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
+                    <td><img height="100" width="100" src="@filename" /></td>
+                }
+
+                @{  if (Session["CurrentUserRole"] != null)
+                    {
+                        <td>
+                            <a href="EditProductView?id=@product.ID">Edit</a>    <a href="DeleteProductView?id=@product.ID">Delete</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
+                        </td>
+                    }
+                }
+
+
+            </tr>
+                    }
+    </table>
+</div>
+
+
+

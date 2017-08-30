@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryModels.cs" />
+    <Compile Include="Models\CategoryProductModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProductModels.cs" />
@@ -289,6 +290,9 @@
     <Content Include="Views\Home\_AddedView.cshtml" />
     <Content Include="Views\Home\DeleteCategoryView.cshtml" />
     <Content Include="Views\Home\DeleteProductView.cshtml" />
+    <Content Include="Views\Home\ShoppingCartView.cshtml" />
+    <Content Include="Views\Home\ShowProductView.cshtml" />
+    <Content Include="Views\Home\ShowCategoryView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
