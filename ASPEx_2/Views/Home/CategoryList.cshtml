@@ -9,7 +9,11 @@
 <div id="MainPageDiv">
     <br />
     <h2>Category List</h2>
-    <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "Home") + "'");" class="pull-right btn btn-info"> Create new category </button>
+    @{  if (Session["CurrentUserRole"] != null)
+        {
+            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "Home") + "'");" class="pull-right btn btn-info"> Create new category </button>
+        }
+    }
     <br />
     <div class="jumbotron">
 
