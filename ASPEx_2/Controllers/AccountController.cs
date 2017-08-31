@@ -367,16 +367,7 @@ namespace ASPEx_2.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            Session.Clear();
-            return RedirectToAction("Index", "Home");
-        }
-
+       
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
