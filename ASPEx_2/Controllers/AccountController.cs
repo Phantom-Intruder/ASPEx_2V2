@@ -77,7 +77,10 @@ namespace ASPEx_2.Controllers
             Account     record              = Account.GetAccountByEmail(model.Email);
             Session["CurrentUser"]          = record;
             Session["CurrentUserName"]      = record.FirstName;
-            Session["CurrentUserRole"]      = record.Role;
+            if (record.Role == 1)
+            {
+                Session["CurrentUserRole"]      = record.Role;
+            }
             return RedirectToLocal(returnUrl);
        }
 
