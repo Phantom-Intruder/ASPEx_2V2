@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "ShoppingCartView";
+    ViewBag.Title = "Shopping Cart";
 }
+
+@model ASPEx_2.Models.ShoppingCartModels
 
 <h2>Your shopping cart</h2>
 <link href="background.css" rel="stylesheet" />
@@ -12,15 +14,19 @@
             <td>ID</td>
             <td>Name</td>
             <td>Description</td>
+            <td>Price</td>
             <td>Image</td>
             <td>Actions</td>
         </tr>
-        @foreach (var product in Model.ProductsList)
+        @{int idLoop = 0; }
+        @foreach (string key in Model.ProductsList.Keys)
         {
+            var product = Model.ProductsList[key];
             <tr>
                 <td>@product.ID</td>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
+                <td>@product.Price</td>
                 @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
                     <td><img height="100" width="100" src="@filename" /></td>
                 }
@@ -33,12 +39,25 @@
                     else
                     {
                         <td>
-                            <center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
-                        </td>
+                            @{ idLoop++; string idName = "formSection" + idLoop;}
+                            <div id="@idName" class="form-style-5">
+                                @using (Ajax.BeginForm(new AjaxOptions
+                                {
+                                    HttpMethod = "post",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = idName
+                                }))
+                                {
+                                    <input type="hidden" name="name" value="@product.Name"/>
+                                    <center><button class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button></center>
+                                }</td>
                     }
                 }
 
             </tr>
                     }
     </table>
+    <br />
+    <br />
+    <h3>Final total is: @Model.TotalPrice</h3>
 </div>

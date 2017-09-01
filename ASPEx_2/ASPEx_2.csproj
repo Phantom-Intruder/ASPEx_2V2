@@ -208,6 +208,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProductModels.cs" />
+    <Compile Include="Models\ShoppingCartModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -294,6 +295,7 @@
     <Content Include="Views\Home\ShoppingCartView.cshtml" />
     <Content Include="Views\Home\ShowProductView.cshtml" />
     <Content Include="Views\Home\ShowCategoryView.cshtml" />
+    <Content Include="Views\Home\_AddedCorrectlyView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -16,12 +16,37 @@ namespace ASPEx_2.Controllers
             return View();
         }
 
+        public ActionResult ShoppingCartView()
+        {
+            ViewBag.Message                     = "Your application description page.";
+            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
+            return View(cart);
+        }
+        [HttpPost]
+        public ActionResult ShoppingCartView(string name)
+        {
+            ViewBag.Message                     = "Your application description page.";
+            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
+            cart.TotalPrice                     = cart.TotalPrice - cart.ProductsList[name].Price;
+            cart.ProductsList.Remove(name);
+            return View(cart);
+        }
+
         public ActionResult ProductList()
         {
             ViewBag.Message                     = "Your application description page.";
-            ProductModels product               = new ProductModels();
+            ProductModels           product     = new ProductModels();
 
             return View(product);
+        }
+
+        [HttpPost]
+        public ActionResult ProductList(string idField)
+        {
+            int                     id          = Int32.Parse(idField);
+            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
+            cart.addProductToCart(id);
+            return PartialView("_AddedCorrectlyView");
         }
 
         public ActionResult CategoryList()

@@ -20,9 +20,11 @@
             <td>ID</td>
             <td>Name</td>
             <td>Description</td>
+            <td>Price</td>
             <td>Image</td>
             <td>Actions</td>
         </tr>
+        @{int idLoop = 0; }
          @foreach (var product in Model.ProductsList)
          {
             <tr>
@@ -31,6 +33,7 @@
                     <td>@product.ID</td>
                     <td><a href="ShowProductView?id=@product.ID">@product.Name</a></td>
                     <td>@product.Description</td>
+                    <td>@product.Price</td>
                     @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
                         <td><img height="100" width="100" src="@filename" /></td>
                     }
@@ -44,7 +47,19 @@
                         else
                         {
                             <td>
-                                <center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
+                                @{ idLoop++; string idName = "formSection" + idLoop;}
+                                <div id="@idName" class="form-style-5">
+                                    @using (Ajax.BeginForm(new AjaxOptions
+                                    {
+                                        HttpMethod = "post",
+                                        InsertionMode = InsertionMode.Replace,
+                                        UpdateTargetId = idName
+                                    }))
+                                    {
+                                        <input type="hidden" value="@product.ID" name="idField" />
+                                        <center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
+                                    }
+                                    </div>
                             </td>
                         }
                    }
@@ -54,3 +69,8 @@
             }
     </table>
 </div>
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
