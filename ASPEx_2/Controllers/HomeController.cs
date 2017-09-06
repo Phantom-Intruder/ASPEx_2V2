@@ -25,11 +25,31 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult ShoppingCartView(string name)
         {
-            ViewBag.Message                     = "Your application description page.";
-            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
-            cart.TotalPrice                     = cart.TotalPrice - cart.ProductsList[name].Price;
-            cart.ProductsList.Remove(name);
-            return View(cart);
+            if (name != null)
+            {
+                ViewBag.Message = "Your application description page.";
+                ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                cart.TotalPrice = cart.TotalPrice - cart.ProductsList[name].Price;
+                cart.ProductsList.Remove(name);
+                return View(cart);
+            }
+            else
+            {
+                //TODO: Save shopping cart code
+                ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
+                int                     accountID   = Int32.Parse(Session["CurrentID"].ToString());
+                Order                   order       = Order.ExecuteCreate(accountID, 1, 1, cart.TotalPrice);
+                order.Insert();
+                decimal                     subtotal    = 0;
+                foreach (string key in cart.ProductsList.Keys)
+                {
+                    Product             product     = cart.ProductsList[key];
+                    subtotal                        = subtotal + product.Price;
+                    OrderItem           orderItem   = OrderItem.ExecuteCreate(order.ID, product.ID, 1, product.Price, subtotal);
+                    orderItem.Insert();
+                }
+                return View(cart);
+            }
         }
 
         public ActionResult ProductList()
@@ -190,7 +210,7 @@ namespace ASPEx_2.Controllers
             try
             {
                 IDNew                                   = Int32.Parse(id);
-                model       = new CategoryProductModels(IDNew); 
+                model                                   = new CategoryProductModels(IDNew); 
             }
             catch (ArgumentNullException n)
             {
@@ -198,5 +218,7 @@ namespace ASPEx_2.Controllers
             }
             return View(model);
         }
+
+        
     }
 }

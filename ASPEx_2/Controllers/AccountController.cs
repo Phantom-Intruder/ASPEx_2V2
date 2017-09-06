@@ -76,6 +76,7 @@ namespace ASPEx_2.Controllers
          
             Account     record              = Account.GetAccountByEmail(model.Email);
             Session["CurrentUser"]          = record;
+            Session["CurrentID"]            = record.ID;
             Session["CurrentUserName"]      = record.FirstName;
             if (record.Role == 1)
             {
