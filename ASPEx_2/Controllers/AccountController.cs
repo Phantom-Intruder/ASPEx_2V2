@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ASPEx_2.Models;
 using ECommerce.Tables.Active.HR;
+using ECommerce.Tables.Content;
+using System.Collections.Generic;
 
 namespace ASPEx_2.Controllers
 {
@@ -74,13 +76,23 @@ namespace ASPEx_2.Controllers
                 return View(model);
             }
          
-            Account     record              = Account.GetAccountByEmail(model.Email);
-            Session["CurrentUser"]          = record;
-            Session["CurrentID"]            = record.ID;
-            Session["CurrentUserName"]      = record.FirstName;
+            Account     record                          = Account.GetAccountByEmail(model.Email);
+            Session["CurrentUser"]                      = record;
+            Session["CurrentID"]                        = record.ID;
+            Session["CurrentUserName"]                  = record.FirstName;
             if (record.Role == 1)
             {
-                Session["CurrentUserRole"]      = record.Role;
+                Session["CurrentUserRole"]              = record.Role;
+            }
+            ShoppingCartModels      cart                = ShoppingCartModels.getInstanceOfObject();
+            List<Order>             orderList           = Order.ListByAccountID(record.ID);
+            foreach (Order o in orderList)
+            {
+                List<OrderItem>     orderItemList       = OrderItem.ListByOrderID(o.ID);
+                foreach (OrderItem item in orderItemList)
+                {
+                    cart.addProductToCart(item.ProductID);
+                }
             }
             return RedirectToLocal(returnUrl);
        }

@@ -40,13 +40,30 @@ namespace ASPEx_2.Controllers
                 int                     accountID   = Int32.Parse(Session["CurrentID"].ToString());
                 Order                   order       = Order.ExecuteCreate(accountID, 1, 1, cart.TotalPrice);
                 order.Insert();
-                decimal                     subtotal    = 0;
+                decimal                 subtotal    = 0;
+                int                     recordId    = Int32.Parse(Session["CurrentID"].ToString());
+                bool                    isPresent   = false;
                 foreach (string key in cart.ProductsList.Keys)
                 {
                     Product             product     = cart.ProductsList[key];
                     subtotal                        = subtotal + product.Price;
                     OrderItem           orderItem   = OrderItem.ExecuteCreate(order.ID, product.ID, 1, product.Price, subtotal);
-                    orderItem.Insert();
+                    List<Order> orderList = Order.ListByAccountID(recordId);
+                    foreach (Order o in orderList)
+                    {
+                        List<OrderItem> orderItemList = OrderItem.ListByOrderID(o.ID);
+                        foreach (OrderItem item in orderItemList)
+                        {
+                            if (item.ProductID == orderItem.ProductID)
+                            {
+                                isPresent           = true;
+                            }
+                        }
+                    }
+                    if (!isPresent)
+                    {
+                        orderItem.Insert();
+                    }
                 }
                 return View(cart);
             }

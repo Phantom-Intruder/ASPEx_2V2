@@ -20,7 +20,7 @@ namespace ASPEx_2.Models
             return instanceOfObject;
         }
 
-        void destroyInstance()
+        public void destroyInstance()
         {
             instanceOfObject = null;
         }
@@ -29,7 +29,6 @@ namespace ASPEx_2.Models
         public decimal TotalPrice { get; set; }
         public void addProductToCart(int id)
         {
-            
             //TODO: Find relevant product
             Product         product                  = Product.ExecuteCreate(id);
             //TODO: Increment this.TotalPrice by product.price

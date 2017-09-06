@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASPEx_2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,8 @@ namespace ASPEx_2.Controllers
         public ActionResult LogOff()
         {
             Session.Clear();
+            ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+            cart.destroyInstance();
             return RedirectToAction("Index", "Home");
         }
     }
