@@ -166,6 +166,8 @@ namespace ASPEx_2.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.RegistrationMessage = "Enter registration details below";
+            ViewBag.RegistrationFailed = false;
             return View();
         }
 
@@ -178,16 +180,26 @@ namespace ASPEx_2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var salt = GetHashCode().ToString();
-                var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
-                Account record = Account.ExecuteCreate(model.FirstName, model.LastName, model.Email, encodingPasswordString, salt, model.ContactNumber, model.ShippingAddress, model.Country, 1, model.Role, model.CreatedAccountID, model.ModifiedAccountID);
-                record.Insert();
+                try
+                {
+                    Account recordData = Account.GetAccountByEmail(model.Email);
+                    ViewBag.RegistrationMessage = "The e-mail is already in use";
+                    ViewBag.RegistrationFailed = true;
+                    return View();
+                }
+                catch(Exception ignored)
+                {
+                    var salt = GetHashCode().ToString();
+                    var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
+                    Account record = Account.ExecuteCreate(model.FirstName, model.LastName, model.Email, encodingPasswordString, salt, model.ContactNumber, model.ShippingAddress, model.Country, 1, model.Role, model.CreatedAccountID, model.ModifiedAccountID);
+                    record.Insert();
+                    ViewBag.RegistrationFailed = false;
+                    Session["CurrentUser"] = record;
+                    Session["CurrentUserName"] = record.FirstName;
+                    return RedirectToAction("Index", "Home");
+                }
                 
-                Session["CurrentUser"] = record;
-                Session["CurrentUserName"] = record.FirstName;
-                return RedirectToAction("Index", "Home");
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
