@@ -42,7 +42,7 @@
                 <td>
                 @{  if (Session["CurrentUserRole"] != null)
                     {
-                        <a href="EditCategoryView?id=@category.ID">Edit</a>    <a href="DeleteCategoryView?id=@category.ID">Delete</a>
+                        <a href="EditCategoryView?id=@category.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="DeleteCategoryView?id=@category.ID"><i class="glyphicon glyphicon-trash"></i></a>
                     }
                     
                 }</td>

@@ -41,7 +41,7 @@
                     @{  if (Session["CurrentUserRole"] != null)
                         {
                             <td>
-                                <a href="EditProductView?id=@product.ID">Edit</a>    <a href="DeleteProductView?id=@product.ID">Delete</a>
+                                <a href="EditProductView?id=@product.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="DeleteProductView?id=@product.ID"><i class="glyphicon glyphicon-trash"></i></a>
                             </td>
                         }
                         else
