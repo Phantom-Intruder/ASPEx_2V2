@@ -61,6 +61,8 @@ namespace ASPEx_2.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginMessage        = "Enter your login details below";
+            ViewBag.LoginFailed = false;
             return View();
         }
 
@@ -71,31 +73,50 @@ namespace ASPEx_2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(model);
-            }
-         
-            Account     record                          = Account.GetAccountByEmail(model.Email);
-            Session["CurrentUser"]                      = record;
-            Session["CurrentID"]                        = record.ID;
-            Session["CurrentUserName"]                  = record.FirstName;
-            if (record.Role == 1)
-            {
-                Session["CurrentUserRole"]              = record.Role;
-            }
-            ShoppingCartModels      cart                = ShoppingCartModels.getInstanceOfObject();
-            List<Order>             orderList           = Order.ListByAccountID(record.ID);
-            foreach (Order o in orderList)
-            {
-                List<OrderItem>     orderItemList       = OrderItem.ListByOrderID(o.ID);
-                foreach (OrderItem item in orderItemList)
+                if (!ModelState.IsValid)
                 {
-                    cart.addProductToCart(item.ProductID);
+                    return View(model);
                 }
+                Account record = Account.GetAccountByEmail(model.Email);
+                var salt = record.Salt;
+                var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
+                if (encodingPasswordString == record.Password)
+                {
+                    ViewBag.LoginFailed = false;
+                    Session["CurrentUser"] = record;
+                    Session["CurrentID"] = record.ID;
+                    Session["CurrentUserName"] = record.FirstName;
+                    if (record.Role == 1)
+                    {
+                        Session["CurrentUserRole"] = record.Role;
+                    }
+                    ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                    List<Order> orderList = Order.ListByAccountID(record.ID);
+                    foreach (Order o in orderList)
+                    {
+                        List<OrderItem> orderItemList = OrderItem.ListByOrderID(o.ID);
+                        foreach (OrderItem item in orderItemList)
+                        {
+                            cart.addProductToCart(item.ProductID);
+                        }
+                    }
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ViewBag.LoginMessage = "Wrong username/password";
+                    ViewBag.LoginFailed = true;
+                }
+            } catch(Exception e)
+            {
+                ViewBag.LoginMessage = "Wrong username/password";
+                ViewBag.LoginFailed = true;
+                return View();
             }
-            return RedirectToLocal(returnUrl);
-       }
+            return View();
+        }
 
         //
         // GET: /Account/VerifyCode
@@ -157,8 +178,9 @@ namespace ASPEx_2.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                Account record = Account.ExecuteCreate(model.FirstName, model.LastName, model.Email, model.Password, "ewqweqw", model.ContactNumber, model.ShippingAddress, model.Country, 1, model.Role, model.CreatedAccountID, model.ModifiedAccountID);
+                var salt = GetHashCode().ToString();
+                var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
+                Account record = Account.ExecuteCreate(model.FirstName, model.LastName, model.Email, encodingPasswordString, salt, model.ContactNumber, model.ShippingAddress, model.Country, 1, model.Role, model.CreatedAccountID, model.ModifiedAccountID);
                 record.Insert();
                 
                 Session["CurrentUser"] = record;
