@@ -16,6 +16,7 @@ namespace ASPEx_2.Models
         public List<KeyValuePair<string, int>> listOfItems;
         public List<KeyValuePair<string, Product>> listOfCategoryItems;
         public List<KeyValuePair<string, Product>> listOfCategoryItemsUsed = new List<KeyValuePair<string, Product>>();
+        private static AdminViewModels instanceOfObject;
 
         public void getCategoriesInProduct(int id)
         {
@@ -40,10 +41,22 @@ namespace ASPEx_2.Models
             }
         }
 
-       
-       
+        public static AdminViewModels getInstanceOfObject()
+        {
+            if (instanceOfObject == null)
+            {
+                instanceOfObject = new AdminViewModels();
+            }
 
-        public AdminViewModels()
+            return instanceOfObject;
+        }
+
+        public void destroyInstance()
+        {
+            instanceOfObject = null;
+        }
+
+        private AdminViewModels()
         {
             //TODO: take all products from db and add to productsDictionary.
             this.ProductsList = ECommerce.Tables.Content.Product.List();

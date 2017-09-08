@@ -5,7 +5,11 @@
 @model ASPEx_2.Models.AdminViewModels
 
 <h2>AdminView</h2>
-
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    HttpMethod = "post"
+}))
+{
 <table style="width:100%;">
     <tr>
         <td>Product Name</td>
@@ -31,15 +35,21 @@
         </tr>
         }
     }
+    else
+    {
+        foreach (string key in Model.productsDictionary.Keys.Reverse())
+        {
+            <tr>
+                <td>@key</td>
+                <td>@Model.productsDictionary[key]</td>
+            </tr>
+        }
+    }
 </table>
 <br />
 <br />
-@using (Ajax.BeginForm(new AjaxOptions
-{
-    HttpMethod = "post"
-}))
-{
-    <input type="hidden" name="saveTableField" value="saveTableField" />
+
+    <input type="hidden" name="saveTableField" value="@ViewBag.typeOfModel" />
 <button class="btn btn-default">Save table</button>
 }
 <br />

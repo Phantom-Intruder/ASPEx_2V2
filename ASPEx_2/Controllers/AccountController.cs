@@ -87,6 +87,7 @@ namespace ASPEx_2.Controllers
                     ViewBag.LoginFailed = false;
                     Session["CurrentUser"] = record;
                     Session["CurrentID"] = record.ID;
+                    UserModel.ID = record.ID;
                     Session["CurrentUserName"] = record.FirstName;
                     if (record.Role == 1)
                     {

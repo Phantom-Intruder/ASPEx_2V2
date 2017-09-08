@@ -212,6 +212,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProductModels.cs" />
     <Compile Include="Models\ShoppingCartModels.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -220,6 +221,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\EditCategoryStyleSheet.css" />
+    <Content Include="Content\tableStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="Filestore\Category\1\1.jpg" />
     <Content Include="Filestore\Category\1\1.png" />
@@ -298,6 +300,9 @@
     <Content Include="Views\Home\_AddedCorrectlyView.cshtml" />
     <Content Include="Views\Home\_SavedShoppingCartView.cshtml" />
     <Content Include="Views\Home\AdminView.cshtml" />
+    <Content Include="Views\Home\CheckoutView.cshtml" />
+    <Content Include="Views\Home\_UserView.cshtml" />
+    <Content Include="Views\Home\_ProductView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

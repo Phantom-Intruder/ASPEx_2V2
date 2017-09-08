@@ -5,12 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Tables.Content;
 using ASPEx_2.Models;
+using System.Data;
+using System.IO;
 
 namespace ASPEx_2.Controllers
 {
     public class HomeController : Controller
     {
         public static int IDNew                           = 0;
+        public static string typeOfModel = "";
+        public List<KeyValuePair<string, Product>> listOfCategoryItemsUsed = new List<KeyValuePair<string, Product>>();
+
         public ActionResult Index()
         {
             return View();
@@ -76,32 +81,88 @@ namespace ASPEx_2.Controllers
 
         public ActionResult AdminView()
         {
-            AdminViewModels adminViewModels     = new AdminViewModels();
+            AdminViewModels adminViewModels     = AdminViewModels.getInstanceOfObject();
 
             return View(adminViewModels);
+        }
+
+        private void convertToExcel(DataTable dt)
+        {
+            string attachment = "attachment; filename=city.xls";
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.ms-excel";
+            string tab = "";
+            foreach (DataColumn dc in dt.Columns)
+            {
+                Response.Write(tab + dc.ColumnName);
+                tab = "\t";
+            }
+            Response.Write("\n");
+            int i;
+            foreach (DataRow dr in dt.Rows)
+            {
+                tab = "";
+                for (i = 0; i < dt.Columns.Count; i++)
+                {
+                    Response.Write(tab + dr[i].ToString());
+                    tab = "\t";
+                }
+                Response.Write("\n");
+            }
+            Response.End();
         }
 
         [HttpPost]
         public ActionResult AdminView(string categoryField, string productField, string saveTableField)
         {
-            AdminViewModels adminViewModels = new AdminViewModels();
+            AdminViewModels adminViewModels = AdminViewModels.getInstanceOfObject();
             if (categoryField != null)
             {
+                adminViewModels.destroyInstance();
                 adminViewModels.getCategoriesInProduct(Int32.Parse(categoryField));
                 ViewBag.typeOfModel = "category";
+                typeOfModel         = "category";
+                listOfCategoryItemsUsed = adminViewModels.listOfCategoryItemsUsed;
                 return View(adminViewModels);
             }
             else if (productField != null)
             {
+                adminViewModels.destroyInstance();
                 adminViewModels.getProduct(Int32.Parse(productField));
                 ViewBag.typeOfModel = "product";
+                typeOfModel = "product";
                 return View(adminViewModels);
             }
             else if (saveTableField != null)
             {
                 //TODO: save table stuff
+                DataTable dataTable = new DataTable();
+                if (typeOfModel == "category")
+                {
+                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
+                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+                    
+                    foreach (var item in listOfCategoryItemsUsed)
+                    {
+                        DataRow dataRow = dataTable.NewRow();
+                        dataRow["Category"] = item.Value.Name;
+                        dataRow["Units sold"] = item.Value.Status;
+                        dataTable.Rows.Add(dataRow);
+                    }
+                    DataSet dataSet = new DataSet();
+                    dataSet.Tables.Add(dataTable);
+                    convertToExcel(dataTable);
+                }
+                else if (typeOfModel == "product")
+                {
 
-                return View(adminViewModels);
+                }
+                else
+                {
+
+                }
+                    return View(adminViewModels);
             }
             else
             {
@@ -122,6 +183,25 @@ namespace ASPEx_2.Controllers
             Product product = Product.ExecuteCreate(productToBeUpdated.CategoryID, productToBeUpdated.Name, productToBeUpdated.Description, productToBeUpdated.Price, productToBeUpdated.ImageName, newQuantity, productToBeUpdated.CreatedAccountID, productToBeUpdated.ModifiedAccountID);
             product.Update(idfield, product);
             return PartialView("_AddedCorrectlyView");
+        }
+
+        public ActionResult CheckoutView()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CheckoutView(string isUser)
+        {
+            if (isUser != null) {
+                UserModel userModel = new UserModel();
+                return PartialView("_UserView",userModel);
+            }
+            else
+            {
+                ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                return PartialView("_ProductView", cart);
+            }
         }
 
         public ActionResult CategoryList()
