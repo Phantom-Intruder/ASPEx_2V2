@@ -21,16 +21,27 @@
             </tr>
         }
     }
-    else
+    else if (ViewBag.typeOfModel == "product")
     {
-        foreach (var item in Model.listOfItems)
+        foreach (var item in Model.listOfCategoryItemsUsed)
         {
         <tr>
-            <td>@item.Key</td>
-            <td>@item.Value</td>            
+            <td>@item.Value.Name</td>
+            <td>@item.Value.Status</td>          
         </tr>
-    }}
+        }
+    }
 </table>
+<br />
+<br />
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    HttpMethod = "post"
+}))
+{
+    <input type="hidden" name="saveTableField" value="saveTableField" />
+<button class="btn btn-default">Save table</button>
+}
 <br />
 <br />
 <br />
@@ -41,14 +52,14 @@
     HttpMethod = "post"
 }))
 {
-    <input id="categoryFieldValue" type="hidden" name="categoryFieldValue" />
     <label for="job">Category filter:&nbsp;&nbsp;</label>
     <select id="job" name="categoryField">
-        <option value="1">Electronics</option>
-        <option value="2">Clothing</option>
-        <option value="3">Toys</option>
-        <option value="4">Home</option>
-        <option value="5">Beauty</option>
+        @{int value = 1; }
+        @foreach (var item in Model.CategoriesList)
+        {
+            <option value="@value">@item.Name</option>
+            value = value + 1;
+        }        
     </select>
 
     <button class="btn btn-default">Filter</button>
@@ -56,26 +67,33 @@
     <br/>
     <br />
     <br />
-    <input type="hidden" name="productFieldValue" />
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    HttpMethod = "post"
+}))
+{
     <label for="job2">Product filter:&nbsp;&nbsp;&nbsp;&nbsp;</label>
     <select id="job2" name="productField">
-        <option value="1">Electronics</option>
-        <option value="2">Clothing</option>
-        <option value="3">Toys</option>
-        <option value="4">Home</option>
-        <option value="5">Beauty</option>
-    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+        @{int value = 1; }
+        @foreach (string key in Model.productsDictionary.Keys)
+        {
+            <option value="@value">@key</option>
+            {value = value + 1;
+            }
+        }
+    </select>
     <button class="btn btn-default">Filter</button>
+}
     <br />
     <br />
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    HttpMethod = "post"
+}))
+{
     <button class="btn btn-danger">Clear filters</button>
+}
 </div>
 
-<script>
-    $('#job').change(function () {
-        $('#categoryFieldValue').val($(this).val());
-    })
-    $('#job2').change(function () {
-        $('#productFieldValue').val($(this).val());
-    })
-</script>
+
+

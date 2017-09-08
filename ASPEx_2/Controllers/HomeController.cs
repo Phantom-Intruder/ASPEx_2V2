@@ -82,28 +82,30 @@ namespace ASPEx_2.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminView(string categoryField, string productFieldValue)
+        public ActionResult AdminView(string categoryField, string productField, string saveTableField)
         {
             AdminViewModels adminViewModels = new AdminViewModels();
             if (categoryField != null)
             {
-                //TODO: category field stuff
                 adminViewModels.getCategoriesInProduct(Int32.Parse(categoryField));
                 ViewBag.typeOfModel = "category";
                 return View(adminViewModels);
             }
-            else if (productFieldValue != null)
+            else if (productField != null)
             {
-                //TODO: product field stuff
+                adminViewModels.getProduct(Int32.Parse(productField));
                 ViewBag.typeOfModel = "product";
+                return View(adminViewModels);
+            }
+            else if (saveTableField != null)
+            {
+                //TODO: save table stuff
 
                 return View(adminViewModels);
             }
             else
             {
-                //TODO: clear stuff 
                 ViewBag.typeOfModel = "none";
-
                 return View(adminViewModels);
             }            
         }

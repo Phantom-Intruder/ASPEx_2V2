@@ -9,6 +9,7 @@ namespace ASPEx_2.Models
     public class AdminViewModels
     {
         public Dictionary<string, int> productsDictionary = new Dictionary<string, int>();
+        public List<ECommerce.Tables.Content.Category> CategoriesList { get; set; }
         public List<ECommerce.Tables.Content.Product> ProductsList { get; set; }
         public Dictionary<string, Product> categoryProductsDictionary = new Dictionary<string, Product>();
         public IOrderedEnumerable<KeyValuePair<string, int>> sortedDict;
@@ -27,12 +28,27 @@ namespace ASPEx_2.Models
             }
         }
 
-        
+        public void getProduct(int id)
+        {
+            listOfCategoryItemsUsed     = new List<KeyValuePair<string, Product>>();
+            foreach (var item in listOfCategoryItems)
+            {
+                if (item.Value.ID == id)
+                {
+                    listOfCategoryItemsUsed.Add(item);
+                }
+            }
+        }
+
+       
+       
 
         public AdminViewModels()
         {
             //TODO: take all products from db and add to productsDictionary.
             this.ProductsList = ECommerce.Tables.Content.Product.List();
+            this.CategoriesList = ECommerce.Tables.Content.Category.List();
+
             foreach (Product product in ProductsList)
             {
                 productsDictionary[product.Name]      = product.Status;
