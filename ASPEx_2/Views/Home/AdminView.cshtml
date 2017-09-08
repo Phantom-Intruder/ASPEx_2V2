@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Admin View";
+}
+@model ASPEx_2.Models.AdminViewModels
+
+<h2>AdminView</h2>
+
+<table style="width:100%;">
+    <tr>
+        <td>Product Name</td>
+        <td>Purchased number</td>
+    </tr>
+    @if (ViewBag.typeOfModel == "category")
+    {
+        foreach (var item in Model.listOfCategoryItemsUsed)
+        {
+            <tr>
+                <td>@item.Value.Name</td>
+                <td>@item.Value.Status</td>
+            </tr>
+        }
+    }
+    else
+    {
+        foreach (var item in Model.listOfItems)
+        {
+        <tr>
+            <td>@item.Key</td>
+            <td>@item.Value</td>            
+        </tr>
+    }}
+</table>
+<br />
+<br />
+<br />
+<div class="well">
+    <h3>Filters</h3>
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    HttpMethod = "post"
+}))
+{
+    <input id="categoryFieldValue" type="hidden" name="categoryFieldValue" />
+    <label for="job">Category filter:&nbsp;&nbsp;</label>
+    <select id="job" name="categoryField">
+        <option value="1">Electronics</option>
+        <option value="2">Clothing</option>
+        <option value="3">Toys</option>
+        <option value="4">Home</option>
+        <option value="5">Beauty</option>
+    </select>
+
+    <button class="btn btn-default">Filter</button>
+}
+    <br/>
+    <br />
+    <br />
+    <input type="hidden" name="productFieldValue" />
+    <label for="job2">Product filter:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <select id="job2" name="productField">
+        <option value="1">Electronics</option>
+        <option value="2">Clothing</option>
+        <option value="3">Toys</option>
+        <option value="4">Home</option>
+        <option value="5">Beauty</option>
+    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-default">Filter</button>
+    <br />
+    <br />
+    <button class="btn btn-danger">Clear filters</button>
+</div>
+
+<script>
+    $('#job').change(function () {
+        $('#categoryFieldValue').val($(this).val());
+    })
+    $('#job2').change(function () {
+        $('#productFieldValue').val($(this).val());
+    })
+</script>

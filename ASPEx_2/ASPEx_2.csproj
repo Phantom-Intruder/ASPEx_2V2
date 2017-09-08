@@ -204,6 +204,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CategoryModels.cs" />
     <Compile Include="Models\CategoryProductModels.cs" />
     <Compile Include="Models\Helper.cs" />
@@ -296,6 +297,7 @@
     <Content Include="Views\Home\ShowCategoryView.cshtml" />
     <Content Include="Views\Home\_AddedCorrectlyView.cshtml" />
     <Content Include="Views\Home\_SavedShoppingCartView.cshtml" />
+    <Content Include="Views\Home\AdminView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

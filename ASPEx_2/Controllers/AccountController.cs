@@ -102,7 +102,14 @@ namespace ASPEx_2.Controllers
                             cart.addProductToCart(item.ProductID);
                         }
                     }
-                    return RedirectToLocal(returnUrl);
+                    if (record.Role == 1)
+                    {
+                        return RedirectToLocal("/Home/ProductList");
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 }
                 else
                 {
@@ -182,6 +189,7 @@ namespace ASPEx_2.Controllers
             {
                 try
                 {
+                    model.Role = 0;
                     Account recordData = Account.GetAccountByEmail(model.Email);
                     ViewBag.RegistrationMessage = "The e-mail is already in use";
                     ViewBag.RegistrationFailed = true;

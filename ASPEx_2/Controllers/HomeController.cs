@@ -74,12 +74,51 @@ namespace ASPEx_2.Controllers
             return View(product);
         }
 
+        public ActionResult AdminView()
+        {
+            AdminViewModels adminViewModels     = new AdminViewModels();
+
+            return View(adminViewModels);
+        }
+
+        [HttpPost]
+        public ActionResult AdminView(string categoryField, string productFieldValue)
+        {
+            AdminViewModels adminViewModels = new AdminViewModels();
+            if (categoryField != null)
+            {
+                //TODO: category field stuff
+                adminViewModels.getCategoriesInProduct(Int32.Parse(categoryField));
+                ViewBag.typeOfModel = "category";
+                return View(adminViewModels);
+            }
+            else if (productFieldValue != null)
+            {
+                //TODO: product field stuff
+                ViewBag.typeOfModel = "product";
+
+                return View(adminViewModels);
+            }
+            else
+            {
+                //TODO: clear stuff 
+                ViewBag.typeOfModel = "none";
+
+                return View(adminViewModels);
+            }            
+        }
+
         [HttpPost]
         public ActionResult ProductList(string idField)
         {
             int                     id          = Int32.Parse(idField);
             ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
             cart.addProductToCart(id);
+            Product productToBeUpdated          = Product.ExecuteCreate(id);
+            int                     newQuantity = productToBeUpdated.Status + 1;
+            int idfield = Int32.Parse(idField);
+            Product product = Product.ExecuteCreate(productToBeUpdated.CategoryID, productToBeUpdated.Name, productToBeUpdated.Description, productToBeUpdated.Price, productToBeUpdated.ImageName, newQuantity, productToBeUpdated.CreatedAccountID, productToBeUpdated.ModifiedAccountID);
+            product.Update(idfield, product);
             return PartialView("_AddedCorrectlyView");
         }
 
