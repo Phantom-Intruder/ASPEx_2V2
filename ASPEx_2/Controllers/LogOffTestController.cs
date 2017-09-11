@@ -21,8 +21,8 @@ namespace ASPEx_2.Controllers
         public ActionResult LogOff()
         {
             Session.Clear();
-            ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
-            cart.destroyInstance();
+            ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
+            cart.DestroyInstance();
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using ASPEx_2.Models;
 using ECommerce.Tables.Content;
-using ASPEx_2.Models;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.IO;
+using System.Web.Mvc;
 
 namespace ASPEx_2.Controllers
 {
@@ -24,7 +21,7 @@ namespace ASPEx_2.Controllers
         public ActionResult ShoppingCartView()
         {
             ViewBag.Message                     = "Your application description page.";
-            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
+            ShoppingCartModels      cart        = ShoppingCartModels.GetInstanceOfObject();
             return View(cart);
         }
         [HttpPost]
@@ -33,7 +30,7 @@ namespace ASPEx_2.Controllers
             if (name != null)
             {
                 ViewBag.Message = "Your application description page.";
-                ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
                 cart.TotalPrice = cart.TotalPrice - cart.ProductsList[name].Price;
                 cart.ProductsList.Remove(name);
                 return View(cart);
@@ -41,7 +38,7 @@ namespace ASPEx_2.Controllers
             else
             {
                 //TODO: Save shopping cart code
-                ShoppingCartModels      cart                = ShoppingCartModels.getInstanceOfObject();
+                ShoppingCartModels      cart                = ShoppingCartModels.GetInstanceOfObject();
                 int                     accountID           = Int32.Parse(Session["CurrentID"].ToString());
                 Order                   order               = Order.ExecuteCreate(accountID, 1, 1, cart.TotalPrice);
                 order.Insert();
@@ -81,7 +78,7 @@ namespace ASPEx_2.Controllers
 
         public ActionResult AdminView()
         {
-            AdminViewModels adminViewModels     = AdminViewModels.getInstanceOfObject();
+            AdminViewModels adminViewModels     = AdminViewModels.GetInstanceOfObject();
 
             return View(adminViewModels);
         }
@@ -116,11 +113,11 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult AdminView(string categoryField, string productField, string saveTableField)
         {
-            AdminViewModels adminViewModels = AdminViewModels.getInstanceOfObject();
+            AdminViewModels adminViewModels = AdminViewModels.GetInstanceOfObject();
             if (categoryField != null)
             {
-                adminViewModels.destroyInstance();
-                adminViewModels.getCategoriesInProduct(Int32.Parse(categoryField));
+                adminViewModels.DestroyInstance();
+                adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
                 ViewBag.typeOfModel = "category";
                 typeOfModel         = "category";
                 listOfCategoryItemsUsed = adminViewModels.listOfCategoryItemsUsed;
@@ -128,8 +125,8 @@ namespace ASPEx_2.Controllers
             }
             else if (productField != null)
             {
-                adminViewModels.destroyInstance();
-                adminViewModels.getProduct(Int32.Parse(productField));
+                adminViewModels.DestroyInstance();
+                adminViewModels.GetProduct(Int32.Parse(productField));
                 ViewBag.typeOfModel = "product";
                 typeOfModel = "product";
                 return View(adminViewModels);
@@ -175,8 +172,8 @@ namespace ASPEx_2.Controllers
         public ActionResult ProductList(string idField)
         {
             int                     id          = Int32.Parse(idField);
-            ShoppingCartModels      cart        = ShoppingCartModels.getInstanceOfObject();
-            cart.addProductToCart(id);
+            ShoppingCartModels      cart        = ShoppingCartModels.GetInstanceOfObject();
+            cart.AddProductToCart(id);
             Product productToBeUpdated          = Product.ExecuteCreate(id);
             int                     newQuantity = productToBeUpdated.Status + 1;
             int idfield = Int32.Parse(idField);
@@ -199,7 +196,7 @@ namespace ASPEx_2.Controllers
             }
             else
             {
-                ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
                 return PartialView("_ProductView", cart);
             }
         }

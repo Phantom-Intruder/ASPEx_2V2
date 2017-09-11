@@ -8,8 +8,8 @@ namespace ASPEx_2.Models
 {
     public class CategoryProductModels
     {
-        public List<Product> listOfProducts                = ECommerce.Tables.Content.Product.List();
-        public List<Product> listOfProductsInACategory     = new List<Product>();
+        public      List<Product>       listOfProducts                = ECommerce.Tables.Content.Product.List();
+        public      List<Product>       listOfProductsInACategory     = new List<Product>();
 
         public CategoryProductModels(int id) {
             foreach (var item in listOfProducts)

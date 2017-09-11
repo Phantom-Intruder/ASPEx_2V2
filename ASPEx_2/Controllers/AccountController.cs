@@ -93,14 +93,14 @@ namespace ASPEx_2.Controllers
                     {
                         Session["CurrentUserRole"] = record.Role;
                     }
-                    ShoppingCartModels cart = ShoppingCartModels.getInstanceOfObject();
+                    ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
                     List<Order> orderList = Order.ListByAccountID(record.ID);
                     foreach (Order o in orderList)
                     {
                         List<OrderItem> orderItemList = OrderItem.ListByOrderID(o.ID);
                         foreach (OrderItem item in orderItemList)
                         {
-                            cart.addProductToCart(item.ProductID);
+                            cart.AddProductToCart(item.ProductID);
                         }
                     }
                     if (record.Role == 1)

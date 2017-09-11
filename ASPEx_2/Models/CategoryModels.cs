@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ECommerce.Tables;
+﻿using System.Collections.Generic;
 
 namespace ASPEx_2.Models
 {
     public class CategoryModels
     {
-        public List<ECommerce.Tables.Content.Category> CategoriesList { get; set; }
+        #region Class properties
+        public      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
+        #endregion
+
+        #region Class constructor
         public CategoryModels()
         {
-            this.CategoriesList = ECommerce.Tables.Content.Category.List();
+            this.CategoriesList         = ECommerce.Tables.Content.Category.List();
         }
+        #endregion
     }
 }

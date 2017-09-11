@@ -1,16 +1,29 @@
 ﻿using ECommerce.Tables.Content;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ASPEx_2.Models
 {
     public class ShoppingCartModels
     {
-        private static ShoppingCartModels instanceOfObject;
+        #region Class field
+        private         static      ShoppingCartModels              instanceOfObject;
+        public                      Dictionary<string, Product>     ProductsList        = new Dictionary<string, Product>();
+        #endregion
+
+        #region Class properties
+        public      decimal         TotalPrice { get; set; }
+        #endregion
+
+        #region Class constructor
         private ShoppingCartModels() { }
-        public static ShoppingCartModels getInstanceOfObject()
+        #endregion
+
+        #region Singleton class methods
+        /// <summary>
+        /// Get the running instance of the class
+        /// </summary>
+        /// <returns></returns>
+        public static ShoppingCartModels GetInstanceOfObject()
         {
             if (instanceOfObject == null)
             {
@@ -20,22 +33,29 @@ namespace ASPEx_2.Models
             return instanceOfObject;
         }
 
-        public void destroyInstance()
+        /// <summary>
+        /// Destroy instance of class
+        /// </summary>
+        public void DestroyInstance()
         {
             instanceOfObject = null;
         }
+        #endregion
 
-        public Dictionary<string, Product> ProductsList  = new Dictionary<string, Product>();
-        public decimal TotalPrice { get; set; }
-        public void addProductToCart(int id)
+        #region Class methods
+        /// <summary>
+        /// Get the product by ID and add it to the cart 
+        /// </summary>
+        /// <param name="id"></param>
+        public void AddProductToCart(int id)
         {
-            //TODO: Find relevant product
+            //Find relevant product
             Product         product                  = Product.ExecuteCreate(id);
-            //TODO: Increment this.TotalPrice by product.price
+            //Increment this.TotalPrice by product.price
             this.TotalPrice                          = this.TotalPrice + product.Price;
-            //TODO: Add product to this.ProductsList
+            //Add product to this.ProductsList
             ProductsList[product.Name]          = product;
-            //TODO: this.ProductsList[product.Name] = product
         }
+        #endregion
     }
 }

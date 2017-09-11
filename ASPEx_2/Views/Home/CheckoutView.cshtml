@@ -9,7 +9,7 @@
     @using (Ajax.BeginForm(new AjaxOptions
     {
         HttpMethod = "post",
-        InsertionMode = InsertionMode.InsertAfter,
+        InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "userDiv"
     }))
     {
@@ -17,7 +17,9 @@
         <button class="btn btn-info">Show my information</button>
     }
 </div>
-
+<br/>
+<br/>
+<br/>
 <div id="productDiv">
     @using (Ajax.BeginForm(new AjaxOptions
     {
