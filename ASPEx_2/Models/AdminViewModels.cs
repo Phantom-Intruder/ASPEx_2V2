@@ -91,6 +91,7 @@ namespace ASPEx_2.Models
                 productsDictionary[product.Name]                = product.Status;
                 categoryProductsDictionary[product.Name]        = product;
             }
+
             sortedDictionary                                    = from entry in productsDictionary orderby entry.Value descending select entry;
             var         sortedCategoryDict                      = from entry in categoryProductsDictionary orderby entry.Value descending select entry;
             listOfItems                                         = sortedDictionary.ToList();

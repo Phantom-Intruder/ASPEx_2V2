@@ -128,57 +128,96 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult AdminView(string categoryField, string productField, string saveTableField)
         {
-            AdminViewModels         adminViewModels         = AdminViewModels.GetInstanceOfObject();
+            
+            AdminViewModels         adminViewModels             = AdminViewModels.GetInstanceOfObject();
+
             if (categoryField != null)
             {
                 adminViewModels.DestroyInstance();
+                adminViewModels                                 = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
-                ViewBag.typeOfModel                         = "category";
-                typeOfModel                                 = "category";
-                listOfCategoryItemsUsed                     = adminViewModels.listOfCategoryItemsUsed;
+                ViewBag.typeOfModel                             = "category";
+                typeOfModel                                     = "category";
+                listOfCategoryItemsUsed                         = adminViewModels.listOfCategoryItemsUsed;
                 return View(adminViewModels);
             }
             else if (productField != null)
             {
                 adminViewModels.DestroyInstance();
+                adminViewModels                                 = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetProduct(Int32.Parse(productField));
-                ViewBag.typeOfModel                         = "product";
-                typeOfModel                                 = "product";
+                ViewBag.typeOfModel                             = "product";
+                typeOfModel                                     = "product";
                 return View(adminViewModels);
             }
             else if (saveTableField != null)
             {
                 //TODO: save table stuff
-                DataTable dataTable                         = new DataTable();
+                DataTable               dataTable               = new DataTable();
                 if (typeOfModel == "category")
                 {
+                    typeOfModel                                 = "";
                     dataTable.Columns.Add("Category", Type.GetType("System.String"));
                     dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
-                    
-                    foreach (var item in listOfCategoryItemsUsed)
+
+                    foreach (var item in adminViewModels.listOfCategoryItemsUsed)
                     {
-                        DataRow dataRow                     = dataTable.NewRow();
-                        dataRow["Category"]                 = item.Value.Name;
-                        dataRow["Units sold"]               = item.Value.Status;
+                        DataRow         dataRow                 = dataTable.NewRow();
+                        dataRow["Category"]                     = item.Value.Name;
+                        dataRow["Units sold"]                   = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
-                    DataSet dataSet                         = new DataSet();
+
+                    DataSet             dataSet                 = new DataSet();
+
                     dataSet.Tables.Add(dataTable);
-                    convertToExcel(dataTable);
+                    ConvertToExcel(dataTable);
                 }
                 else if (typeOfModel == "product")
                 {
-                    //TODO
+                    typeOfModel                                 = "";
+                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
+                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+
+                    foreach (var item in adminViewModels.listOfCategoryItemsUsed)
+                    {
+                        DataRow         dataRow                 = dataTable.NewRow();
+
+                        dataRow["Category"]                     = item.Value.Name;
+                        dataRow["Units sold"]                   = item.Value.Status;
+                        dataTable.Rows.Add(dataRow);
+                    }
+
+                    DataSet             dataSet                 = new DataSet();
+
+                    dataSet.Tables.Add(dataTable);
+                    ConvertToExcel(dataTable);
                 }
                 else
                 {
-                    //TODO
+                    
+                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
+                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+
+                    foreach (var item in adminViewModels.listOfCategoryItems)
+                    {
+                        DataRow         dataRow                 = dataTable.NewRow();
+
+                        dataRow["Category"]                     = item.Value.Name;
+                        dataRow["Units sold"]                   = item.Value.Status;
+                        dataTable.Rows.Add(dataRow);
+                    }
+
+                    DataSet             dataSet                 = new DataSet();
+
+                    dataSet.Tables.Add(dataTable);
+                    ConvertToExcel(dataTable);
                 }
                 return View(adminViewModels);
             }
             else
             {
-                ViewBag.typeOfModel                         = "none";
+                ViewBag.typeOfModel                             = "none";
                 return View(adminViewModels);
             }            
         }
@@ -379,7 +418,7 @@ namespace ASPEx_2.Controllers
         #endregion
 
         #region Helpers
-        private void convertToExcel(DataTable dt)
+        private void ConvertToExcel(DataTable dt)
         {
             string attachment = "attachment; filename=city.xls";
             Response.ClearContent();
