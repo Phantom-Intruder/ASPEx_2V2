@@ -9,7 +9,15 @@
         <li>
             @Html.ActionLink("Hello " + Session["CurrentUserName"] + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
-        <li>@Html.ActionLink("Cart", "ShoppingCartView", "Home", routeValues: null, htmlAttributes: new { id = "cartLink" })</li>
+        @{  if (Session["CurrentUserRole"] != null)
+            {
+                <li>@Html.ActionLink("Admin controls", "AdminView", "Home", routeValues: null, htmlAttributes: new { id = "adminLink" })</li>
+            }
+            else
+            {
+                <li>@Html.ActionLink("Cart", "ShoppingCartView", "Home", routeValues: null, htmlAttributes: new { id = "cartLink" })</li>
+                }
+            }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
 </ul>
     }

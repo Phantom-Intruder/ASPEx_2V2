@@ -37,11 +37,11 @@
     }
     else
     {
-        foreach (string key in Model.productsDictionary.Keys.Reverse())
+        foreach (var item in Model.listOfItems)
         {
             <tr>
-                <td>@key</td>
-                <td>@Model.productsDictionary[key]</td>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
             </tr>
         }
     }
