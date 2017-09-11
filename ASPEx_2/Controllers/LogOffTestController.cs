@@ -1,14 +1,11 @@
 ﻿using ASPEx_2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ASPEx_2.Controllers
 {
     public class LogOffTestController : Controller
     {
+        #region Account logoff 
         // GET: LogOff
         public ActionResult Index()
         {
@@ -20,10 +17,13 @@ namespace ASPEx_2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            Session.Clear();
-            ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
+            ShoppingCartModels      cart        = ShoppingCartModels.GetInstanceOfObject();
+
             cart.DestroyInstance();
+            Session.Clear();
+
             return RedirectToAction("Index", "Home");
         }
+        #endregion
     }
 }
