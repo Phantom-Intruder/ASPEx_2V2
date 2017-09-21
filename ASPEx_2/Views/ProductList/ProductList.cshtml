@@ -31,8 +31,24 @@
                 
 
                     <td>@product.ID</td>
-                    <td><a href="ShowProductView?id=@product.ID">@product.Name</a></td>
-                    <td>@product.Description</td>
+                    @{ if (product.Name.Length > 20)
+                        {
+                            <td><a href="ShowProductView?id=@product.ID">@product.Name.Substring(0, 17) ...</td>
+                        }
+                        else
+                        {
+                            <td><a href="ShowProductView?id=@product.ID">@product.Name</td>
+                        }
+                    }
+                    @{ if (product.Description.Length > 25)
+                        {
+                            <td><a href="ShowProductView?id=@product.ID">@product.Description.Substring(0, 17) ...</td>
+                        }
+                        else
+                        {
+                            <td><a href="ShowProductView?id=@product.ID">@product.Description</td>
+                        }
+                    }
                     <td>@product.Price</td>
                     @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
                         <td><img height="100" width="100" src="@filename" /></td>
