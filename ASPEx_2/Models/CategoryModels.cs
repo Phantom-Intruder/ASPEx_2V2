@@ -4,11 +4,11 @@ namespace ASPEx_2.Models
 {
     public class CategoryModels
     {
-        #region Class properties
+        #region Properties
         public      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
         #endregion
 
-        #region Class constructor
+        #region Class members
         public CategoryModels()
         {
             this.CategoriesList         = ECommerce.Tables.Content.Category.List();

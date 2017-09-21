@@ -5,13 +5,13 @@ using System.Linq;
 namespace ASPEx_2.Models
 {
     public class AdminViewModels
-    {
-        #region Class properties
+    {   
+        #region Properties
         public      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
         public      List<ECommerce.Tables.Content.Product>          ProductsList { get; set; }
         #endregion
 
-        #region Class fields
+        #region members
         private         static      AdminViewModels                 instanceOfObject;
 
         public      IOrderedEnumerable<KeyValuePair<string, int>>       sortedDictionary;

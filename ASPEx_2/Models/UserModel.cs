@@ -4,14 +4,14 @@ namespace ASPEx_2.Models
 {
     public class UserModel
     {
-        #region Class properties
+        #region Properties
         public string Name { get; set; }
         public string ShippingAddress { get; set; }
         public string ContactNumber { get; set; }
         public string Email { get; set; }
         #endregion
 
-        #region Class field
+        #region Class members
         public static      int         ID      = 0;
         #endregion
 

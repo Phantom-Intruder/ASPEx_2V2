@@ -5,12 +5,12 @@ namespace ASPEx_2.Models
 {
     public class ShoppingCartModels
     {
-        #region Class field
-        private         static      ShoppingCartModels              instanceOfObject;
-        public                      Dictionary<string, Product>     ProductsList        = new Dictionary<string, Product>();
+        #region Class members
+        private  static     ShoppingCartModels              instanceOfObject    = null;
+        public        Dictionary<string, Product>     ProductsList        = new Dictionary<string, Product>();
         #endregion
 
-        #region Class properties
+        #region Properties
         public      decimal         TotalPrice { get; set; }
         #endregion
 

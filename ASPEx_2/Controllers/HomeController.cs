@@ -26,7 +26,6 @@ namespace ASPEx_2.Controllers
         public ActionResult ShoppingCartView()
         {
             ShoppingCartModels      cart        = ShoppingCartModels.GetInstanceOfObject();
-            ViewBag.Message                     = "Your application description page.";
 
             return View(cart);
         }
@@ -34,8 +33,7 @@ namespace ASPEx_2.Controllers
         public ActionResult ProductList()
         {
             ProductModels       product         = new ProductModels();
-            ViewBag.Message                     = "Your application description page.";
-
+          
             return View(product);
         }
 
@@ -54,22 +52,19 @@ namespace ASPEx_2.Controllers
         public ActionResult CategoryList()
         {
             CategoryModels      category        = new CategoryModels();
-            ViewBag.Message                     = "Your contact page.";
-
+            
             return View(category);
         }
 
         public ActionResult EditCategoryView()
         {
-            ViewBag.Message         = "Your application description page.";
-
+           
             return View();
         }
 
         public ActionResult EditProductView()
         {
-            ViewBag.Message         = "Your application description page.";
-
+           
             return View();
         }
         #endregion
@@ -82,7 +77,6 @@ namespace ASPEx_2.Controllers
             {
                 ShoppingCartModels      cart                = ShoppingCartModels.GetInstanceOfObject();
 
-                ViewBag.Message                             = "Your application description page.";
                 cart.TotalPrice                             = cart.TotalPrice - cart.ProductsList[name].Price;
                 cart.ProductsList.Remove(name);
 
@@ -136,8 +130,8 @@ namespace ASPEx_2.Controllers
                 adminViewModels.DestroyInstance();
                 adminViewModels                                 = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
-                ViewBag.typeOfModel                             = "category";
-                typeOfModel                                     = "category";
+                ViewBag.typeOfModel                             = Constants.MODEL_CATEGORY;
+                typeOfModel                                     = Constants.MODEL_CATEGORY;
                 listOfCategoryItemsUsed                         = adminViewModels.listOfCategoryItemsUsed;
                 return View(adminViewModels);
             }
@@ -146,25 +140,25 @@ namespace ASPEx_2.Controllers
                 adminViewModels.DestroyInstance();
                 adminViewModels                                 = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetProduct(Int32.Parse(productField));
-                ViewBag.typeOfModel                             = "product";
-                typeOfModel                                     = "product";
+                ViewBag.typeOfModel                             = Constants.MODEL_PRODUCT;
+                typeOfModel                                     = Constants.MODEL_PRODUCT;
                 return View(adminViewModels);
             }
             else if (saveTableField != null)
             {
                 //TODO: save table stuff
                 DataTable               dataTable               = new DataTable();
-                if (typeOfModel == "category")
+                if (typeOfModel == Constants.MODEL_CATEGORY)
                 {
                     typeOfModel                                 = "";
-                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
-                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+                    dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+                    dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
                     foreach (var item in adminViewModels.listOfCategoryItemsUsed)
                     {
                         DataRow         dataRow                 = dataTable.NewRow();
-                        dataRow["Category"]                     = item.Value.Name;
-                        dataRow["Units sold"]                   = item.Value.Status;
+                        dataRow[Constants.CATEGORY_COLUMN]                     = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]                   = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
@@ -173,18 +167,18 @@ namespace ASPEx_2.Controllers
                     dataSet.Tables.Add(dataTable);
                     ConvertToExcel(dataTable);
                 }
-                else if (typeOfModel == "product")
+                else if (typeOfModel == Constants.MODEL_PRODUCT)
                 {
                     typeOfModel                                 = "";
-                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
-                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+                    dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+                    dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
                     foreach (var item in adminViewModels.listOfCategoryItemsUsed)
                     {
                         DataRow         dataRow                 = dataTable.NewRow();
 
-                        dataRow["Category"]                     = item.Value.Name;
-                        dataRow["Units sold"]                   = item.Value.Status;
+                        dataRow[Constants.CATEGORY_COLUMN]                     = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]                   = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
@@ -196,15 +190,15 @@ namespace ASPEx_2.Controllers
                 else
                 {
                     
-                    dataTable.Columns.Add("Category", Type.GetType("System.String"));
-                    dataTable.Columns.Add("Units sold", Type.GetType("System.String"));
+                    dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+                    dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
                     foreach (var item in adminViewModels.listOfCategoryItems)
                     {
                         DataRow         dataRow                 = dataTable.NewRow();
 
-                        dataRow["Category"]                     = item.Value.Name;
-                        dataRow["Units sold"]                   = item.Value.Status;
+                        dataRow[Constants.CATEGORY_COLUMN]                     = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]                   = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
@@ -217,7 +211,7 @@ namespace ASPEx_2.Controllers
             }
             else
             {
-                ViewBag.typeOfModel                             = "none";
+                ViewBag.typeOfModel                             = Constants.CATEGORY_TYPE_NONE;
                 return View(adminViewModels);
             }            
         }
@@ -420,10 +414,10 @@ namespace ASPEx_2.Controllers
         #region Helpers
         private void ConvertToExcel(DataTable dt)
         {
-            string attachment = "attachment; filename=city.xls";
+            string attachment = Constants.FILE_NAME;
             Response.ClearContent();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader(Constants.CONTENT_DISPOSITION, attachment);
+            Response.ContentType = Constants.APPLICATION_VND ;
             string tab = "";
             foreach (DataColumn dc in dt.Columns)
             {

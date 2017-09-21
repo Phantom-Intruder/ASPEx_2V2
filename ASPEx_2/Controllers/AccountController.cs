@@ -18,7 +18,7 @@ namespace ASPEx_2.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl           = returnUrl;
-            ViewBag.LoginMessage        = "Enter your login details below";
+            ViewBag.LoginMessage        = Constants.ENTER_LOGIN_MESSAGE;
             ViewBag.LoginFailed         = false;
             return View();
         }
@@ -32,62 +32,69 @@ namespace ASPEx_2.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-
-                Account                 record                      = Account.GetAccountByEmail(model.Email);
-                var                     salt                        = record.Salt;
-                var                     encodingPasswordString      = Helper.EncodePassword(model.Password, salt);
-                ShoppingCartModels      cart                        = ShoppingCartModels.GetInstanceOfObject();
-                List<Order>             orderList                   = Order.ListByAccountID(record.ID);
-                List<OrderItem>         orderItemList               = new List<OrderItem>();
-
-                if (encodingPasswordString == record.Password)
-                {
-                    ViewBag.LoginFailed                             = false;
-                    Session["CurrentUser"]                          = record;
-                    Session["CurrentID"]                            = record.ID;
-                    UserModel.ID                                    = record.ID;
-                    Session["CurrentUserName"]                      = record.FirstName;
-
-                    if (record.Role == 1)
+                if (ModelState.IsValid)
+                {                    
+                    if (Account.GetAccountByEmail(model.Email) != null)
                     {
-                        Session["CurrentUserRole"]                  = record.Role;
-                    }
+                        Account record = Account.GetAccountByEmail(model.Email);
+                        var salt = record.Salt;
+                        var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
+                        ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
+                        List<Order> orderList = Order.ListByAccountID(record.ID);
+                        List<OrderItem> orderItemList = new List<OrderItem>();
 
-                    
-                    foreach (Order o in orderList)
-                    {
-                        orderItemList                               = OrderItem.ListByOrderID(o.ID);
-                        foreach (OrderItem item in orderItemList)
+                        if (encodingPasswordString == record.Password)
                         {
-                            cart.AddProductToCart(item.ProductID);
+                            ViewBag.LoginFailed = false;
+                            Session["CurrentUser"] = record;
+                            Session["CurrentID"] = record.ID;
+                            UserModel.ID = record.ID;
+                            Session["CurrentUserName"] = record.FirstName;
+
+                            if (record.Role == 1)
+                            {
+                                Session["CurrentUserRole"] = record.Role;
+                            }
+
+
+                            foreach (Order o in orderList)
+                            {
+                                orderItemList = OrderItem.ListByOrderID(o.ID);
+                                foreach (OrderItem item in orderItemList)
+                                {
+                                    cart.AddProductToCart(item.ProductID);
+                                }
+                            }
+                            if (record.Role == 1)
+                            {
+                                return RedirectToAction(Constants.CONTROLLER_ADMIN, Constants.CONTROLLER_HOME);
+                            }
+                            else
+                            {
+                                return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_HOME);
+                            }
                         }
-                    }
-                    if (record.Role == 1)
-                    {
-                        return RedirectToLocal("/Home/AdminView");
-                    }
                     else
                     {
-                        return RedirectToLocal("/Home/ProductList");
+                        ViewBag.LoginMessage = Constants.WRONG_USERNAME;
+                        ViewBag.LoginFailed = true;
+                    }
                     }
                 }
                 else
                 {
-                    ViewBag.LoginMessage                            = "Wrong username/password";
-                    ViewBag.LoginFailed                             = true;
+                    ViewBag.LoginMessage = Constants.WRONG_USERNAME;
+                    ViewBag.LoginFailed = true;
+                    return View();
                 }
+                return View(model);
             }
             catch (Exception ignored)
             {
-                ViewBag.LoginMessage                                = "Wrong username/password";
-                ViewBag.LoginFailed                                 = true;
+                ViewBag.LoginMessage = Constants.WRONG_USERNAME;
+                ViewBag.LoginFailed = true;
                 return View();
             }
-            return View();
         }
         #endregion
 
@@ -97,7 +104,7 @@ namespace ASPEx_2.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.RegistrationMessage         = "Enter registration details below";
+            ViewBag.RegistrationMessage         = Constants.REGISTRATION_MESSAGE;
             ViewBag.RegistrationFailed          = false;
             return View();
         }
@@ -116,7 +123,7 @@ namespace ASPEx_2.Controllers
                     Account         recordData                  = Account.GetAccountByEmail(model.Email);
 
                     model.Role                                  = 0;
-                    ViewBag.RegistrationMessage                 = "The e-mail is already in use";
+                    ViewBag.RegistrationMessage                 = Constants.EMAIL_IN_USE;
                     ViewBag.RegistrationFailed                  = true;
                     return View();
                 }
@@ -140,7 +147,7 @@ namespace ASPEx_2.Controllers
                     ViewBag.RegistrationFailed                  = false;
                     Session["CurrentUser"]                      = record;
                     Session["CurrentUserName"]                  = record.FirstName;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
                 }
 
             }
@@ -158,7 +165,7 @@ namespace ASPEx_2.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
