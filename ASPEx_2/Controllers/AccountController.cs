@@ -67,11 +67,11 @@ namespace ASPEx_2.Controllers
                             }
                             if (record.Role == 1)
                             {
-                                return RedirectToAction(Constants.CONTROLLER_ADMIN, Constants.CONTROLLER_HOME);
+                                return RedirectToAction(Constants.CONTROLLER_ADMIN, Constants.CONTROLLER_ADMIN);
                             }
                             else
                             {
-                                return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_HOME);
+                                return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_PRODUCT_LIST);
                             }
                         }
                     else

@@ -9,7 +9,7 @@
 <h2>Product List</h2>
 @{  if (Session["CurrentUserRole"] != null)
     {
-        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "Home") + "'");" class="pull-right btn btn-info">Create new product </button>
+        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "ProductList") + "'");" class="pull-right btn btn-info">Create new product </button>
     }
 }
 <br />

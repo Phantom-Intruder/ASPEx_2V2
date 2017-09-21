@@ -11,11 +11,11 @@
         </li>
         @{  if (Session["CurrentUserRole"] != null)
             {
-                <li>@Html.ActionLink("Admin controls", "AdminView", "Home", routeValues: null, htmlAttributes: new { id = "adminLink" })</li>
+                <li>@Html.ActionLink("Admin controls", "AdminView", "AdminView", routeValues: null, htmlAttributes: new { id = "adminLink" })</li>
             }
             else
             {
-                <li>@Html.ActionLink("Cart", "ShoppingCartView", "Home", routeValues: null, htmlAttributes: new { id = "cartLink" })</li>
+                <li>@Html.ActionLink("Cart", "ShoppingCartView", "ShoppingCart", routeValues: null, htmlAttributes: new { id = "cartLink" })</li>
                 }
             }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>

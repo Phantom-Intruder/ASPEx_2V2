@@ -11,7 +11,7 @@
     <h2>Category List</h2>
     @{  if (Session["CurrentUserRole"] != null)
         {
-            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "Home") + "'");" class="pull-right btn btn-info"> Create new category </button>
+            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "CategoryList") + "'");" class="pull-right btn btn-info"> Create new category </button>
         }
     }
     <br />
