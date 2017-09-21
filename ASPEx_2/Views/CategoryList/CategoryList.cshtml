@@ -30,7 +30,7 @@
                 }
                 
             </tr>
-            @foreach (var category in Model.CategoriesList)
+            @foreach (var category in Model.GetCategoriesList())
             {
             <tr>
                 <td>@category.ID</td>

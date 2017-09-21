@@ -304,14 +304,15 @@
     <Content Include="Views\ProductList\ShowProductView.cshtml" />
     <Content Include="Views\CategoryList\ShowCategoryView.cshtml" />
     <Content Include="Views\Home\_AddedCorrectlyView.cshtml" />
-    <Content Include="Views\Home\_SavedShoppingCartView.cshtml" />
+    <Content Include="Views\ShoppingCart\_SavedShoppingCartView.cshtml" />
     <Content Include="Views\AdminView\AdminView.cshtml" />
     <Content Include="Views\CheckoutView\CheckoutView.cshtml" />
-    <Content Include="Views\Home\_UserView.cshtml" />
-    <Content Include="Views\Home\_ProductView.cshtml" />
+    <Content Include="Views\CheckoutView\_UserView.cshtml" />
+    <Content Include="Views\CheckoutView\_ProductView.cshtml" />
     <Content Include="Views\CategoryList\_AddedView.cshtml" />
     <Content Include="Views\ProductList\_AddedCorrectlyView.cshtml" />
     <Content Include="Views\ProductList\_AddedView.cshtml" />
+    <Content Include="Views\CategoryList\ShowProductView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

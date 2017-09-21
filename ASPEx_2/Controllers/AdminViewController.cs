@@ -43,7 +43,7 @@ namespace ASPEx_2.Controllers
                 adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
                 ViewBag.typeOfModel = Constants.MODEL_CATEGORY;
                 typeOfModel = Constants.MODEL_CATEGORY;
-                listOfCategoryItemsUsed = adminViewModels.listOfCategoryItemsUsed;
+                listOfCategoryItemsUsed = adminViewModels.GetListOfCategoryItemsUsed();
                 return View(adminViewModels);
             }
             else if (productField != null)
@@ -65,7 +65,7 @@ namespace ASPEx_2.Controllers
                     dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
                     dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-                    foreach (var item in adminViewModels.listOfCategoryItemsUsed)
+                    foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
                     {
                         DataRow dataRow = dataTable.NewRow();
                         dataRow[Constants.CATEGORY_COLUMN] = item.Value.Name;
@@ -84,7 +84,7 @@ namespace ASPEx_2.Controllers
                     dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
                     dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-                    foreach (var item in adminViewModels.listOfCategoryItemsUsed)
+                    foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
                     {
                         DataRow dataRow = dataTable.NewRow();
 
@@ -104,7 +104,7 @@ namespace ASPEx_2.Controllers
                     dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
                     dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-                    foreach (var item in adminViewModels.listOfCategoryItems)
+                    foreach (var item in adminViewModels.GetListOfCategoryItems())
                     {
                         DataRow dataRow = dataTable.NewRow();
 

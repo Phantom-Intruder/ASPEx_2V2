@@ -105,6 +105,26 @@ namespace ASPEx_2.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult ShowProductView(string id)
+        {
+            try
+            {
+                Product product = Product.ExecuteCreate(Int32.Parse(id));
+
+                IDNew = Int32.Parse(id);
+                ViewBag.Name = product.Name;
+                ViewBag.Description = product.Description;
+                ViewBag.Price = product.Price;
+                ViewBag.FileName = product.ImageName;
+            }
+            catch (ArgumentNullException n)
+            {
+                return View();
+            }
+            return View();
+        }
         #endregion
     }
 }

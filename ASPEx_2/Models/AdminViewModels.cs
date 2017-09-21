@@ -7,19 +7,19 @@ namespace ASPEx_2.Models
     public class AdminViewModels
     {   
         #region Properties
-        public      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
-        public      List<ECommerce.Tables.Content.Product>          ProductsList { get; set; }
+        private List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
+        private List<ECommerce.Tables.Content.Product>          ProductsList { get; set; }
         #endregion
 
         #region members
-        private         static      AdminViewModels                 instanceOfObject;
+        private static      AdminViewModels                         instanceOfObject;
 
-        public      IOrderedEnumerable<KeyValuePair<string, int>>       sortedDictionary;
-        public      Dictionary<string, int>                             productsDictionary              = new Dictionary<string, int>();
-        public      Dictionary<string, Product>                         categoryProductsDictionary      = new Dictionary<string, Product>();
-        public      List<KeyValuePair<string, int>>                     listOfItems                     = new List<KeyValuePair<string, int>>();
-        public      List<KeyValuePair<string, Product>>                 listOfCategoryItems             = new List<KeyValuePair<string, Product>>();
-        public      List<KeyValuePair<string, Product>>                 listOfCategoryItemsUsed         = new List<KeyValuePair<string, Product>>();
+        private IOrderedEnumerable<KeyValuePair<string, int>>       sortedDictionary;
+        private Dictionary<string, int>                             productsDictionary              = new Dictionary<string, int>();
+        private Dictionary<string, Product>                         categoryProductsDictionary      = new Dictionary<string, Product>();
+        private List<KeyValuePair<string, int>>                     listOfItems                     = new List<KeyValuePair<string, int>>();
+        private List<KeyValuePair<string, Product>>                 listOfCategoryItems             = new List<KeyValuePair<string, Product>>();
+        private List<KeyValuePair<string, Product>>                 listOfCategoryItemsUsed         = new List<KeyValuePair<string, Product>>();
         #endregion
 
         #region Get data for admin view models 
@@ -52,6 +52,51 @@ namespace ASPEx_2.Models
                     listOfCategoryItemsUsed.Add(item);
                 }
             }
+        }
+
+        /// <summary>
+        /// Get category list
+        /// </summary>
+        /// <returns>category list</returns>
+        public List<Category> GetCategoriesList()
+        {
+            return this.CategoriesList;
+        }
+
+        /// <summary>
+        /// Get list of category items used 
+        /// </summary>
+        /// <returns>category items used </returns>
+        public List<KeyValuePair<string, Product>> GetListOfCategoryItemsUsed()
+        {
+            return this.listOfCategoryItemsUsed;
+        }
+
+        /// <summary>
+        /// Get list of category items
+        /// </summary>
+        /// <returns>list of category items</returns>
+        public List<KeyValuePair<string, Product>> GetListOfCategoryItems()
+        {
+            return this.listOfCategoryItems;
+        }
+
+        /// <summary>
+        /// Get list of items 
+        /// </summary>
+        /// <returnsGet list of items ></returns>
+        public List<KeyValuePair<string, int>> GetListOfItems()
+        {
+            return this.listOfItems;
+        }
+
+        /// <summary>
+        /// Gets a dictionary of products
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, int> GetProductsDictionary()
+        {
+            return this.productsDictionary;
         }
         #endregion
 

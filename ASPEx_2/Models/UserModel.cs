@@ -5,10 +5,10 @@ namespace ASPEx_2.Models
     public class UserModel
     {
         #region Properties
-        public string Name { get; set; }
-        public string ShippingAddress { get; set; }
-        public string ContactNumber { get; set; }
-        public string Email { get; set; }
+        private string Name { get; set; }
+        private string ShippingAddress { get; set; }
+        private string ContactNumber { get; set; }
+        private string Email { get; set; }
         #endregion
 
         #region Class members
@@ -25,6 +25,28 @@ namespace ASPEx_2.Models
             this.ContactNumber          = account.ContactNo;
             this.Email                  = account.Email;
         }
-        #endregion        
+        #endregion
+
+        #region Getters
+        public string GetName()
+        {
+            return this.Name;
+        }
+
+        public string GetShippingAddress()
+        {
+            return this.ShippingAddress;
+        }
+
+        public string GetContactNumber()
+        {
+            return this.ContactNumber;
+        }
+
+        public string GetEmail()
+        {
+            return this.Email;
+        }
+        #endregion
     }
 }

@@ -17,7 +17,7 @@
     </tr>
     @if (ViewBag.typeOfModel == "category")
     {
-        foreach (var item in Model.listOfCategoryItemsUsed)
+        foreach (var item in Model.GetListOfCategoryItemsUsed())
         {
             <tr>
                 <td>@item.Value.Name</td>
@@ -27,7 +27,7 @@
     }
     else if (ViewBag.typeOfModel == "product")
     {
-        foreach (var item in Model.listOfCategoryItemsUsed)
+        foreach (var item in Model.GetListOfCategoryItemsUsed())
         {
         <tr>
             <td>@item.Value.Name</td>
@@ -37,7 +37,7 @@
     }
     else
     {
-        foreach (var item in Model.listOfItems)
+        foreach (var item in Model.GetListOfItems())
         {
             <tr>
                 <td>@item.Key</td>
@@ -64,7 +64,7 @@
     <label for="job">Category filter:&nbsp;&nbsp;</label>
     <select id="job" name="categoryField">
         @{int value = 1; }
-        @foreach (var item in Model.CategoriesList)
+        @foreach (var item in Model.GetCategoriesList())
         {
             <option value="@value">@item.Name</option>
             value = value + 1;
@@ -84,7 +84,7 @@
     <label for="job2">Product filter:&nbsp;&nbsp;&nbsp;&nbsp;</label>
     <select id="job2" name="productField">
         @{int value = 1; }
-        @foreach (string key in Model.productsDictionary.Keys)
+        @foreach (string key in Model.GetProductsDictionary().Keys)
         {
             <option value="@value">@key</option>
             {value = value + 1;

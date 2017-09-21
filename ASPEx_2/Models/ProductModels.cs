@@ -9,14 +9,20 @@ namespace ASPEx_2.Models
     public class ProductModels
     {
         #region Properties
-        public List<ECommerce.Tables.Content.Product> ProductsList { get; set; }
-        public int MyProperty { get; set; }
+        private List<ECommerce.Tables.Content.Product> ProductsList { get; set; }
         #endregion
 
-        #region Class members
+        #region Class constructor 
         public ProductModels()
         {
             this.ProductsList       = ECommerce.Tables.Content.Product.List();
+        }
+        #endregion
+
+        #region Getters
+        public List<ECommerce.Tables.Content.Product> GetProductsList()
+        {
+            return this.ProductsList;
         }
         #endregion
     }
