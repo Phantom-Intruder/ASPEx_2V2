@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "EditProductView";
 }
+@model ASPEx_2.Models.AdminViewModels
 
 <h2>EditProductView</h2>
 
@@ -40,13 +41,15 @@
                         <input type="hidden" name="isEditField" value="true" />
                     <input id="price" type="text" value="@ViewBag.Price" name="priceField" placeholder="Price *" />
                     <label for="job">Category:</label>
-                    <select id="job" name="categoryField">
-                        <option value="1">Electronics</option>
-                        <option value="2">Clothing</option>
-                        <option value="3">Toys</option>
-                        <option value="4">Home</option>
-                        <option value="5">Beauty</option>
-                    </select>
+                        <select id="job" name="categoryField">
+                            @{int value = 1; }
+                            @foreach (var item in Model.GetCategoriesList())
+                            {
+                                <option value="@value">@item.Name</option>
+                                value = value + 1;
+                            }
+                        </select>
+
                     <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
                 </fieldset>
                         }
@@ -69,11 +72,12 @@
                                 <input id="price" type="text" name="priceField" placeholder="Price *" />
                                 <label for="job">Category:</label>
                                 <select id="job" name="categoryField">
-                                    <option value="1">Electronics</option>
-                                    <option value="2">Clothing</option>
-                                    <option value="3">Toys</option>
-                                    <option value="4">Home</option>
-                                    <option value="5">Beauty</option>
+                                    @{int value = 1; }
+                                    @foreach (var item in Model.GetCategoriesList())
+                                    {
+                                        <option value="@value">@item.Name</option>
+                                        value = value + 1;
+                                    }
                                 </select>
                                 <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
                             </fieldset>

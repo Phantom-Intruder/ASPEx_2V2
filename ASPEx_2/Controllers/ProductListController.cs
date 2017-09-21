@@ -43,7 +43,8 @@ namespace ASPEx_2.Controllers
             {
                 return View();
             }
-            return View();
+            AdminViewModels models = AdminViewModels.GetInstanceOfObject();
+            return View(models);
         }
 
         [HttpGet]
