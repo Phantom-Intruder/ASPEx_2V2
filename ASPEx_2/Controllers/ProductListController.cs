@@ -19,8 +19,8 @@ namespace ASPEx_2.Controllers
         }
         public ActionResult EditProductView()
         {
-
-            return View();
+            AdminViewModels models = AdminViewModels.GetInstanceOfObject();
+            return View(models);
         }
         #endregion
 
@@ -30,18 +30,19 @@ namespace ASPEx_2.Controllers
         {
             try
             {
-                Product product = Product.ExecuteCreate(Int32.Parse(id));
+                    Product product = Product.ExecuteCreate(Int32.Parse(id));
 
-                IDNew = Int32.Parse(id);
-                ViewBag.Message = "Added " + product.Name;
-                ViewBag.Name = product.Name;
-                ViewBag.Description = product.Description;
-                ViewBag.Price = product.Price;
-                ViewBag.FileName = product.ImageName;
+                    IDNew = Int32.Parse(id);
+                    ViewBag.Message = "Added " + product.Name;
+                    ViewBag.Name = product.Name;
+                    ViewBag.Description = product.Description;
+                    ViewBag.Price = product.Price;
+                    ViewBag.FileName = product.ImageName;
             }
             catch (ArgumentNullException n)
             {
-                return View();
+                AdminViewModels models2 = AdminViewModels.GetInstanceOfObject();
+                return View(models2);
             }
             AdminViewModels models = AdminViewModels.GetInstanceOfObject();
             return View(models);
