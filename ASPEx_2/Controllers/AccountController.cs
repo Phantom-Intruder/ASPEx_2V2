@@ -33,10 +33,11 @@ namespace ASPEx_2.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {                    
-                    if (Account.GetAccountByEmail(model.Email) != null)
+                {
+                    Account record = Account.GetAccountByEmail(model.Email);
+                    if (record != null)
                     {
-                        Account record = Account.GetAccountByEmail(model.Email);
+                        
                         var salt = record.Salt;
                         var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
                         ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();

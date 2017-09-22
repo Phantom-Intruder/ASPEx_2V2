@@ -3,6 +3,7 @@
     ViewBag.Title = "EditCategoryView";
 }
 
+@model ASPEx_2.Models.CategoryModels
 
 <link href="@Url.Content("~/Content/background.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/EditCategoryStyleSheet.css")" rel="stylesheet" type="text/css" />
@@ -13,49 +14,55 @@
 <div class="parent">
     <div id="formDiv" class="child">
         <div id="formSection" class="form-style-5">
-            @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "post", InsertionMode = InsertionMode.Replace,
-                UpdateTargetId = "formSection"}))
+            @using (Html.BeginForm("EditCategoryView", "CategoryList", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
-                if (ViewBag.Name != null)
-                {
+                @Html.AntiForgeryToken()
+
+               
             <fieldset>
                 <legend><span class="number"></span> Category edit form</legend>
-                <input id="name" type="text" value="@ViewBag.Name" name="nameField" placeholder="Name *" />
-                <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description">@ViewBag.Description</textarea>
-                <br />                
-                <input type="file" id="fileUpload" />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <!-- ttest-->
                 <br />
-                <input type="text" value="@ViewBag.FileName.Replace('\\', '/')" name="filePathField" id="filePath" />
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
+                </div>
                 <br />
-                @{ string imageLocation = "/Filestore" + ViewBag.FileName.Replace('\\', '/');
-                <img id="imagePreview" src="@imageLocation" height="42" width="42" alt="Preview" />
+                <!-- ttest-->
+
+                <input type="text" value="@Model.FilePath.Replace('\\', '/')" name="filePathField" id="filePath" readonly />
+                <br />
+                @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
+                    <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
                 }
-            
-                <input type="hidden" name="isEditField" value="true" />
-                <br />            
-                <input type="submit" value="Apply" id="submitBtn"/>
+                <br />
+                <br />
+
+                <div class="col-md-10">
+                    @Html.HiddenFor(m => m.EditField, new { @class = "form-control", @value = "true" })
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                    </div>
+                </div>
             </fieldset>
-                    }
-                    else
-                    {
-                        <fieldset>
-                            <legend><span class="number"></span> Category edit form</legend>
-                            <input id="name" type="text" name="nameField" placeholder="Name *" />
-                            <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description"></textarea>
-                            <br />
-                            <input type="file" id="fileUpload" />
-                            <br />
-                            <input type="text" name="filePathField" id="filePath" />
-                            <br />
-                            
-                            <img id="imagePreview" height="42" width="42" alt="Preview" />
-                            
-                            <input type="hidden" name="isEditField" value="false" />
-                            <br />
-                            <input type="submit" value="Apply" id="submitBtn" />
-                        </fieldset>
-                                    }
-                                }
+                    
+             }
         </div>
     </div>
 </div>
@@ -82,8 +89,8 @@
         }
     }
 
-    $("#fileUpload").change(function () {
-        var filePath = $('#fileUpload').val();
+    $("#FileUpload").change(function () {
+        var filePath = $('#FileUpload').val();
         filePath = filePath.split("\\")[2];
         filePath = "\\Category\\" + filePath.split('.')[0] + "\\" + filePath;
         

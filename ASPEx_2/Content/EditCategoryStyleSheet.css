@@ -8,23 +8,12 @@
 }
 
 .child {
-  
-
   position: absolute;
   margin-top: 10%;
   left: 35%;
 
 }
-.form-style-5{ 
-    box-sizing: border-box;
-    padding: 10px 20px;
-    background: #f4f7f8;
-    margin: 10px auto;
-    padding: 20px;
-    background: #f4f7f8;
-    border-radius: 8px;
-    font-family: Georgia, "Times New Roman", Times, serif;
-}
+
 .form-style-5 fieldset{
     border: none;
 }
@@ -34,7 +23,7 @@
 }
 .form-style-5 label {
     display: block;
-    margin-bottom: 8px;
+    margin-right: 15px;
 }
 .form-style-5 input[type="text"],
 .form-style-5 input[type="date"],
@@ -109,7 +98,7 @@
     font-size: 18px;
     text-align: center;
     font-style: normal;
-    width: 95%;
+    width: 50%;
     margin-bottom: 10px;
     top: 0px;
     left: 0px;

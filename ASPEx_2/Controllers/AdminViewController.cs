@@ -22,7 +22,7 @@ namespace ASPEx_2.Controllers
         // GET: AdminView
         public ActionResult AdminView()
         {
-            AdminViewModels adminViewModels = AdminViewModels.GetInstanceOfObject();
+            AdminViewModels adminViewModels         = AdminViewModels.GetInstanceOfObject();
 
             return View(adminViewModels);
         }
@@ -34,66 +34,66 @@ namespace ASPEx_2.Controllers
         public ActionResult AdminView(string categoryField, string productField, string saveTableField)
         {
 
-            AdminViewModels adminViewModels = AdminViewModels.GetInstanceOfObject();
+            AdminViewModels adminViewModels                         = AdminViewModels.GetInstanceOfObject();
 
             if (categoryField != null)
             {
                 adminViewModels.DestroyInstance();
-                adminViewModels = AdminViewModels.GetInstanceOfObject();
+                adminViewModels                                     = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
-                ViewBag.typeOfModel = Constants.MODEL_CATEGORY;
-                typeOfModel = Constants.MODEL_CATEGORY;
-                listOfCategoryItemsUsed = adminViewModels.GetListOfCategoryItemsUsed();
+                ViewBag.typeOfModel                                 = Constants.MODEL_CATEGORY;
+                typeOfModel                                         = Constants.MODEL_CATEGORY;
+                listOfCategoryItemsUsed                             = adminViewModels.GetListOfCategoryItemsUsed();
                 return View(adminViewModels);
             }
             else if (productField != null)
             {
                 adminViewModels.DestroyInstance();
-                adminViewModels = AdminViewModels.GetInstanceOfObject();
+                adminViewModels                                     = AdminViewModels.GetInstanceOfObject();
                 adminViewModels.GetProduct(Int32.Parse(productField));
-                ViewBag.typeOfModel = Constants.MODEL_PRODUCT;
-                typeOfModel = Constants.MODEL_PRODUCT;
+                ViewBag.typeOfModel                                 = Constants.MODEL_PRODUCT;
+                typeOfModel                                         = Constants.MODEL_PRODUCT;
                 return View(adminViewModels);
             }
             else if (saveTableField != null)
             {
                 //TODO: save table stuff
-                DataTable dataTable = new DataTable();
+                DataTable dataTable                                 = new DataTable();
                 if (typeOfModel == Constants.MODEL_CATEGORY)
                 {
-                    typeOfModel = "";
+                    typeOfModel                                     = "";
                     dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
                     dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
                     foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
                     {
-                        DataRow dataRow = dataTable.NewRow();
-                        dataRow[Constants.CATEGORY_COLUMN] = item.Value.Name;
-                        dataRow[Constants.UNITS_SOLD_COLUMN] = item.Value.Status;
+                        DataRow dataRow                             = dataTable.NewRow();
+                        dataRow[Constants.CATEGORY_COLUMN]          = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]        = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
-                    DataSet dataSet = new DataSet();
+                    DataSet dataSet                                 = new DataSet();
 
                     dataSet.Tables.Add(dataTable);
                     ConvertToExcel(dataTable);
                 }
                 else if (typeOfModel == Constants.MODEL_PRODUCT)
                 {
-                    typeOfModel = "";
+                    typeOfModel                                     = "";
                     dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
                     dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
                     foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
                     {
-                        DataRow dataRow = dataTable.NewRow();
+                        DataRow dataRow                             = dataTable.NewRow();
 
-                        dataRow[Constants.CATEGORY_COLUMN] = item.Value.Name;
-                        dataRow[Constants.UNITS_SOLD_COLUMN] = item.Value.Status;
+                        dataRow[Constants.CATEGORY_COLUMN]          = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]        = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
-                    DataSet dataSet = new DataSet();
+                    DataSet dataSet                                 = new DataSet();
 
                     dataSet.Tables.Add(dataTable);
                     ConvertToExcel(dataTable);
@@ -106,14 +106,14 @@ namespace ASPEx_2.Controllers
 
                     foreach (var item in adminViewModels.GetListOfCategoryItems())
                     {
-                        DataRow dataRow = dataTable.NewRow();
+                        DataRow dataRow                             = dataTable.NewRow();
 
-                        dataRow[Constants.CATEGORY_COLUMN] = item.Value.Name;
-                        dataRow[Constants.UNITS_SOLD_COLUMN] = item.Value.Status;
+                        dataRow[Constants.CATEGORY_COLUMN]          = item.Value.Name;
+                        dataRow[Constants.UNITS_SOLD_COLUMN]        = item.Value.Status;
                         dataTable.Rows.Add(dataRow);
                     }
 
-                    DataSet dataSet = new DataSet();
+                    DataSet dataSet                                 = new DataSet();
 
                     dataSet.Tables.Add(dataTable);
                     ConvertToExcel(dataTable);
@@ -122,7 +122,7 @@ namespace ASPEx_2.Controllers
             }
             else
             {
-                ViewBag.typeOfModel = Constants.CATEGORY_TYPE_NONE;
+                ViewBag.typeOfModel                                 = Constants.CATEGORY_TYPE_NONE;
                 return View(adminViewModels);
             }
         }

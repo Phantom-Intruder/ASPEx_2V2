@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "EditProductView";
 }
-@model ASPEx_2.Models.AdminViewModels
+@model ASPEx_2.Models.ProductModels
 
 <h2>EditProductView</h2>
 
@@ -11,78 +11,133 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
 
     <div class="parent">
-
-        <div  id="formDiv" class="child">
+        <div id="formDiv" class="child">
             <div id="formSection" class="form-style-5">
-            @using (Ajax.BeginForm(new AjaxOptions
-            {
-                HttpMethod = "post",
-                InsertionMode = InsertionMode.Replace,
-                UpdateTargetId = "formSection"
-            }))
-            {
-                if (ViewBag.Name != null)
-                { 
-                    <fieldset>
-                    <legend><span class="number"></span>Product edit form</legend>
-                    <input id="name" type="text" value="@ViewBag.Name" name="nameField" placeholder="Name *" />
-                                      <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description">@ViewBag.Description</textarea>
-                   
-                    <br />
-                    <input type="file" id="fileUpload" />
-                    <br />
-                    <input type="text" value="@ViewBag.FileName.Replace('\\', '/')" name="filePathField" id="filePath"  readonly/>
-                    <br />
-                    @{ string imageLocation = "/Filestore" + ViewBag.FileName.Replace('\\', '/');
-                    <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
-                    }
-                    <br />
-                        <br />
-                        <input type="hidden" name="isEditField" value="true" />
-                    <input id="price" type="text" value="@ViewBag.Price" name="priceField" placeholder="Price *" />
-                    <label for="job">Category:</label>
-                        <select id="job" name="categoryField">
-                            @{int value = 1; }
-                            @foreach (var item in Model.GetCategoriesList())
-                            {
-                                <option value="@value">@item.Name</option>
-                                value = value + 1;
+                @using (Html.BeginForm("EditProductView", "ProductList", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    string modelIsNull = Model.Name;
+                    if (modelIsNull != null)
+                    {
+                        <fieldset>
+                            <legend><span class="number"></span>Product edit form</legend>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <!-- ttest-->
+                            <br />
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
+                            </div>
+                            <br />
+                            <!-- ttest-->
+
+                            <input type="text" value="@Model.FilePath.Replace('\\', '/')" name="filePathField" id="filePath" readonly />
+                            <br />
+                            @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
+                                <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
                             }
-                        </select>
+                            <br />
+                            <br />
 
-                    <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
-                </fieldset>
-                        }
-                        else
-                        {
-                            <fieldset>
-                                <legend><span class="number"></span>Product edit form</legend>
-                                <input id="name" type="text" name="nameField" placeholder="Name *" />
-                                <textarea id="description" name="descriptionField" style="height:150px" placeholder="Description"></textarea>
+                            <div class="col-md-10">
+                                @Html.HiddenFor(m => m.EditField, new { @class = "form-control", @value = "true" })
+                            </div>
 
-                                <br />
-                                <input type="file" id="fileUpload" />
-                                <br />
-                                <input type="text"  name="filePathField" id="filePath"  readonly/>
-                                <br />
-                                <img id="imagePreview" height="42" width="42" alt="Preview" />
-                                <br />
-                                <br />
-                                <input type="hidden" name="isEditField" value="false" />
-                                <input id="price" type="text" name="priceField" placeholder="Price *" />
-                                <label for="job">Category:</label>
-                                <select id="job" name="categoryField">
-                                    @{int value = 1; }
-                                    @foreach (var item in Model.GetCategoriesList())
-                                    {
-                                        <option value="@value">@item.Name</option>
-                                        value = value + 1;
-                                    }
-                                </select>
-                                <button id="submitBtn" onclick="applyButtonClicked()">Apply</button>
-                            </fieldset>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(x => x.Category, new SelectList(Model.GetCategoryNamesList()), "Select a category...", new { @style = "width:500px" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Submit" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </fieldset>
+                     }
+                     else
+                     {
+                                    <fieldset>
+                                        <legend><span class="number"></span>Product edit form</legend>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+                                            <div class="col-md-10">
+                                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <!-- ttest-->
+                                   
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
+                                        </div>
+                                        <br />
+                                        <!-- ttest-->
+
+                                        <input type="text" value="@Model.FilePath.Replace('\\', '/')" name="filePathField" id="filePath" readonly />
+                                        <br />
+                                        @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
+                                            <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
                                         }
+                                        <br />
+                                        <br />
+
+                                        <div class="col-md-10">
+                                            @Html.HiddenFor(m => m.EditField, new { @class = "form-control", @value = "true" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownListFor(x => x.Category, new SelectList(Model.GetCategoryNamesList()), "Select a category...", new { @style = "width:500px" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Submit" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                     }
+
+                                }
             </div>
         </div>
     </div>
@@ -97,22 +152,21 @@
     function readURL(input) {
 
         if (input.files && input.files[0]) {
-            var reader          = new FileReader();
+            var reader = new FileReader();
 
             reader.onload = function (e) {
                 $('#imagePreview').attr('src', e.target.result);
-            }            
+            }
             reader.readAsDataURL(input.files[0]);
         }
     }
 
-    $("#fileUpload").change(function () {
-        var filePath = $('#fileUpload').val();
-        var path = $('#fileUpload')
-        alert(path.data);
+    $("#FileUpload").change(function () {
+        var filePath = $('#FileUpload').val();
+        var path = $('#FileUpload')
 
         filePath = filePath.split("\\")[2];
-        
+
         filePath = "\\Product\\" + filePath.split('.')[0] + "\\" + filePath;
         document.getElementById("filePath").value = filePath;
         readURL(this);
