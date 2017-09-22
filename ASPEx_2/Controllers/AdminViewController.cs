@@ -12,7 +12,7 @@ namespace ASPEx_2.Controllers
     public class AdminViewController : Controller
     {
         #region Class fields
-        public static string typeOfModel = "";
+        public static string typeOfModel        = "";
 
         public List<KeyValuePair<string, Product>> listOfCategoryItemsUsed =
                 new List<KeyValuePair<string, Product>>();
@@ -131,25 +131,25 @@ namespace ASPEx_2.Controllers
         #region Helpers
         private void ConvertToExcel(DataTable dt)
         {
-            string attachment = Constants.FILE_NAME;
+            string attachment           = Constants.FILE_NAME;
             Response.ClearContent();
             Response.AddHeader(Constants.CONTENT_DISPOSITION, attachment);
-            Response.ContentType = Constants.APPLICATION_VND;
-            string tab = "";
+            Response.ContentType        = Constants.APPLICATION_VND;
+            string tab                  = "";
             foreach (DataColumn dc in dt.Columns)
             {
                 Response.Write(tab + dc.ColumnName);
-                tab = "\t";
+                tab                     = "\t";
             }
             Response.Write("\n");
             int i;
             foreach (DataRow dr in dt.Rows)
             {
-                tab = "";
+                tab                     = "";
                 for (i = 0; i < dt.Columns.Count; i++)
                 {
                     Response.Write(tab + dr[i].ToString());
-                    tab = "\t";
+                    tab                 = "\t";
                 }
                 Response.Write("\n");
             }

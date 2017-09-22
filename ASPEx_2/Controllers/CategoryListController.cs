@@ -35,26 +35,33 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult EditCategoryView(CategoryModels model)
         {
-            var file                = model.FileUpload;
-
-            var directories         = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
-            int folderNumber        = directories.Length;
-            folderNumber            = folderNumber + 1;
-            string targetPath       = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
-            string destFile         = System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
-            if (!System.IO.Directory.Exists(targetPath))
+            string filePathField        = "";
+            if (model.FileUpload != null)
             {
-                System.IO.Directory.CreateDirectory(targetPath);
-                file.SaveAs(destFile);
+                var file                = model.FileUpload;
+
+                var directories         = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
+                int folderNumber        = directories.Length;
+                folderNumber            = folderNumber + 1;
+                string targetPath       = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
+                string destFile         = System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+                if (!System.IO.Directory.Exists(targetPath))
+                {
+                    System.IO.Directory.CreateDirectory(targetPath);
+                    file.SaveAs(destFile);
+                }
+                else
+                {
+                    Console.WriteLine("Source path does not exist!");
+                }
+
+
+                filePathField           = @"/Category/" + folderNumber + "/" + folderNumber + ".png";
             }
             else
             {
-                Console.WriteLine("Source path does not exist!");
+                filePathField           = model.FilePath;
             }
-            
-
-            string filePathField        = @"/Category/" + folderNumber + "/" + folderNumber + ".png";
-
             if (model.EditField == null)
             {
                 Category record         = Category.ExecuteCreate(model.Name,

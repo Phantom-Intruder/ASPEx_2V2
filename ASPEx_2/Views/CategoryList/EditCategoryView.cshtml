@@ -43,7 +43,9 @@
                 <br />
                 <!-- ttest-->
 
-                <input type="text" value="@Model.FilePath.Replace('\\', '/')" name="filePathField" id="filePath" readonly />
+                <div class="col-md-10">
+                    @Html.HiddenFor(m => m.FilePath, new { @class = "form-control", @value = Model.FilePath.Replace('\\', '/'), @name = "filePathField" })
+                </div>
                 <br />
                 @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
                     <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />

@@ -87,35 +87,43 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult EditProductView(ProductModels model)
         {
-            var file                        = model.FileUpload;
-            
-            var directories                 = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
-            int folderNumber                = directories.Length;
-            folderNumber                    = folderNumber + 1;
-            string targetPath               = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\"+ folderNumber;
-            string destFile                 = System.IO.Path.Combine(targetPath, ""+ folderNumber + ".png");
-            if (!System.IO.Directory.Exists(targetPath))
+            string filePathField                = "";
+            int idOfCategoryField               = 0;
+            if (model.FileUpload != null)
             {
-                System.IO.Directory.CreateDirectory(targetPath);
-                file.SaveAs(destFile);
+                var file                        = model.FileUpload;
+
+                var directories                 = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
+                int folderNumber                = directories.Length;
+                folderNumber                    = folderNumber + 1;
+                string targetPath               = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
+                string destFile                 = System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+                if (!System.IO.Directory.Exists(targetPath))
+                {
+                    System.IO.Directory.CreateDirectory(targetPath);
+                    file.SaveAs(destFile);
+                }
+                else
+                {
+                    Console.WriteLine("Source path does not exist!");
+                }
+                
+                int index                       = 1;
+                foreach (string name in model.GetCategoryNamesList())
+                {
+                    if (name == model.Name)
+                    {
+                        idOfCategoryField       = index;
+                    }
+                    index                       = index + 1;
+                }
+
+                filePathField                   = @"/Product/" + folderNumber + "/" + folderNumber + ".png";
             }
             else
             {
-                Console.WriteLine("Source path does not exist!");
+                filePathField                   = model.FilePath;
             }
-            int idOfCategoryField           = 0;
-            int index                       = 1;
-            foreach (string name in model.GetCategoryNamesList())
-            {
-                if (name == model.Name)
-                {
-                    idOfCategoryField       = index; 
-                }
-                index                       = index + 1;
-            }
-
-            string filePathField            = @"/Product/" + folderNumber + "/" + folderNumber + ".png";
-
             if (model.EditField == null)
             {
                 if (model.Price == 0)
