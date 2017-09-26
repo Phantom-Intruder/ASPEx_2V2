@@ -155,6 +155,11 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+		/// <summary>
+		/// Saves all the data to the tables without filters
+		/// </summary>
+		/// <param name="adminViewModels"></param>
+		/// <param name="dataTable"></param>
 		public void SaveAllDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
@@ -175,6 +180,11 @@ namespace ASPEx_2.Models
 			ConvertToExcel(dataTable);
 		}
 
+		/// <summary>
+		/// Saves all data about the product to a table 
+		/// </summary>
+		/// <param name="adminViewModels"></param>
+		/// <param name="dataTable"></param>
 		public void SaveProductDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
@@ -195,6 +205,11 @@ namespace ASPEx_2.Models
 			ConvertToExcel(dataTable);
 		}
 
+		/// <summary>
+		/// Saves all data about a category to a table 
+		/// </summary>
+		/// <param name="adminViewModels"></param>
+		/// <param name="dataTable"></param>
 		public void SaveCategoryDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
@@ -214,6 +229,12 @@ namespace ASPEx_2.Models
 			ConvertToExcel(dataTable);
 		}
 
+		/// <summary>
+		/// Get data about a product using product ID
+		/// </summary>
+		/// <param name="productField"></param>
+		/// <param name="adminViewModels"></param>
+		/// <returns></returns>
 		public AdminViewModels GetProductData(string productField, AdminViewModels adminViewModels)
 		{
 			int			ID			= adminViewModels.GetProductId(productField);
@@ -223,6 +244,12 @@ namespace ASPEx_2.Models
 			return adminViewModels;
 		}
 
+		/// <summary>
+		/// Gets a list of category items used 
+		/// </summary>
+		/// <param name="categoryField"></param>
+		/// <param name="adminViewModels"></param>
+		/// <returns></returns>
 		public AdminViewModels GetCategoryDetails(string categoryField, AdminViewModels adminViewModels)
 		{
 			adminViewModels.DestroyInstance();
@@ -234,6 +261,11 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Helpers
+
+		/// <summary>
+		/// Converts data table to Excel file and saves it 
+		/// </summary>
+		/// <param name="dt"></param>
 		private void ConvertToExcel(DataTable dt)
 		{
 			string		attachment							= Constants.FILE_NAME;

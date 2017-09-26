@@ -35,6 +35,11 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+
+		/// <summary>
+		/// Set user defaults and any saved data about the shopping cart
+		/// </summary>
+		/// <param name="record"></param>
 		public void InitialiseUserAndReadyCart(Account record){
 			SessionSingleton.Current.CurrentUserSession			= record;
 			orderList											= Order.ListByAccountID(record.ID);
@@ -116,6 +121,10 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+
+		/// <summary>
+		/// If data is valid, create an account and insert it into the database
+		/// </summary>
 		public void CreateAndInsertAccount()
 		{
 			var salt = GetHashCode().ToString();

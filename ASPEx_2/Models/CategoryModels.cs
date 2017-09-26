@@ -31,6 +31,12 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="filePathField"></param>
 		public void CreateNewRecord(CategoryModels model, string filePathField)
 		{
 			Category		record		= Category.ExecuteCreate(model.Name,
@@ -43,6 +49,11 @@ namespace ASPEx_2.Models
 			record.Insert();
 		}
 
+		/// <summary>
+		/// Takes selected picture and copies it to the file store 
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		public string CopyFileIntoFilestore(CategoryModels model)
 		{
 			string		filePathField;
@@ -68,6 +79,11 @@ namespace ASPEx_2.Models
 			return filePathField;
 		}
 
+		/// <summary>
+		/// Insert data about new category
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="categoryModels"></param>
 		public void EditCategoryOfID(string id, CategoryModels categoryModels)
 		{
 			Category		category		= Category.ExecuteCreate(Int32.Parse(id));

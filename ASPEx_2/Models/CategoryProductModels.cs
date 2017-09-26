@@ -8,11 +8,13 @@ namespace ASPEx_2.Models
 {
     public class CategoryProductModels
     {
-        private      List<Product>       listOfProducts                = ECommerce.Tables.Content.Product.List();
-        private      List<Product>       listOfProductsInACategory     = new List<Product>();
+		#region members
+		private	List<Product>       listOfProducts                = ECommerce.Tables.Content.Product.List();
+        private List<Product>       listOfProductsInACategory     = new List<Product>();
+		#endregion
 
-    #region Constructor
-        public CategoryProductModels(int id) {
+		#region Constructor
+		public CategoryProductModels(int id) {
             foreach (var item in listOfProducts)
             {
                 if (item.CategoryID == id)
@@ -24,11 +26,19 @@ namespace ASPEx_2.Models
         #endregion
 
         #region Getters
+		/// <summary>
+		/// Get list of all products 
+		/// </summary>
+		/// <returns></returns>
         public List<Product> GetListOfProducts()
         {
             return this.listOfProducts;
         }
 
+		/// <summary>
+		/// Get list of products in a category
+		/// </summary>
+		/// <returns></returns>
         public List<Product> GetListOfProductsInACategory()
         {
             return this.listOfProductsInACategory;

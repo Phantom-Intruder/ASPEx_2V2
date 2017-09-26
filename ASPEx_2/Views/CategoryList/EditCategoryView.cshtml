@@ -35,14 +35,11 @@
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <!-- ttest-->
                 <br />
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
                 </div>
                 <br />
-                <!-- ttest-->
-
                 <div class="col-md-10">
                     @Html.HiddenFor(m => m.FilePath, new { @class = "form-control", @value = Model.FilePath.Replace('\\', '/'), @name = "filePathField" })
                 </div>

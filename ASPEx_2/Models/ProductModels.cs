@@ -43,6 +43,12 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+
+		/// <summary>
+		/// Create product using model
+		/// </summary>
+		/// <param name="productModels"></param>
+		/// <param name="product"></param>
 		public void CreateProduct(ProductModels productModels, Product product)
 		{
 			productModels.Name				= product.Name;
@@ -52,6 +58,12 @@ namespace ASPEx_2.Models
 			productModels.EditField			= "true";
 		}
 
+		/// <summary>
+		/// Create and insert product
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="filePathField"></param>
+		/// <param name="idOfCategoryField"></param>
 		public void CreateAndInsertNewProduct(ProductModels model, string filePathField, int idOfCategoryField)
 		{
 
@@ -63,6 +75,11 @@ namespace ASPEx_2.Models
 			record.Insert();
 		}
 
+		/// <summary>
+		/// Copy selected image into filestore
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		public string CopyFileIntoFilestore(ProductModels model)
 		{
 			string filePathField;
@@ -82,13 +99,16 @@ namespace ASPEx_2.Models
 			{
 				Console.WriteLine("Source path does not exist!");
 			}
-
-
-
 			filePathField					= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
 			return filePathField;
 		}
 
+		/// <summary>
+		/// Get the category ID of a particular product
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="idOfCategoryField"></param>
+		/// <param name="index"></param>
 		public void SetCategoryID(ProductModels model, ref int idOfCategoryField, ref int index)
 		{
 			foreach (string name in model.GetCategoryNamesList())

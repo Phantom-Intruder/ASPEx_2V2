@@ -16,6 +16,11 @@ namespace ASPEx_2.Models
 		#endregion
 
 		#region Model methods
+
+		/// <summary>
+		/// Save the shopping cart to database when user requests 
+		/// </summary>
+		/// <returns></returns>
 		public ShoppingCartModels SaveShoppingCartToDatabase()
 		{
 			ShoppingCartModels			cart				= ShoppingCartModels.GetInstanceOfObject();
@@ -52,6 +57,11 @@ namespace ASPEx_2.Models
 			return cart;
 		}
 
+		/// <summary>
+		/// Remove an item from the shopping cart
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public ShoppingCartModels RemoveShoppingCartItems(string name)
 		{
 			ShoppingCartModels		cart			= ShoppingCartModels.GetInstanceOfObject();
