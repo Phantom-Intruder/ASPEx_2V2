@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Category list";
 }
-
+@using ASPEx_2.Helpers;
 @model ASPEx_2.Models.CategoryModels
 
 <link href="background.css" rel="stylesheet" />
@@ -9,7 +9,7 @@
 <div id="MainPageDiv">
     <br />
     <h2>Category List</h2>
-    @{  if (Session["CurrentUserRole"] != null)
+    @{  if (SessionSingleton.Current.CurrentUserRole != 0)
         {
             <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "CategoryList") + "'");" class="pull-right btn btn-info"> Create new category </button>
         }
@@ -23,7 +23,7 @@
                 <td>Name</td>
                 <td>Description</td>
                 <td>Image</td>
-                @{  if (Session["CurrentUserRole"] != null)
+                @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                     {
                         <td>Actions</td>
                     }
@@ -57,7 +57,7 @@
                 <td><img height="100" width="100" src="@filename" /></td>
                 }
                 <td>
-                @{  if (Session["CurrentUserRole"] != null)
+                @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                     {
                         <a href="EditCategoryView?id=@category.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="DeleteCategoryView?id=@category.ID"><i class="glyphicon glyphicon-trash"></i></a>
                     }

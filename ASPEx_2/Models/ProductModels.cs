@@ -26,6 +26,7 @@ namespace ASPEx_2.Models
         [Display(Name = "Price")]
         public decimal Price { get; set; }
 
+        [Required]
         [Display(Name = "Category")]
         public string Category { get; set; }
 
@@ -40,6 +41,7 @@ namespace ASPEx_2.Models
         #endregion
 
         #region Class members
+        [Required]
         private List<string> CategoryNamesList      = new List<string>();
         #endregion
 

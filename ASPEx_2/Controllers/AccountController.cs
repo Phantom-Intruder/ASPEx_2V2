@@ -1,4 +1,5 @@
 ﻿using ASPEx_2.Models;
+using ASPEx_2.Helpers;
 using ECommerce.Tables.Active.HR;
 using ECommerce.Tables.Content;
 using System;
@@ -47,14 +48,14 @@ namespace ASPEx_2.Controllers
                         if (encodingPasswordString == record.Password)
                         {
                             ViewBag.LoginFailed = false;
-                            Session["CurrentUser"] = record;
-                            Session["CurrentID"] = record.ID;
+                            SessionSingleton.Current.CurrentUserSession = record;
+                            
                             UserModel.ID = record.ID;
-                            Session["CurrentUserName"] = record.FirstName;
+                            
 
                             if (record.Role == 1)
                             {
-                                Session["CurrentUserRole"] = record.Role;
+                                SessionSingleton.Current.CurrentUserRole = record.Role;
                             }
 
 
@@ -146,8 +147,8 @@ namespace ASPEx_2.Controllers
                                                                                         model.ModifiedAccountID);
                     record.Insert();
                     ViewBag.RegistrationFailed                  = false;
-                    Session["CurrentUser"]                      = record;
-                    Session["CurrentUserName"]                  = record.FirstName;
+                    SessionSingleton.Current.CurrentUserSession = record;
+                    
                     return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
                 }
 

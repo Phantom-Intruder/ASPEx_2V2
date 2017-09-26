@@ -10,13 +10,12 @@ namespace ASPEx_2.Controllers
     public class ProductListController : Controller
     {
         public static int       IDNew       = 0;
-
+        
         #region Display views
         // GET: ProductList
         public ActionResult ProductList()
         {
             ProductModels       product         = new ProductModels();
-            ViewBag.Details                     = "List of Products";
             return View(product);
         }
         public ActionResult EditProductView()
@@ -89,6 +88,15 @@ namespace ASPEx_2.Controllers
         {
             string filePathField                = "";
             int idOfCategoryField               = 0;
+            int index = 1;
+            foreach (string name in model.GetCategoryNamesList())
+            {
+                if (name.ToString().Equals(model.Category))
+                {
+                    idOfCategoryField = index;
+                }
+                index = index + 1;
+            }
             if (model.FileUpload != null)
             {
                 var file                        = model.FileUpload;
@@ -108,15 +116,7 @@ namespace ASPEx_2.Controllers
                     Console.WriteLine("Source path does not exist!");
                 }
                 
-                int index                       = 1;
-                foreach (string name in model.GetCategoryNamesList())
-                {
-                    if (name == model.Name)
-                    {
-                        idOfCategoryField       = index;
-                    }
-                    index                       = index + 1;
-                }
+                
 
                 filePathField                   = @"/Product/" + folderNumber + "/" + folderNumber + ".png";
             }
@@ -126,40 +126,27 @@ namespace ASPEx_2.Controllers
             }
             if (model.EditField == null)
             {
-                if (model.Price == 0)
-                {
-                    ViewBag.Details         = "Error, please ensure that the price field is a number. The product wasn't added.";
-                    RedirectToAction("ProductList", "ProductList");
+              
+                    ViewBag.Message             = "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
 
-                }
-                else
-                {
-                    ViewBag.Message         = "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
-
-                    Product record          = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-                                                                                model.Name,
-                                                                                model.Description,
-                                                                                model.Price,
-                                                                                filePathField, 1, 50, 51);
+                    Product record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+                                                                                    model.Name,
+                                                                                    model.Description,
+                                                                                    model.Price,
+                                                                                    filePathField, 1, 50, 51);
                     record.Insert();
-                }
+
             }
             else
             {
-                if (model.Price == 0)
-                {
-                    ViewBag.Details = "Error, please ensure that the price field is a number";
-                    RedirectToAction("ProductList", "ProductList");
-                }
-                else
-                {
-                    Product record = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-                                                                        model.Name,
-                                                                        model.Description,
-                                                                        model.Price,
-                                                                        filePathField, 1, 50, 51);
+               
+                    Product record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+                                                                                    model.Name,
+                                                                                    model.Description,
+                                                                                    model.Price,
+                                                                                    filePathField, 1, 50, 51);
                     record.Update(IDNew, record);
-                }
+                
             }
 
             return RedirectToAction("ProductList", "ProductList");

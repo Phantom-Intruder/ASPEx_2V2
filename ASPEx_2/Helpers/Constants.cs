@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ASPEx_2.Controllers
+namespace ASPEx_2.Helpers
 {
     public class Constants
     {
@@ -35,6 +35,7 @@ namespace ASPEx_2.Controllers
         public const string         UNITS_SOLD_COLUMN               = "Units sold";
         public const string         DATA_TYPE_STRING                = "System.String";
         public const string         CATEGORY_TYPE_NONE              = "none";
+        public const string         SESSION_SINGLETON_NAME          = "Singleton_502E69E5-668B-E011-951F-00155DF26207";
 
 
     }

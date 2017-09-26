@@ -1,4 +1,5 @@
-﻿using ASPEx_2.Models;
+﻿using ASPEx_2.Helpers;
+using ASPEx_2.Models;
 using ECommerce.Tables.Content;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace ASPEx_2.Controllers
             {
                 //Save shopping cart code
                 ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
-                int accountID = Int32.Parse(Session["CurrentID"].ToString());
+                int accountID = Int32.Parse(SessionSingleton.Current.CurrentUserSession.ID.ToString());
                 Order order = Order.ExecuteCreate(accountID, 1, 1, cart.TotalPrice);
                 decimal subtotal = 0;
                 bool isPresent = false;

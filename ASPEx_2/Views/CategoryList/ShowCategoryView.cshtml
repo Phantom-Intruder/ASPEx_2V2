@@ -2,13 +2,14 @@
 @{
     ViewBag.Title = "ShowCategoryView";
 }
+@using ASPEx_2.Helpers;
 
 @model ASPEx_2.Models.CategoryProductModels
 
 <link href="background.css" rel="stylesheet" />
 <br />
 <h2>Product List</h2>
-@{  if (Session["CurrentUserRole"] != null)
+@{  if (SessionSingleton.Current.CurrentUserRole != 0)
     {
         <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "ProductList") + "'");" class="pull-right btn btn-info">Create new product </button>
     }
@@ -36,7 +37,7 @@
                     <td><img height="100" width="100" src="@filename" /></td>
                 }
 
-                @{  if (Session["CurrentUserRole"] != null)
+                @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                     {
                         <td>
                             <a href="EditProductView?id=@product.ID">Edit</a>    <a href="DeleteProductView?id=@product.ID">Delete</a>

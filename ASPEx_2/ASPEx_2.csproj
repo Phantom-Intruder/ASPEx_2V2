@@ -202,7 +202,7 @@
     <Compile Include="Controllers\AdminViewController.cs" />
     <Compile Include="Controllers\CategoryListController.cs" />
     <Compile Include="Controllers\CheckoutViewController.cs" />
-    <Compile Include="Controllers\Constants.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogOffTestController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -211,11 +211,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\SessionSingleton.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CategoryModels.cs" />
     <Compile Include="Models\CategoryProductModels.cs" />
-    <Compile Include="Models\Helper.cs" />
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProductModels.cs" />
