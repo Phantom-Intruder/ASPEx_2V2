@@ -1,4 +1,5 @@
-﻿using ECommerce.Tables.Content;
+﻿using ASPEx_2.Helpers;
+using ECommerce.Tables.Content;
 using System.Collections.Generic;
 
 namespace ASPEx_2.Models
@@ -6,7 +7,6 @@ namespace ASPEx_2.Models
     public class ShoppingCartModels
     {
         #region Class members
-        private  static     ShoppingCartModels              instanceOfObject    = null;
         public        Dictionary<string, Product>     ProductsList        = new Dictionary<string, Product>();
         #endregion
 
@@ -25,12 +25,12 @@ namespace ASPEx_2.Models
         /// <returns></returns>
         public static ShoppingCartModels GetInstanceOfObject()
         {
-            if (instanceOfObject == null)
+            if (SessionSingleton.Current.CurrentUserShoppingCart == null)
             {
-                instanceOfObject        = new ShoppingCartModels();
-            }
+				SessionSingleton.Current.CurrentUserShoppingCart		= new ShoppingCartModels();
+			}
 
-            return instanceOfObject;
+            return SessionSingleton.Current.CurrentUserShoppingCart;
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace ASPEx_2.Models
         /// </summary>
         public void DestroyInstance()
         {
-            instanceOfObject = null;
-        }
+			SessionSingleton.Current.CurrentUserShoppingCart		= null;
+		}
         #endregion
 
         #region Class methods
@@ -54,7 +54,7 @@ namespace ASPEx_2.Models
             //Increment this.TotalPrice by product.price
             this.TotalPrice                          = this.TotalPrice + product.Price;
             //Add product to this.ProductsList
-            ProductsList[product.Name]          = product;
+            ProductsList[product.Name]				 = product;
         }
         #endregion
     }

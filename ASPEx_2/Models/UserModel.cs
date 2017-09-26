@@ -1,4 +1,5 @@
 ﻿using ECommerce.Tables.Active.HR;
+using ASPEx_2.Helpers;
 
 namespace ASPEx_2.Models
 {
@@ -20,10 +21,10 @@ namespace ASPEx_2.Models
         {
             Account         account     = Account.ExecuteCreate(ID);
 
-            this.Name                   = account.FirstName;
-            this.ShippingAddress        = account.ShippingAddress;
-            this.ContactNumber          = account.ContactNo;
-            this.Email                  = account.Email;
+            this.Name                   = SessionSingleton.Current.CurrentUserSession.FirstName;
+            this.ShippingAddress        = SessionSingleton.Current.CurrentUserSession.ShippingAddress;
+            this.ContactNumber          = SessionSingleton.Current.CurrentUserSession.ContactNo;
+            this.Email                  = SessionSingleton.Current.CurrentUserSession.Email;
         }
         #endregion
 

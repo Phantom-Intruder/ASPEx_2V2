@@ -1,4 +1,5 @@
-﻿using ECommerce.Tables.Active.HR;
+﻿using ASPEx_2.Models;
+using ECommerce.Tables.Active.HR;
 using System;
 using System.Web;
 
@@ -30,6 +31,7 @@ namespace ASPEx_2.Helpers
     #region Session variables
         public Account CurrentUserSession { get; set; }
         public int CurrentUserRole { get; set; }
+        public ShoppingCartModels CurrentUserShoppingCart { get; set; }
         #endregion
     }
 }

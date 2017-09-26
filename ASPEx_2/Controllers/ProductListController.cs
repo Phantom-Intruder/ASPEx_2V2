@@ -15,12 +15,12 @@ namespace ASPEx_2.Controllers
         // GET: ProductList
         public ActionResult ProductList()
         {
-            ProductModels       product         = new ProductModels();
+            ProductModels       product				= new ProductModels();
             return View(product);
         }
         public ActionResult EditProductView()
         {
-            AdminViewModels models              = AdminViewModels.GetInstanceOfObject();
+            AdminViewModels		models              = AdminViewModels.GetInstanceOfObject();
             return View(models);
         }
         #endregion
@@ -29,8 +29,8 @@ namespace ASPEx_2.Controllers
         [HttpGet]
         public ActionResult EditProductView(string id)
         {
-            ProductModels productModels             = new ProductModels();
-            ViewBag.Details = "Enter details below";
+            ProductModels		productModels		= new ProductModels();
+            ViewBag.Details							= "Enter details below";
             try
             {
                     Product product                 = Product.ExecuteCreate(Int32.Parse(id));
@@ -86,26 +86,26 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult EditProductView(ProductModels model)
         {
-            string filePathField                = "";
-            int idOfCategoryField               = 0;
-            int index = 1;
+            string		filePathField					= "";
+            int			idOfCategoryField               = 0;
+            int			index							= 1;
             foreach (string name in model.GetCategoryNamesList())
             {
                 if (name.ToString().Equals(model.Category))
                 {
-                    idOfCategoryField = index;
+                    idOfCategoryField					= index;
                 }
-                index = index + 1;
+                index									= index + 1;
             }
             if (model.FileUpload != null)
             {
-                var file                        = model.FileUpload;
+                var file								= model.FileUpload;
 
-                var directories                 = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
-                int folderNumber                = directories.Length;
-                folderNumber                    = folderNumber + 1;
-                string targetPath               = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
-                string destFile                 = System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+                var directories							= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
+                int folderNumber						= directories.Length;
+                folderNumber							= folderNumber + 1;
+                string targetPath						= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
+                string destFile							= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
                 if (!System.IO.Directory.Exists(targetPath))
                 {
                     System.IO.Directory.CreateDirectory(targetPath);
@@ -118,29 +118,29 @@ namespace ASPEx_2.Controllers
                 
                 
 
-                filePathField                   = @"/Product/" + folderNumber + "/" + folderNumber + ".png";
+                filePathField							= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
             }
             else
             {
-                filePathField                   = model.FilePath;
+                filePathField							= model.FilePath;
             }
             if (model.EditField == null)
             {
               
-                    ViewBag.Message             = "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
+                    ViewBag.Message						= "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
 
-                    Product record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-                                                                                    model.Name,
-                                                                                    model.Description,
-                                                                                    model.Price,
-                                                                                    filePathField, 1, 50, 51);
+                    Product			record				= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+																							model.Name,
+																							model.Description,
+																							model.Price,
+																							filePathField, 1, 50, 51);
                     record.Insert();
 
             }
             else
             {
                
-                    Product record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+                    Product			record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
                                                                                     model.Name,
                                                                                     model.Description,
                                                                                     model.Price,
@@ -156,19 +156,19 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult ProductList(string idField)
         {
-            int id                          = Int32.Parse(idField);
-            ShoppingCartModels cart         = ShoppingCartModels.GetInstanceOfObject();
-            Product productToBeUpdated      = Product.ExecuteCreate(id);
-            int newQuantity                 = productToBeUpdated.Status + 1;
-            int idfield                     = Int32.Parse(idField);
-            Product product                 = Product.ExecuteCreate(productToBeUpdated.CategoryID,
-                                                                    productToBeUpdated.Name,
-                                                                    productToBeUpdated.Description,
-                                                                    productToBeUpdated.Price,
-                                                                    productToBeUpdated.ImageName,
-                                                                    newQuantity,
-                                                                    productToBeUpdated.CreatedAccountID,
-                                                                    productToBeUpdated.ModifiedAccountID);
+            int						id                      = Int32.Parse(idField);
+            ShoppingCartModels		cart					= ShoppingCartModels.GetInstanceOfObject();
+            Product					productToBeUpdated		= Product.ExecuteCreate(id);
+            int						newQuantity             = productToBeUpdated.Status + 1;
+            int						idfield                 = Int32.Parse(idField);
+            Product					product                 = Product.ExecuteCreate(productToBeUpdated.CategoryID,
+																					productToBeUpdated.Name,
+																					productToBeUpdated.Description,
+																					productToBeUpdated.Price,
+																					productToBeUpdated.ImageName,
+																					newQuantity,
+																					productToBeUpdated.CreatedAccountID,
+																					productToBeUpdated.ModifiedAccountID);
 
             cart.AddProductToCart(id);
             product.Update(idfield, product);

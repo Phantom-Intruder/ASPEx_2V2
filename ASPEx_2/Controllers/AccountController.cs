@@ -11,7 +11,6 @@ namespace ASPEx_2.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-
         #region Account login 
         //
         // GET: /Account/Login
@@ -35,33 +34,33 @@ namespace ASPEx_2.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Account record = Account.GetAccountByEmail(model.Email);
+                    Account						record									= Account.GetAccountByEmail(model.Email);
                     if (record != null)
                     {
                         
-                        var salt = record.Salt;
-                        var encodingPasswordString = Helper.EncodePassword(model.Password, salt);
-                        ShoppingCartModels cart = ShoppingCartModels.GetInstanceOfObject();
-                        List<Order> orderList = Order.ListByAccountID(record.ID);
-                        List<OrderItem> orderItemList = new List<OrderItem>();
+                        var						salt									= record.Salt;
+                        var						encodingPasswordString					= Helper.EncodePassword(model.Password, salt);
+                        ShoppingCartModels		cart									= ShoppingCartModels.GetInstanceOfObject();
+                        List<Order>				orderList								= Order.ListByAccountID(record.ID);
+                        List<OrderItem>			orderItemList							= new List<OrderItem>();
 
                         if (encodingPasswordString == record.Password)
                         {
-                            ViewBag.LoginFailed = false;
-                            SessionSingleton.Current.CurrentUserSession = record;
+                            ViewBag.LoginFailed									= false;
+                            SessionSingleton.Current.CurrentUserSession			= record;
                             
-                            UserModel.ID = record.ID;
+                            UserModel.ID										= record.ID;
                             
 
                             if (record.Role == 1)
                             {
-                                SessionSingleton.Current.CurrentUserRole = record.Role;
+                                SessionSingleton.Current.CurrentUserRole		= record.Role;
                             }
 
 
                             foreach (Order o in orderList)
                             {
-                                orderItemList = OrderItem.ListByOrderID(o.ID);
+                                orderItemList									= OrderItem.ListByOrderID(o.ID);
                                 foreach (OrderItem item in orderItemList)
                                 {
                                     cart.AddProductToCart(item.ProductID);
@@ -78,23 +77,23 @@ namespace ASPEx_2.Controllers
                         }
                     else
                     {
-                        ViewBag.LoginMessage = Constants.WRONG_USERNAME;
-                        ViewBag.LoginFailed = true;
+                        ViewBag.LoginMessage									= Constants.WRONG_USERNAME;
+                        ViewBag.LoginFailed										= true;
                     }
                     }
                 }
                 else
                 {
-                    ViewBag.LoginMessage = Constants.WRONG_USERNAME;
-                    ViewBag.LoginFailed = true;
+                    ViewBag.LoginMessage										= Constants.WRONG_USERNAME;
+                    ViewBag.LoginFailed											= true;
                     return View();
                 }
                 return View(model);
             }
             catch (Exception ignored)
             {
-                ViewBag.LoginMessage = Constants.WRONG_USERNAME;
-                ViewBag.LoginFailed = true;
+                ViewBag.LoginMessage											= Constants.WRONG_USERNAME;
+                ViewBag.LoginFailed												= true;
                 return View();
             }
         }
@@ -122,32 +121,32 @@ namespace ASPEx_2.Controllers
             {
                 try
                 {
-                    Account         recordData                  = Account.GetAccountByEmail(model.Email);
+                    Account         recordData							= Account.GetAccountByEmail(model.Email);
 
-                    model.Role                                  = 0;
-                    ViewBag.RegistrationMessage                 = Constants.EMAIL_IN_USE;
-                    ViewBag.RegistrationFailed                  = true;
+                    model.Role											= 0;
+                    ViewBag.RegistrationMessage							= Constants.EMAIL_IN_USE;
+                    ViewBag.RegistrationFailed							= true;
                     return View();
                 }
                 catch (Exception ignored)
                 {
-                    var             salt                        = GetHashCode().ToString();
-                    var             encodingPasswordString      = Helper.EncodePassword(model.Password, salt);
-                    Account         record                      = Account.ExecuteCreate(model.FirstName, 
-                                                                                        model.LastName, 
-                                                                                        model.Email, 
-                                                                                        encodingPasswordString, 
-                                                                                        salt, 
-                                                                                        model.ContactNumber, 
-                                                                                        model.ShippingAddress, 
-                                                                                        model.Country, 
-                                                                                        1, 
-                                                                                        model.Role, 
-                                                                                        model.CreatedAccountID, 
-                                                                                        model.ModifiedAccountID);
+                    var             salt								= GetHashCode().ToString();
+                    var             encodingPasswordString				= Helper.EncodePassword(model.Password, salt);
+                    Account         record								= Account.ExecuteCreate(model.FirstName, 
+																								model.LastName, 
+																								model.Email, 
+																								encodingPasswordString, 
+																								salt, 
+																								model.ContactNumber, 
+																								model.ShippingAddress, 
+																								model.Country, 
+																								1, 
+																								model.Role, 
+																								model.CreatedAccountID, 
+																								model.ModifiedAccountID);
                     record.Insert();
-                    ViewBag.RegistrationFailed                  = false;
-                    SessionSingleton.Current.CurrentUserSession = record;
+                    ViewBag.RegistrationFailed							= false;
+                    SessionSingleton.Current.CurrentUserSession			= record;
                     
                     return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
                 }
@@ -179,9 +178,9 @@ namespace ASPEx_2.Controllers
 
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
+                LoginProvider		= provider;
+                RedirectUri			= redirectUri;
+                UserId				= userId;
             }
 
             public string LoginProvider { get; set; }
@@ -190,6 +189,5 @@ namespace ASPEx_2.Controllers
 
         }
         #endregion
-
     }
 }
