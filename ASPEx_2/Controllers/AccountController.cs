@@ -30,43 +30,22 @@ namespace ASPEx_2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            try
-            {
                 if (ModelState.IsValid)
                 {
-                    Account						record									= Account.GetAccountByEmail(model.Email);
-                    if (record != null)
-                    {
+					if (Account.ExecuteCreateByEmail(model.Email) != null)
+					{
+						Account					record							= Account.GetAccountByEmail(model.Email);
+
+                        var						salt							= record.Salt;
+                        var						encodingPasswordString			= Helper.EncodePassword(model.Password, salt);
                         
-                        var						salt									= record.Salt;
-                        var						encodingPasswordString					= Helper.EncodePassword(model.Password, salt);
-                        ShoppingCartModels		cart									= ShoppingCartModels.GetInstanceOfObject();
-                        List<Order>				orderList								= Order.ListByAccountID(record.ID);
-                        List<OrderItem>			orderItemList							= new List<OrderItem>();
 
                         if (encodingPasswordString == record.Password)
                         {
                             ViewBag.LoginFailed									= false;
-                            SessionSingleton.Current.CurrentUserSession			= record;
-                            
-                            UserModel.ID										= record.ID;
-                            
+							model.InitialiseUserAndReadyCart(record);
 
-                            if (record.Role == 1)
-                            {
-                                SessionSingleton.Current.CurrentUserRole		= record.Role;
-                            }
-
-
-                            foreach (Order o in orderList)
-                            {
-                                orderItemList									= OrderItem.ListByOrderID(o.ID);
-                                foreach (OrderItem item in orderItemList)
-                                {
-                                    cart.AddProductToCart(item.ProductID);
-                                }
-                            }
-                            if (record.Role == 1)
+							if (record.Role == 1)
                             {
                                 return RedirectToAction(Constants.CONTROLLER_ADMIN, Constants.CONTROLLER_ADMIN);
                             }
@@ -75,27 +54,20 @@ namespace ASPEx_2.Controllers
                                 return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_PRODUCT_LIST);
                             }
                         }
-                    else
-                    {
-                        ViewBag.LoginMessage									= Constants.WRONG_USERNAME;
-                        ViewBag.LoginFailed										= true;
-                    }
-                    }
-                }
-                else
-                {
-                    ViewBag.LoginMessage										= Constants.WRONG_USERNAME;
-                    ViewBag.LoginFailed											= true;
-                    return View();
+						else
+						{
+							ViewBag.LoginMessage									= Constants.WRONG_USERNAME;
+							ViewBag.LoginFailed										= true;
+						}
+					}
+					else
+					{
+						ViewBag.LoginMessage										= Constants.WRONG_USERNAME;
+						ViewBag.LoginFailed											= true;
+						return View();
+					}
                 }
                 return View(model);
-            }
-            catch (Exception ignored)
-            {
-                ViewBag.LoginMessage											= Constants.WRONG_USERNAME;
-                ViewBag.LoginFailed												= true;
-                return View();
-            }
         }
         #endregion
 
@@ -118,49 +90,31 @@ namespace ASPEx_2.Controllers
         public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                try
-                {
-                    Account         recordData							= Account.GetAccountByEmail(model.Email);
+			{				
+				if(Account.ExecuteCreateByEmail(model.Email)== null)
+				{
+					model.CreateAndInsertAccount();
+					ViewBag.RegistrationFailed							= false;
 
-                    model.Role											= 0;
+					return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
+				}
+				else
+				{
+					model.Role											= 0;
                     ViewBag.RegistrationMessage							= Constants.EMAIL_IN_USE;
                     ViewBag.RegistrationFailed							= true;
                     return View();
-                }
-                catch (Exception ignored)
-                {
-                    var             salt								= GetHashCode().ToString();
-                    var             encodingPasswordString				= Helper.EncodePassword(model.Password, salt);
-                    Account         record								= Account.ExecuteCreate(model.FirstName, 
-																								model.LastName, 
-																								model.Email, 
-																								encodingPasswordString, 
-																								salt, 
-																								model.ContactNumber, 
-																								model.ShippingAddress, 
-																								model.Country, 
-																								1, 
-																								model.Role, 
-																								model.CreatedAccountID, 
-																								model.ModifiedAccountID);
-                    record.Insert();
-                    ViewBag.RegistrationFailed							= false;
-                    SessionSingleton.Current.CurrentUserSession			= record;
-                    
-                    return RedirectToAction(Constants.CONTROLLER_INDEX, Constants.CONTROLLER_HOME);
-                }
-
+				}
             }
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        #endregion
+		#endregion
 
-        #region Helpers
+		#region Helpers
 
 
-        private ActionResult RedirectToLocal(string returnUrl)
+		private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
             {

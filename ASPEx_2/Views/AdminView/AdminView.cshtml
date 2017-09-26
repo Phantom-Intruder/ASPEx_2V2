@@ -86,7 +86,7 @@
         @{int value = 1; }
         @foreach (string key in Model.GetProductsDictionary().Keys)
         {
-            <option value="@value">@key</option>
+            <option value="@key">@key</option>
             {value = value + 1;
             }
         }

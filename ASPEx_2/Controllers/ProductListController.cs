@@ -32,28 +32,24 @@ namespace ASPEx_2.Controllers
             ProductModels		productModels		= new ProductModels();
             ViewBag.Details							= "Enter details below";
             try
-            {
-                    Product product                 = Product.ExecuteCreate(Int32.Parse(id));
+			{
+				Product product						= Product.ExecuteCreate(Int32.Parse(id));
 
-                    IDNew                           = Int32.Parse(id);
-                    ViewBag.Message                 = "Added " + product.Name;
-                    productModels.Name              = product.Name;
-                    productModels.Description       = product.Description;
-                    productModels.Price             = product.Price;
-                    productModels.FilePath          = product.ImageName;
-                    productModels.EditField         = "true";   
-            }
-            catch (ArgumentNullException n)
+				IDNew								= Int32.Parse(id);
+				ViewBag.Message						= "Added " + product.Name;
+				productModels.CreateProduct(productModels, product);
+			}
+			catch (ArgumentNullException n)
             {
-                //AdminViewModels models2 = AdminViewModels.GetInstanceOfObject();
                 productModels.FilePath               = "";
                 return View(productModels);
             }
-            //AdminViewModels models = AdminViewModels.GetInstanceOfObject();
             return View(productModels);
         }
 
-        [HttpGet]
+		
+
+		[HttpGet]
         public ActionResult DeleteProductView(string id)
         {
             Product.Delete(Int32.Parse(id));
@@ -85,75 +81,43 @@ namespace ASPEx_2.Controllers
         #region Post methods
         [HttpPost]
         public ActionResult EditProductView(ProductModels model)
-        {
-            string		filePathField					= "";
-            int			idOfCategoryField               = 0;
-            int			index							= 1;
-            foreach (string name in model.GetCategoryNamesList())
-            {
-                if (name.ToString().Equals(model.Category))
-                {
-                    idOfCategoryField					= index;
-                }
-                index									= index + 1;
-            }
-            if (model.FileUpload != null)
-            {
-                var file								= model.FileUpload;
+		{
+			string		filePathField			= "";
+			int			idOfCategoryField		= 0;
+			int			index					= 1;
+			model.SetCategoryID(model, ref idOfCategoryField, ref index);
+			if (model.FileUpload != null)
+			{
+				filePathField					= model.CopyFileIntoFilestore(model);
+			}
+			else
+			{
+				filePathField					= model.FilePath;
+			}
+			if (model.EditField == null)
+			{
+				ViewBag.Message					= "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
 
-                var directories							= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
-                int folderNumber						= directories.Length;
-                folderNumber							= folderNumber + 1;
-                string targetPath						= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
-                string destFile							= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
-                if (!System.IO.Directory.Exists(targetPath))
-                {
-                    System.IO.Directory.CreateDirectory(targetPath);
-                    file.SaveAs(destFile);
-                }
-                else
-                {
-                    Console.WriteLine("Source path does not exist!");
-                }
-                
-                
+				model.CreateAndInsertNewProduct(model, filePathField, idOfCategoryField);
 
-                filePathField							= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
-            }
-            else
-            {
-                filePathField							= model.FilePath;
-            }
-            if (model.EditField == null)
-            {
-              
-                    ViewBag.Message						= "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
+			}
+			else
+			{
 
-                    Product			record				= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-																							model.Name,
-																							model.Description,
-																							model.Price,
-																							filePathField, 1, 50, 51);
-                    record.Insert();
+				Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+																		model.Name,
+																		model.Description,
+																		model.Price,
+																		filePathField, 1, 50, 51);
+				record.Update(IDNew, record);
 
-            }
-            else
-            {
-               
-                    Product			record              = Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-                                                                                    model.Name,
-                                                                                    model.Description,
-                                                                                    model.Price,
-                                                                                    filePathField, 1, 50, 51);
-                    record.Update(IDNew, record);
-                
-            }
+			}
 
-            return RedirectToAction("ProductList", "ProductList");
+			return RedirectToAction("ProductList", "ProductList");
 
-        }
-        
-        [HttpPost]
+		}
+
+		[HttpPost]
         public ActionResult ProductList(string idField)
         {
             int						id                      = Int32.Parse(idField);

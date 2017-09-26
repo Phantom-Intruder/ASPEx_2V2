@@ -1,54 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using ASPEx_2.Helpers;
+using ECommerce.Tables.Active.HR;
+using ECommerce.Tables.Content;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ASPEx_2.Models
 {
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
     public class ExternalLoginListViewModel
     {
         public string ReturnUrl { get; set; }
     }
 
-    public class SendCodeViewModel
+	public class LoginViewModel
     {
-        public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
-        public string ReturnUrl { get; set; }
-        public bool RememberMe { get; set; }
-    }
+		#region Class members
+		private ShoppingCartModels		cart				= ShoppingCartModels.GetInstanceOfObject();
+		private List<Order>				orderList			= new List<Order>();
+		private List<OrderItem>			orderItemList		= new List<OrderItem>();
+		#endregion
 
-    public class VerifyCodeViewModel
-    {
-        [Required]
-        public string Provider { get; set; }
-
-        [Required]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
-        public string ReturnUrl { get; set; }
-
-        [Display(Name = "Remember this browser?")]
-        public bool RememberBrowser { get; set; }
-
-        public bool RememberMe { get; set; }
-    }
-
-    public class ForgotViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
-    public class LoginViewModel
-    {
-        [Required]
+		#region Login model
+		[Required]
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
@@ -60,11 +32,37 @@ namespace ASPEx_2.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+		#endregion
+
+		#region Model methods
+		public void InitialiseUserAndReadyCart(Account record){
+			SessionSingleton.Current.CurrentUserSession			= record;
+			orderList											= Order.ListByAccountID(record.ID);
+			UserModel.ID										= record.ID;
+
+
+			if (record.Role == 1)
+			{
+				SessionSingleton.Current.CurrentUserRole		= record.Role;
+			}
+
+
+			foreach (Order o in orderList)
+			{
+				orderItemList									= OrderItem.ListByOrderID(o.ID);
+				foreach (OrderItem item in orderItemList)
+				{
+					cart.AddProductToCart(item.ProductID);
+				}
+			}
+		}
+		#endregion
     }
 
     public class RegisterViewModel
     {
-        [Required]
+		#region Register model
+		[Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -115,35 +113,29 @@ namespace ASPEx_2.Models
         [Required]
         [Display(Name = "Modified Account ID")]
         public int ModifiedAccountID { get; set; }
+		#endregion
 
-    }
+		#region Model methods
+		public void CreateAndInsertAccount()
+		{
+			var salt = GetHashCode().ToString();
+			var encodingPasswordString = Helper.EncodePassword(this.Password, salt);
+			Account record = Account.ExecuteCreate(this.FirstName,
+																						this.LastName,
+																						this.Email,
+																						encodingPasswordString,
+																						salt,
+																						this.ContactNumber,
+																						this.ShippingAddress,
+																						this.Country,
+																						1,
+																						this.Role,
+																						this.CreatedAccountID,
+																						this.ModifiedAccountID);
+			record.Insert();
+			SessionSingleton.Current.CurrentUserSession = record;
+		}
+		#endregion
+	}
 
-    public class ResetPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-
-        public string Code { get; set; }
-    }
-
-    public class ForgotPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
 }

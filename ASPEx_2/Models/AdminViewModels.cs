@@ -1,6 +1,10 @@
-﻿using ECommerce.Tables.Content;
+﻿using ASPEx_2.Helpers;
+using ECommerce.Tables.Content;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Web;
 
 namespace ASPEx_2.Models
 {
@@ -37,6 +41,12 @@ namespace ASPEx_2.Models
                 }
             }
         }
+
+		public int GetProductId(string name)
+		{
+			int			returnID		= categoryProductsDictionary[name].ID;
+			return returnID;
+		}
 
         /// <summary>
         /// Gets the product by ID
@@ -142,6 +152,115 @@ namespace ASPEx_2.Models
             listOfItems                                         = sortedDictionary.ToList();
             listOfCategoryItems                                 = sortedCategoryDict.ToList();
         }
-        #endregion
-    }
+		#endregion
+
+		#region Model methods
+		public void SaveAllDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		{
+			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+
+			foreach (var item in adminViewModels.GetListOfCategoryItems())
+			{
+				DataRow			dataRow						= dataTable.NewRow();
+
+				dataRow[Constants.CATEGORY_COLUMN]			= item.Value.Name;
+				dataRow[Constants.UNITS_SOLD_COLUMN]		= item.Value.Status;
+				dataTable.Rows.Add(dataRow);
+			}
+
+			DataSet				dataSet						= new DataSet();
+
+			dataSet.Tables.Add(dataTable);
+			ConvertToExcel(dataTable);
+		}
+
+		public void SaveProductDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		{
+			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+
+			foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
+			{
+				DataRow			dataRow						= dataTable.NewRow();
+
+				dataRow[Constants.CATEGORY_COLUMN]			= item.Value.Name;
+				dataRow[Constants.UNITS_SOLD_COLUMN]		= item.Value.Status;
+				dataTable.Rows.Add(dataRow);
+			}
+
+			DataSet				dataSet						= new DataSet();
+
+			dataSet.Tables.Add(dataTable);
+			ConvertToExcel(dataTable);
+		}
+
+		public void SaveCategoryDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		{
+			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
+
+			foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
+			{
+				DataRow			dataRow						= dataTable.NewRow();
+				dataRow[Constants.CATEGORY_COLUMN]			= item.Value.Name;
+				dataRow[Constants.UNITS_SOLD_COLUMN]		= item.Value.Status;
+				dataTable.Rows.Add(dataRow);
+			}
+
+			DataSet				dataSet						= new DataSet();
+
+			dataSet.Tables.Add(dataTable);
+			ConvertToExcel(dataTable);
+		}
+
+		public AdminViewModels GetProductData(string productField, AdminViewModels adminViewModels)
+		{
+			int			ID			= adminViewModels.GetProductId(productField);
+			adminViewModels.DestroyInstance();
+			adminViewModels			= AdminViewModels.GetInstanceOfObject();
+			adminViewModels.GetProduct(ID);
+			return adminViewModels;
+		}
+
+		public AdminViewModels GetCategoryDetails(string categoryField, AdminViewModels adminViewModels)
+		{
+			adminViewModels.DestroyInstance();
+			adminViewModels					= AdminViewModels.GetInstanceOfObject();
+			adminViewModels.GetCategoriesInProduct(Int32.Parse(categoryField));
+			listOfCategoryItemsUsed			= adminViewModels.GetListOfCategoryItemsUsed();
+			return adminViewModels;
+		}
+		#endregion
+
+		#region Helpers
+		private void ConvertToExcel(DataTable dt)
+		{
+			string		attachment							= Constants.FILE_NAME;
+			HttpContext.Current.Response.ClearContent();
+			HttpContext.Current.Response.AddHeader(Constants.CONTENT_DISPOSITION, attachment);
+			HttpContext.Current.Response.ContentType		= Constants.APPLICATION_VND;
+			string		tab									= "";
+			foreach (DataColumn dc in dt.Columns)
+			{
+				HttpContext.Current.Response.Write(tab + dc.ColumnName);
+				tab											= "\t";
+			}
+			HttpContext.Current.Response.Write("\n");
+			int			i									=0;
+			foreach (DataRow dr in dt.Rows)
+			{
+				tab											= "";
+				for (i = 0; i < dt.Columns.Count; i++)
+				{
+					HttpContext.Current.Response.Write(tab + dr[i].ToString());
+					tab										= "\t";
+				}
+				HttpContext.Current.Response.Write("\n");
+			}
+			HttpContext.Current.Response.End();
+		}
+
+		#endregion
+	}
 }

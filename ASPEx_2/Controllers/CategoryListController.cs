@@ -37,43 +37,18 @@ namespace ASPEx_2.Controllers
         {
             string filePathField        = "";
             if (model.FileUpload != null)
-            {
-                var file                = model.FileUpload;
-
-                var directories         = Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
-                int folderNumber        = directories.Length;
-                folderNumber            = folderNumber + 1;
-                string targetPath       = @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
-                string destFile         = System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
-                if (!System.IO.Directory.Exists(targetPath))
-                {
-                    System.IO.Directory.CreateDirectory(targetPath);
-                    file.SaveAs(destFile);
-                }
-                else
-                {
-                    Console.WriteLine("Source path does not exist!");
-                }
-
-
-                filePathField           = @"/Category/" + folderNumber + "/" + folderNumber + ".png";
-            }
-            else
+			{
+				filePathField			= model.CopyFileIntoFilestore(model);
+			}
+			else
             {
                 filePathField           = model.FilePath;
             }
             if (model.EditField == null)
-            {
-                Category record         = Category.ExecuteCreate(model.Name,
-                                                                 model.Description,
-                                                                 filePathField,
-                                                                 1,
-                                                                 50,
-                                                                 51);
-
-                record.Insert();
-            }
-            else
+			{
+				model.CreateNewRecord(model, filePathField);
+			}
+			else
             {
                 Category record         = Category.ExecuteCreate(model.Name,
                                                                  model.Description,
@@ -87,34 +62,31 @@ namespace ASPEx_2.Controllers
 
             return RedirectToAction("CategoryList", "CategoryList");
         }
-        #endregion
-      
-        #region Get methods
-        [HttpGet]
+		#endregion
+
+		#region Get methods
+		[HttpGet]
         public ActionResult EditCategoryView(string id)
         {
             CategoryModels categoryModels       = new CategoryModels();
 
             try
-            {
-                Category category               = Category.ExecuteCreate(Int32.Parse(id));
+			{
+				IDNew							= Int32.Parse(id);
 
-                IDNew                           = Int32.Parse(id);
-                categoryModels.Name             = category.Name;
-                categoryModels.Description      = category.Description;
-                categoryModels.FilePath         = category.ImageName;
-                categoryModels.EditField        = "true";
-            }
-            catch (ArgumentNullException n)
+				categoryModels.EditCategoryOfID(id, categoryModels);
+			}
+			catch (ArgumentNullException n)
             {
-                //AdminViewModels models2 = AdminViewModels.GetInstanceOfObject();
                 categoryModels.FilePath         = "";
                 return View(categoryModels);
             }
             return View(categoryModels);
         }
 
-        [HttpGet]
+		
+
+		[HttpGet]
         public ActionResult DeleteCategoryView(string id)
         {
             Category.Delete(Int32.Parse(id));
