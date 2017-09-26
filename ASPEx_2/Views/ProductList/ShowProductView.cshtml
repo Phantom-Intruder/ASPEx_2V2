@@ -9,20 +9,20 @@
 <br />
 <div class="jumbotron">
     <blockquote>
-        <h3>@ViewBag.Name</h3>
+        <h3>@Model.Name</h3>
     </blockquote>
     <br />
     <blockquote>
-        <h3>@ViewBag.Description</h3>
+        <h3>@Model.Description</h3>
     </blockquote>
     <br />
     <blockquote>
-        <h3>@ViewBag.Price</h3>
+        <h3>@Model.Price</h3>
     </blockquote>
     <br />
     <blockquote>
-        @{ string imageLocation = "/Filestore" + ViewBag.FileName.Replace('\\', '/');
-            <img id="imagePreview" src="@imageLocation" height="42" width="42" alt="Preview" />
+        @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
+            <img id="imagePreview" src="@imageLocation" height="152" width="152" alt="Preview" />
         }
     </blockquote>
     </div>

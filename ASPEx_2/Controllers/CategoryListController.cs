@@ -70,16 +70,15 @@ namespace ASPEx_2.Controllers
         {
             CategoryModels categoryModels       = new CategoryModels();
 
-            try
-			{
+            if(id != null) { 
+
 				IDNew							= Int32.Parse(id);
 
 				categoryModels.EditCategoryOfID(id, categoryModels);
 			}
-			catch (ArgumentNullException n)
+			else
             {
                 categoryModels.FilePath         = "";
-                return View(categoryModels);
             }
             return View(categoryModels);
         }
@@ -97,12 +96,12 @@ namespace ASPEx_2.Controllers
         public ActionResult ShowCategoryView(string id)
         {
             CategoryProductModels model;
-            try
-            {
+            if (id != null)
+			{ 
                 IDNew       = Int32.Parse(id);
                 model       = new CategoryProductModels(IDNew);
             }
-            catch (ArgumentNullException n)
+            else
             {
                 return View();
             }
@@ -112,21 +111,18 @@ namespace ASPEx_2.Controllers
         [HttpGet]
         public ActionResult ShowProductView(string id)
         {
-            try
-            {
-                Product product             = Product.ExecuteCreate(Int32.Parse(id));
+            Product				product             = Product.ExecuteCreate(Int32.Parse(id));
+			ProductModels		productModels		= new ProductModels();
 
-                IDNew                       = Int32.Parse(id);
-                ViewBag.Name                = product.Name;
-                ViewBag.Description         = product.Description;
-                ViewBag.Price               = product.Price;
-                ViewBag.FileName            = product.ImageName;
+			if (product != null)
+			{
+				IDNew								= Int32.Parse(id);
+				productModels.Name					= product.Name;
+				productModels.Description			= product.Description;
+				productModels.Price					= product.Price;
+				productModels.FilePath				= product.ImageName;
             }
-            catch (ArgumentNullException n)
-            {
-                return View();
-            }
-            return View();
+            return View(productModels);
         }
         #endregion
     }

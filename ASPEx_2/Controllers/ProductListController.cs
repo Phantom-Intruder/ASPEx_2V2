@@ -31,18 +31,17 @@ namespace ASPEx_2.Controllers
         {
             ProductModels		productModels		= new ProductModels();
             ViewBag.Details							= "Enter details below";
-            try
+			if (id != null)
 			{
-				Product product						= Product.ExecuteCreate(Int32.Parse(id));
-
+				Product			product				= Product.ExecuteCreate(Int32.Parse(id));
+            
 				IDNew								= Int32.Parse(id);
 				ViewBag.Message						= "Added " + product.Name;
 				productModels.CreateProduct(productModels, product);
 			}
-			catch (ArgumentNullException n)
-            {
+			else
+			{
                 productModels.FilePath               = "";
-                return View(productModels);
             }
             return View(productModels);
         }
@@ -60,21 +59,18 @@ namespace ASPEx_2.Controllers
         [HttpGet]
         public ActionResult ShowProductView(string id)
         {
-            try
-            {
-                Product product             = Product.ExecuteCreate(Int32.Parse(id));
+			Product				product             = Product.ExecuteCreate(Int32.Parse(id));
+			ProductModels		productModels		= new ProductModels();
 
-                IDNew                       = Int32.Parse(id);
-                ViewBag.Name                = product.Name;
-                ViewBag.Description         = product.Description;
-                ViewBag.Price               = product.Price;
-                ViewBag.FileName            = product.ImageName;
+			if (product != null)
+			{
+                IDNew								= Int32.Parse(id);
+				productModels.Name					= product.Name;
+				productModels.Description			= product.Description;
+				productModels.Price					= product.Price;
+				productModels.FilePath				= product.ImageName;
             }
-            catch (ArgumentNullException n)
-            {
-                return View();
-            }
-            return View();
+            return View(productModels);
         }
         #endregion
 
