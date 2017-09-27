@@ -48,7 +48,7 @@ namespace ASPEx_2.Controllers
                             }
                             else
                             {
-                                return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_PRODUCT_LIST);
+                                return RedirectToAction(Constants.CONTROLLER_PRODUCT_LIST, Constants.CONTROLLER_PRODUCT);
                             }
                         }
 						else

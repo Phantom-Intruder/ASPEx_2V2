@@ -64,13 +64,13 @@ namespace ASPEx_2.Models
 		/// <param name="model"></param>
 		/// <param name="filePathField"></param>
 		/// <param name="idOfCategoryField"></param>
-		private void CreateAndInsertNewProduct(ProductModels model, string filePathField, int idOfCategoryField)
+		private void CreateAndInsertNewProduct(string filePathField, int idOfCategoryField)
 		{
 
 			Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-																	model.Name,
-																	model.Description,
-																	model.Price,
+																	this.Name,
+																	this.Description,
+																	this.Price,
 																	filePathField, 1, 50, 51);
 			record.Insert();
 		}
@@ -80,10 +80,10 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		private string CopyFileIntoFilestore(ProductModels model)
+		private string CopyFileIntoFilestore()
 		{
 			string filePathField;
-			HttpPostedFileBase		file				= model.FileUpload;
+			HttpPostedFileBase		file				= this.FileUpload;
 
 			string[]				directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
 			int						folderNumber		= directories.Length;
@@ -109,11 +109,11 @@ namespace ASPEx_2.Models
 		/// <param name="model"></param>
 		/// <param name="idOfCategoryField"></param>
 		/// <param name="index"></param>
-		private void SetCategoryID(ProductModels model, ref int idOfCategoryField, ref int index)
+		private void SetCategoryID(ref int idOfCategoryField, ref int index)
 		{
-			foreach (string name in model.GetCategoryNamesList())
+			foreach (string name in this.GetCategoryNamesList())
 			{
-				if (name.ToString().Equals(model.Category))
+				if (name.ToString().Equals(this.Category))
 				{
 					idOfCategoryField		= index;
 				}
@@ -160,10 +160,10 @@ namespace ASPEx_2.Models
 			int			idOfCategoryField		= 0;
 			int			index					= 1;
 
-			this.SetCategoryID(this, ref idOfCategoryField, ref index);
+			this.SetCategoryID(ref idOfCategoryField, ref index);
 			if (this.FileUpload != null)
 			{
-				filePathField					= this.CopyFileIntoFilestore(this);
+				filePathField					= this.CopyFileIntoFilestore();
 			}
 			else
 			{
@@ -171,7 +171,7 @@ namespace ASPEx_2.Models
 			}
 			if (this.EditField == null)
 			{
-				this.CreateAndInsertNewProduct(this, filePathField, idOfCategoryField);
+				this.CreateAndInsertNewProduct(filePathField, idOfCategoryField);
 
 			}
 			else

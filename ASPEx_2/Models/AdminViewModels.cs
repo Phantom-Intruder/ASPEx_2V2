@@ -160,12 +160,12 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		private void SaveAllDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveAllDataToTable(DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItems())
+			foreach (KeyValuePair<string, Product> item in this.GetListOfCategoryItems())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 
@@ -185,12 +185,12 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		private void SaveProductDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveProductDataToTable(DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItemsUsed())
+			foreach (KeyValuePair<string, Product> item in this.GetListOfCategoryItemsUsed())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 
@@ -210,12 +210,12 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		private void SaveCategoryDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveCategoryDataToTable(DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItemsUsed())
+			foreach (KeyValuePair<string, Product> item in this.GetListOfCategoryItemsUsed())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 				dataRow[Constants.CATEGORY_COLUMN]			= item.Value.Name;
@@ -265,16 +265,16 @@ namespace ASPEx_2.Models
 			if (typeOfModel == Constants.MODEL_CATEGORY)
 			{
 				typeOfModel					= "";
-				adminViewModels.SaveCategoryDataToTable(adminViewModels, dataTable);
+				adminViewModels.SaveCategoryDataToTable(dataTable);
 			}
 			else if (typeOfModel == Constants.MODEL_PRODUCT)
 			{
 				typeOfModel					= "";
-				adminViewModels.SaveProductDataToTable(adminViewModels, dataTable);
+				adminViewModels.SaveProductDataToTable(dataTable);
 			}
 			else
 			{
-				adminViewModels.SaveAllDataToTable(adminViewModels, dataTable);
+				adminViewModels.SaveAllDataToTable(dataTable);
 			}
 		}
 		#endregion

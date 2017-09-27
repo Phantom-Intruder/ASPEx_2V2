@@ -129,7 +129,7 @@ namespace ASPEx_2.Models
 		{
 			string		salt								= GetHashCode().ToString();
 			string		encodingPasswordString				= Helper.EncodePassword(this.Password, salt);
-			Account			record							= Account.ExecuteCreate(this.FirstName,
+			Account		record								= Account.ExecuteCreate(this.FirstName,
 																					this.LastName,
 																					this.Email,
 																					encodingPasswordString,

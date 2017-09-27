@@ -36,10 +36,10 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <param name="filePathField"></param>
-		private void CreateNewRecord(CategoryModels model, string filePathField)
+		private void CreateNewRecord(string filePathField)
 		{
-			Category		record		= Category.ExecuteCreate(model.Name,
-																 model.Description,
+			Category		record		= Category.ExecuteCreate(this.Name,
+																 this.Description,
 																 filePathField,
 																 1,
 																 50,
@@ -53,10 +53,10 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		private string CopyFileIntoFilestore(CategoryModels model)
+		private string CopyFileIntoFilestore()
 		{
 			string						filePathField;
-			HttpPostedFileBase			file		= model.FileUpload;
+			HttpPostedFileBase			file		= this.FileUpload;
 
 			string[]			directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
 			int					folderNumber		= directories.Length;
@@ -104,7 +104,7 @@ namespace ASPEx_2.Models
 			string		filePathField		= "";
 			if (this.FileUpload != null)
 			{
-				filePathField				= this.CopyFileIntoFilestore(this);
+				filePathField				= this.CopyFileIntoFilestore();
 			}
 			else
 			{
@@ -112,7 +112,7 @@ namespace ASPEx_2.Models
 			}
 			if (this.EditField == null)
 			{
-				this.CreateNewRecord(this, filePathField);
+				this.CreateNewRecord(filePathField);
 			}
 			else
 			{
