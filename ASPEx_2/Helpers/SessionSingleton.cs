@@ -32,6 +32,8 @@ namespace ASPEx_2.Helpers
         public Account CurrentUserSession { get; set; }
         public int CurrentUserRole { get; set; }
         public ShoppingCartModels CurrentUserShoppingCart { get; set; }
-        #endregion
-    }
+		public CategoryModels CurrentCategory { get; set; }
+		public ProductModels CurrentProduct { get; set; }
+		#endregion
+	}
 }

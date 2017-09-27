@@ -48,15 +48,14 @@ namespace ASPEx_2.Models
 		/// <summary>
 		/// Create product using model
 		/// </summary>
-		/// <param name="productModels"></param>
 		/// <param name="product"></param>
-		public void CreateProduct(ProductModels productModels, Product product)
+		public void CreateProduct(Product product)
 		{
-			productModels.Name				= product.Name;
-			productModels.Description		= product.Description;
-			productModels.Price				= product.Price;
-			productModels.FilePath			= product.ImageName;
-			productModels.EditField			= "true";
+			this.Name				= product.Name;
+			this.Description		= product.Description;
+			this.Price				= product.Price;
+			this.FilePath			= product.ImageName;
+			this.EditField			= "true";
 		}
 
 		/// <summary>

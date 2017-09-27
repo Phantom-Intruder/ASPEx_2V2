@@ -1,4 +1,5 @@
-﻿using ASPEx_2.Models;
+﻿using ASPEx_2.Helpers;
+using ASPEx_2.Models;
 using ECommerce.Tables.Content;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,17 @@ namespace ASPEx_2.Controllers
         // GET: CategoryList
         public ActionResult List()
         {
-            CategoryModels category         = new CategoryModels();
+            CategoryModels		category					= new CategoryModels();
+			SessionSingleton.Current.CurrentCategory		= category;
 
-            return View(category);
+			return View(SessionSingleton.Current.CurrentCategory);
         }
         public ActionResult Edit()
         {
-            CategoryModels category         = new CategoryModels();
+            CategoryModels		category					= new CategoryModels();
+			SessionSingleton.Current.CurrentCategory		= category;
 
-            return View(category);
+			return View(SessionSingleton.Current.CurrentCategory);
         }
         #endregion
 
@@ -35,14 +38,16 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult Edit(CategoryModels model)
         {
-			if (model.Validation())
+			SessionSingleton.Current.CurrentCategory		= model;
+
+			if (SessionSingleton.Current.CurrentCategory.Validation())
 			{
-				model.Save(IDNew);
+				SessionSingleton.Current.CurrentCategory.Save(IDNew);
 
 				return RedirectToAction("List", "Category");
 			}
-			ViewBag.NoImage			= "You haven't selected an image";
-			return View(model);
+			ViewBag.NoImage									= "You haven't selected an image";
+			return View(SessionSingleton.Current.CurrentCategory);
         }
 		#endregion
 
@@ -50,19 +55,21 @@ namespace ASPEx_2.Controllers
 		[HttpGet]
         public ActionResult Edit(string id)
         {
-            CategoryModels categoryModels       = new CategoryModels();
+            CategoryModels		categoryModels							= new CategoryModels();
+			SessionSingleton.Current.CurrentCategory					= categoryModels;
 
-            if(id != null) { 
+			if (id != null) { 
 
-				IDNew							= Int32.Parse(id);
+				IDNew													= Int32.Parse(id);
 
-				categoryModels.EditCategoryOfID(id, categoryModels);
+				SessionSingleton.Current.CurrentCategory.EditCategoryOfID(id);
 			}
 			else
             {
-                categoryModels.FilePath         = " ";
+				SessionSingleton.Current.CurrentCategory.FilePath		= " ";
             }
-            return View(categoryModels);
+
+            return View(SessionSingleton.Current.CurrentCategory);
         }
 
 		[HttpGet]
@@ -92,12 +99,12 @@ namespace ASPEx_2.Controllers
         [HttpGet]
         public ActionResult ShowProductView(string id)
 		{
-			IDNew									= Int32.Parse(id);
+			IDNew											= Int32.Parse(id);
 
-			ProductModels		productModels		= new ProductModels();
-			
-			productModels.ShowProductFromId(id);
-			return View(productModels);
+			ProductModels		productModels				= new ProductModels();
+			SessionSingleton.Current.CurrentProduct			= productModels;
+			SessionSingleton.Current.CurrentProduct.ShowProductFromId(id);
+			return View(SessionSingleton.Current.CurrentProduct);
 		}
 
 		#endregion

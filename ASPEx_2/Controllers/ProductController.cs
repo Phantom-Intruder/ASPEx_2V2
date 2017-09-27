@@ -1,4 +1,5 @@
-﻿using ASPEx_2.Models;
+﻿using ASPEx_2.Helpers;
+using ASPEx_2.Models;
 using ECommerce.Tables.Content;
 using System;
 using System.IO;
@@ -15,12 +16,15 @@ namespace ASPEx_2.Controllers
         // GET: ProductList
         public ActionResult List()
         {
-            ProductModels       product				= new ProductModels();
-            return View(product);
+            ProductModels       product					= new ProductModels();
+			SessionSingleton.Current.CurrentProduct		= product;
+
+			return View(SessionSingleton.Current.CurrentProduct);
         }
         public ActionResult Edit()
         {
             AdminViewModels		models              = AdminViewModels.GetInstanceOfObject();
+
             return View(models);
         }
         #endregion
@@ -29,22 +33,25 @@ namespace ASPEx_2.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            ProductModels		productModels		= new ProductModels();
-            ViewBag.Details							= "Enter details below";
+            ProductModels		productModels				= new ProductModels();
+			SessionSingleton.Current.CurrentProduct			= productModels;
+
+			
+			ViewBag.Details									= "Enter details below";
 			if (id != null)
 			{
-				Product			product				= Product.ExecuteCreate(Int32.Parse(id));
+				Product			product						= Product.ExecuteCreate(Int32.Parse(id));
             
-				IDNew								= Int32.Parse(id);
-				ViewBag.Message						= "Added " + product.Name;
-				productModels.CreateProduct(productModels, product);
+				IDNew										= Int32.Parse(id);
+				ViewBag.Message								= "Added " + product.Name;
+				SessionSingleton.Current.CurrentProduct.CreateProduct(product);
 			}
 			else
 			{
-                productModels.FilePath               = " ";
+				SessionSingleton.Current.CurrentProduct.FilePath               = " ";
             }
-            return View(productModels);
-        }
+			return View(SessionSingleton.Current.CurrentProduct);
+		}
 
 		
 
@@ -63,8 +70,9 @@ namespace ASPEx_2.Controllers
 
 			ProductModels productModels = new ProductModels();
 
-			productModels.ShowProductFromId(id);
-			return View(productModels);
+			SessionSingleton.Current.CurrentProduct			= productModels;
+			SessionSingleton.Current.CurrentProduct.ShowProductFromId(id);
+			return View(SessionSingleton.Current.CurrentProduct);
 		}
 		#endregion
 
@@ -72,21 +80,24 @@ namespace ASPEx_2.Controllers
 		[HttpPost]
         public ActionResult Edit(ProductModels model)
 		{
-			if (model.Validation())
+			SessionSingleton.Current.CurrentProduct			= model;
+			if (SessionSingleton.Current.CurrentProduct.Validation())
 			{
-				model.Save(IDNew);
+				SessionSingleton.Current.CurrentProduct.Save(IDNew);
 
 				return RedirectToAction("List", "Product");
 			}
-			ViewBag.NoImage = "You haven't selected an image";
-			return View(model);
+			ViewBag.NoImage									= "You haven't selected an image";
+			return View(SessionSingleton.Current.CurrentProduct);
 		}
 
 		[HttpPost]
         public ActionResult List(string idField)
 		{
-			ProductModels		product			= new ProductModels();
-			product.AddProductToShoppingCart(idField);
+			ProductModels		product						= new ProductModels();
+			SessionSingleton.Current.CurrentProduct			= product;
+
+			SessionSingleton.Current.CurrentProduct.AddProductToShoppingCart(idField);
 
 			return PartialView("_AddedCorrectlyView");
 		}

@@ -82,15 +82,14 @@ namespace ASPEx_2.Models
 		/// Insert data about new category
 		/// </summary>
 		/// <param name="id"></param>
-		/// <param name="categoryModels"></param>
-		public void EditCategoryOfID(string id, CategoryModels categoryModels)
+		public void EditCategoryOfID(string id)
 		{
 			Category		category		= Category.ExecuteCreate(Int32.Parse(id));
 
-			categoryModels.Name				= category.Name;
-			categoryModels.Description		= category.Description;
-			categoryModels.FilePath			= category.ImageName;
-			categoryModels.EditField		= "true";
+			this.Name				= category.Name;
+			this.Description		= category.Description;
+			this.FilePath			= category.ImageName;
+			this.EditField		= "true";
 		}
 		public bool Validation()
 		{
