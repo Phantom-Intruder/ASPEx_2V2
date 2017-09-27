@@ -119,17 +119,18 @@ namespace ASPEx_2.Models
         {
             if (instanceOfObject == null)
             {
-                instanceOfObject        = new AdminViewModels();
+                instanceOfObject							= new AdminViewModels();
             }
+			SessionSingleton.Current.CurrentAdminData		= instanceOfObject;
 			instanceOfObject.DestroyInstance();
-			instanceOfObject			= new AdminViewModels();
+			instanceOfObject								= new AdminViewModels();
             return instanceOfObject;
         }
 
-        /// <summary>
-        /// Destroys the current running instance
-        /// </summary>
-        public void DestroyInstance()
+		/// <summary>
+		/// Destroys the current running instance
+		/// </summary>
+		public void DestroyInstance()
         {
             instanceOfObject            = null;
         }
@@ -260,22 +261,22 @@ namespace ASPEx_2.Models
 			return adminViewModels;
 		}
 
-		public void SaveTableToFile(AdminViewModels adminViewModels, string typeOfModel)
+		public void SaveTableToFile(string typeOfModel)
 		{
 			DataTable		dataTable		= new DataTable();
 			if (typeOfModel == Constants.MODEL_CATEGORY)
 			{
 				typeOfModel					= "";
-				adminViewModels.SaveCategoryDataToTable(dataTable);
+				this.SaveCategoryDataToTable(dataTable);
 			}
 			else if (typeOfModel == Constants.MODEL_PRODUCT)
 			{
 				typeOfModel					= "";
-				adminViewModels.SaveProductDataToTable(dataTable);
+				this.SaveProductDataToTable(dataTable);
 			}
 			else
 			{
-				adminViewModels.SaveAllDataToTable(dataTable);
+				this.SaveAllDataToTable(dataTable);
 			}
 		}
 		#endregion

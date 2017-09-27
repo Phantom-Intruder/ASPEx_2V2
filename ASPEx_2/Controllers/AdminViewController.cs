@@ -54,7 +54,7 @@ namespace ASPEx_2.Controllers
 			}
 			else if (saveTableField != null)
 			{
-				adminViewModels.SaveTableToFile(adminViewModels, typeOfModel);
+				SessionSingleton.Current.CurrentAdminData.SaveTableToFile(typeOfModel);
 			}
 			else
             {

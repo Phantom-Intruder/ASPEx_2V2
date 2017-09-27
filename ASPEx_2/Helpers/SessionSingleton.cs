@@ -34,6 +34,7 @@ namespace ASPEx_2.Helpers
         public ShoppingCartModels CurrentUserShoppingCart { get; set; }
 		public CategoryModels CurrentCategory { get; set; }
 		public ProductModels CurrentProduct { get; set; }
+		public AdminViewModels CurrentAdminData { get; set; }
 		#endregion
 	}
 }
