@@ -112,11 +112,11 @@ namespace ASPEx_2.Models
 		/// <param name="index"></param>
 		private void SetCategoryID(ref int idOfCategoryField, ref int index)
 		{
-			foreach (string name in this.GetCategoryNamesList())
+			foreach (Category category in this.GetCategoryList())
 			{
-				if (name.ToString().Equals(this.Category))
+				if (category.Name.ToString().Equals(this.Category))
 				{
-					idOfCategoryField		= index;
+					idOfCategoryField		= category.ID;
 				}
 				index						= index + 1;
 			}
@@ -245,6 +245,6 @@ namespace ASPEx_2.Models
             }
             return this.CategoryNamesList;
         }
-        #endregion
-    }
+		#endregion
+	}
 }
