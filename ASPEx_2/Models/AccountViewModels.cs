@@ -127,8 +127,8 @@ namespace ASPEx_2.Models
 		/// </summary>
 		public void CreateAndInsertAccount()
 		{
-			var			salt								= GetHashCode().ToString();
-			var			encodingPasswordString				= Helper.EncodePassword(this.Password, salt);
+			string		salt								= GetHashCode().ToString();
+			string		encodingPasswordString				= Helper.EncodePassword(this.Password, salt);
 			Account			record							= Account.ExecuteCreate(this.FirstName,
 																					this.LastName,
 																					this.Email,

@@ -15,7 +15,7 @@ namespace ASPEx_2.Models
 
 		#region Constructor
 		public CategoryProductModels(int id) {
-            foreach (var item in listOfProducts)
+            foreach (Product item in listOfProducts)
             {
                 if (item.CategoryID == id)
                 {

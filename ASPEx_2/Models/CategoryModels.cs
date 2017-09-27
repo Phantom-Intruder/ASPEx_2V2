@@ -55,14 +55,14 @@ namespace ASPEx_2.Models
 		/// <returns></returns>
 		private string CopyFileIntoFilestore(CategoryModels model)
 		{
-			string		filePathField;
-			var			file				= model.FileUpload;
+			string						filePathField;
+			HttpPostedFileBase			file		= model.FileUpload;
 
-			var			directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
-			int			folderNumber		= directories.Length;
-			folderNumber					= folderNumber + 1;
-			string		targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
-			string		destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+			string[]			directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
+			int					folderNumber		= directories.Length;
+			folderNumber							= folderNumber + 1;
+			string				targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
+			string				destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
 			if (!System.IO.Directory.Exists(targetPath))
 			{
 				System.IO.Directory.CreateDirectory(targetPath);
@@ -74,7 +74,7 @@ namespace ASPEx_2.Models
 			}
 
 
-			filePathField					= @"/Category/" + folderNumber + "/" + folderNumber + ".png";
+			filePathField							= @"/Category/" + folderNumber + "/" + folderNumber + ".png";
 			return filePathField;
 		}
 

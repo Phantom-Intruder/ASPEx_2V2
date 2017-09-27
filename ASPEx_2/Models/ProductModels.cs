@@ -84,13 +84,13 @@ namespace ASPEx_2.Models
 		private string CopyFileIntoFilestore(ProductModels model)
 		{
 			string filePathField;
-			var			file				= model.FileUpload;
+			HttpPostedFileBase		file				= model.FileUpload;
 
-			var			directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
-			int			folderNumber		= directories.Length;
-			folderNumber					= folderNumber + 1;
-			string		targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
-			string		destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+			string[]				directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
+			int						folderNumber		= directories.Length;
+			folderNumber								= folderNumber + 1;
+			string					targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
+			string					destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
 			if (!System.IO.Directory.Exists(targetPath))
 			{
 				System.IO.Directory.CreateDirectory(targetPath);
@@ -100,7 +100,7 @@ namespace ASPEx_2.Models
 			{
 				Console.WriteLine("Source path does not exist!");
 			}
-			filePathField					= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
+			filePathField								= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
 			return filePathField;
 		}
 
@@ -239,7 +239,7 @@ namespace ASPEx_2.Models
 
         public List<string> GetCategoryNamesList()
         {
-            foreach (var item in CategoryList)
+            foreach (Category item in CategoryList)
             {
                 CategoryNamesList.Add(item.Name);
             }

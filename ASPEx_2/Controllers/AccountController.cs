@@ -33,8 +33,8 @@ namespace ASPEx_2.Controllers
 					{
 						Account					record							= Account.GetAccountByEmail(model.Email);
 
-                        var						salt							= record.Salt;
-                        var						encodingPasswordString			= Helper.EncodePassword(model.Password, salt);
+                        string					salt							= record.Salt;
+                        string					encodingPasswordString			= Helper.EncodePassword(model.Password, salt);
                         
 
                         if (encodingPasswordString == record.Password)

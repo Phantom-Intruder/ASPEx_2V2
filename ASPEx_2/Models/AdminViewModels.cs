@@ -33,7 +33,7 @@ namespace ASPEx_2.Models
         /// <param name="id"></param>
         public void GetCategoriesInProduct(int id)
         {
-            foreach (var item in listOfCategoryItems)
+            foreach (KeyValuePair<string, Product> item in listOfCategoryItems)
             {
                 if (item.Value.CategoryID == id)
                 {
@@ -55,7 +55,7 @@ namespace ASPEx_2.Models
         public void GetProduct(int id)
         {
             listOfCategoryItemsUsed     = new List<KeyValuePair<string, Product>>();
-            foreach (var item in listOfCategoryItems)
+            foreach (KeyValuePair<string, Product> item in listOfCategoryItems)
             {
                 if (item.Value.ID == id)
                 {
@@ -165,7 +165,7 @@ namespace ASPEx_2.Models
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (var item in adminViewModels.GetListOfCategoryItems())
+			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItems())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 
@@ -190,7 +190,7 @@ namespace ASPEx_2.Models
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
+			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItemsUsed())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 
@@ -215,7 +215,7 @@ namespace ASPEx_2.Models
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 
-			foreach (var item in adminViewModels.GetListOfCategoryItemsUsed())
+			foreach (KeyValuePair<string, Product> item in adminViewModels.GetListOfCategoryItemsUsed())
 			{
 				DataRow			dataRow						= dataTable.NewRow();
 				dataRow[Constants.CATEGORY_COLUMN]			= item.Value.Name;
