@@ -43,41 +43,24 @@ namespace ASPEx_2.Controllers
 
 				ViewBag.typeOfModel									= Constants.MODEL_CATEGORY;
 				typeOfModel											= Constants.MODEL_CATEGORY;
-				return View(adminViewModels);
 			}
 			else if (productField != null)
 			{
 				adminViewModels										= adminViewModels.GetProductData(productField, adminViewModels);
+
 				ViewBag.typeOfModel									= Constants.MODEL_PRODUCT;
 				typeOfModel											= Constants.MODEL_PRODUCT;
-				return View(adminViewModels);
 			}
 			else if (saveTableField != null)
-            {
-                //TODO: save table stuff
-                DataTable dataTable                                 = new DataTable();
-                if (typeOfModel == Constants.MODEL_CATEGORY)
-				{
-					typeOfModel										= "";
-					adminViewModels.SaveCategoryDataToTable(adminViewModels, dataTable);
-				}
-				else if (typeOfModel == Constants.MODEL_PRODUCT)
-				{
-					typeOfModel										= "";
-					adminViewModels.SaveProductDataToTable(adminViewModels, dataTable);
-				}
-				else
-				{
-					adminViewModels.SaveAllDataToTable(adminViewModels, dataTable);
-				}
-				return View(adminViewModels);
-            }
-            else
+			{
+				adminViewModels.SaveTableToFile(adminViewModels, typeOfModel);
+			}
+			else
             {
                 ViewBag.typeOfModel                                 = Constants.CATEGORY_TYPE_NONE;
-                return View(adminViewModels);
             }
-        }
+			return View(adminViewModels);
+		}
 		#endregion
 	}
 }

@@ -18,7 +18,8 @@ namespace ASPEx_2.Models
 
         [Required]
         [Display(Name = "Name")]
-        public string Name { get; set; }
+		[StringLength(100)]
+		public string Name { get; set; }
 
         [Required]
         [Display(Name = "Description")]
@@ -119,6 +120,96 @@ namespace ASPEx_2.Models
 				}
 				index						= index + 1;
 			}
+		}
+
+		/// <summary>
+		/// Show the product using ID
+		/// </summary>
+		/// <param name="id"></param>
+		public void ShowProductFromId(string id)
+		{
+			Product product = Product.ExecuteCreate(Int32.Parse(id));
+			if (product != null)
+			{
+				this.Name = product.Name;
+				this.Description = product.Description;
+				this.Price = product.Price;
+				this.FilePath = product.ImageName;
+			}
+		}
+
+		/// <summary>
+		/// Custom validation for model
+		/// </summary>
+		/// <returns></returns>
+		public bool Validation()
+		{
+			if ((this.EditField == null) && (this.FileUpload == null))
+			{
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Save the record
+		/// </summary>
+		/// <param name="IDNew"></param>
+		public void Save(int IDNew)
+		{
+			string		filePathField			= "";
+			int			idOfCategoryField		= 0;
+			int			index					= 1;
+
+			this.SetCategoryID(this, ref idOfCategoryField, ref index);
+			if (this.FileUpload != null)
+			{
+				filePathField					= this.CopyFileIntoFilestore(this);
+			}
+			else
+			{
+				filePathField					= this.FilePath;
+			}
+			if (this.EditField == null)
+			{
+				this.CreateAndInsertNewProduct(this, filePathField, idOfCategoryField);
+
+			}
+			else
+			{
+
+				Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+																					this.Name,
+																					this.Description,
+																					this.Price,
+																					filePathField, 1, 50, 51);
+				record.Update(IDNew, record);
+
+			}
+		}
+
+		/// <summary>
+		/// Adds a selected product to the cart
+		/// </summary>
+		/// <param name="idField"></param>
+		public void AddProductToShoppingCart(string idField)
+		{
+			int						id						= Int32.Parse(idField);
+			ShoppingCartModels		cart					= ShoppingCartModels.GetInstanceOfObject();
+			Product					productToBeUpdated		= Product.ExecuteCreate(id);
+			int						newQuantity				= productToBeUpdated.Status + 1;
+			int						idfield					= Int32.Parse(idField);
+			Product					product					= Product.ExecuteCreate(productToBeUpdated.CategoryID,
+																					productToBeUpdated.Name,
+																					productToBeUpdated.Description,
+																					productToBeUpdated.Price,
+																					productToBeUpdated.ImageName,
+																					newQuantity,
+																					productToBeUpdated.CreatedAccountID,
+																					productToBeUpdated.ModifiedAccountID);
+
+			cart.AddProductToCart(id);
+			product.Update(idfield, product);
 		}
 		#endregion
 

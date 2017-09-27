@@ -1,14 +1,11 @@
-﻿using ASPEx_2.Models;
-using ASPEx_2.Helpers;
+﻿using ASPEx_2.Helpers;
+using ASPEx_2.Models;
 using ECommerce.Tables.Active.HR;
-using ECommerce.Tables.Content;
-using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace ASPEx_2.Controllers
 {
-    [Authorize]
+	[Authorize]
     public class AccountController : Controller
     {
         #region Account login 

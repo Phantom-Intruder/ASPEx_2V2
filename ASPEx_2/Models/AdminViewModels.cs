@@ -258,6 +258,25 @@ namespace ASPEx_2.Models
 			listOfCategoryItemsUsed			= adminViewModels.GetListOfCategoryItemsUsed();
 			return adminViewModels;
 		}
+
+		public void SaveTableToFile(AdminViewModels adminViewModels, string typeOfModel)
+		{
+			DataTable		dataTable		= new DataTable();
+			if (typeOfModel == Constants.MODEL_CATEGORY)
+			{
+				typeOfModel					= "";
+				adminViewModels.SaveCategoryDataToTable(adminViewModels, dataTable);
+			}
+			else if (typeOfModel == Constants.MODEL_PRODUCT)
+			{
+				typeOfModel					= "";
+				adminViewModels.SaveProductDataToTable(adminViewModels, dataTable);
+			}
+			else
+			{
+				adminViewModels.SaveAllDataToTable(adminViewModels, dataTable);
+			}
+		}
 		#endregion
 
 		#region Helpers

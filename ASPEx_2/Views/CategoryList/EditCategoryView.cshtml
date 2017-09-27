@@ -35,11 +35,13 @@
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <br />
+            
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
                 </div>
-                <br />
+              <br/>
+				<br/>
+				<p style="color:red">@ViewBag.NoImage</p>
                 <div class="col-md-10">
                     @Html.HiddenFor(m => m.FilePath, new { @class = "form-control", @value = Model.FilePath.Replace('\\', '/'), @name = "filePathField" })
                 </div>
@@ -68,13 +70,13 @@
 
 @section scripts{
     
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>#
+@Scripts.Render("~/bundles/jqueryval")
+
+
     }
 
 <script>
-    
-           
-        
     function readURL(input) {
 
         if (input.files && input.files[0]) {

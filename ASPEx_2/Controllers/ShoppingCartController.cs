@@ -25,20 +25,17 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult ShoppingCartView(string name)
         {
+			ShoppingCartModels		cart			= ShoppingCartModels.GetInstanceOfObject();
             if (name != null)
-			{
-				ShoppingCartModels		cart		= ShoppingCartModels.GetInstanceOfObject();
+			{				
 				cart								= cart.RemoveShoppingCartItems(name);
-
-				return View(cart);
 			}
 			else
 			{
-				//Save shopping cart code
-				ShoppingCartModels		cart		= ShoppingCartModels.GetInstanceOfObject();
 				cart								= cart.SaveShoppingCartToDatabase();
-				return View(cart);
 			}
+			return View(cart);
+
 		}
 		#endregion
 	}

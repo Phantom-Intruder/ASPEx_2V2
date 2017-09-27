@@ -35,32 +35,14 @@ namespace ASPEx_2.Controllers
         [HttpPost]
         public ActionResult EditCategoryView(CategoryModels model)
         {
-            string filePathField        = "";
-            if (model.FileUpload != null)
+			if (model.Validation())
 			{
-				filePathField			= model.CopyFileIntoFilestore(model);
-			}
-			else
-            {
-                filePathField           = model.FilePath;
-            }
-            if (model.EditField == null)
-			{
-				model.CreateNewRecord(model, filePathField);
-			}
-			else
-            {
-                Category record         = Category.ExecuteCreate(model.Name,
-                                                                 model.Description,
-                                                                 filePathField,
-                                                                 1,
-                                                                 50,
-                                                                 51);
+				model.Save(IDNew);
 
-                record.Update(IDNew, record);
-            }
-
-            return RedirectToAction("CategoryList", "CategoryList");
+				return RedirectToAction("CategoryList", "CategoryList");
+			}
+			ViewBag.NoImage			= "You haven't selected an image";
+			return View(model);
         }
 		#endregion
 
@@ -78,12 +60,10 @@ namespace ASPEx_2.Controllers
 			}
 			else
             {
-                categoryModels.FilePath         = "";
+                categoryModels.FilePath         = " ";
             }
             return View(categoryModels);
         }
-
-		
 
 		[HttpGet]
         public ActionResult DeleteCategoryView(string id)
@@ -92,6 +72,7 @@ namespace ASPEx_2.Controllers
 
             return View();
         }
+
         [HttpGet]
         public ActionResult ShowCategoryView(string id)
         {
@@ -110,20 +91,15 @@ namespace ASPEx_2.Controllers
 
         [HttpGet]
         public ActionResult ShowProductView(string id)
-        {
-            Product				product             = Product.ExecuteCreate(Int32.Parse(id));
-			ProductModels		productModels		= new ProductModels();
+		{
+			IDNew									= Int32.Parse(id);
 
-			if (product != null)
-			{
-				IDNew								= Int32.Parse(id);
-				productModels.Name					= product.Name;
-				productModels.Description			= product.Description;
-				productModels.Price					= product.Price;
-				productModels.FilePath				= product.ImageName;
-            }
-            return View(productModels);
-        }
-        #endregion
-    }
+			ProductModels		productModels		= new ProductModels();
+			
+			productModels.ShowProductFromId(id);
+			return View(productModels);
+		}
+
+		#endregion
+	}
 }

@@ -14,12 +14,10 @@
         <div id="formDiv" class="child">
             <div id="formSection" class="form-style-5">
                 @using (Html.BeginForm("EditProductView", "ProductList", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
-                {
+				{
                     @Html.AntiForgeryToken()
 
-                    string modelIsNull = Model.Name;
-                    if (modelIsNull != null)
-                    {
+
                         <fieldset>
                             <legend><span class="number"></span>Product edit form</legend>
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -37,13 +35,13 @@
                                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <!-- ttest-->
-                         
+                      
                             <div class="col-md-10">
                                 @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
                             </div>
-                       
-                            <!-- ttest-->
+							<br />
+							<br />
+							<p style="color:red">@ViewBag.NoImage</p>
                             <div class="col-md-10">
                                 @Html.HiddenFor(m => m.FilePath, new { @class = "form-control", @value = Model.FilePath.Replace('\\', '/'), @name = "filePathField" })
                             </div>
@@ -77,67 +75,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                     }
-                     else
-                     {
-                                    <fieldset>
-                                        <legend><span class="number"></span>Product edit form</legend>
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-                                            <div class="col-md-10">
-                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
-                                            <div class="col-md-10">
-                                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                       
-                                        <!-- ttest-->
-                                   
-                                        <div class="col-md-10">
-                                            @Html.TextBoxFor(m => m.FileUpload, null, new { type = "file", @class = "input-file", @name = "FileUpload" })
-                                        </div>
-                                        
-                                        <!-- ttest-->
-
-                                        <div class="col-md-10">
-                                            @Html.HiddenFor(m => m.FilePath, new { @class = "form-control", @value = Model.FilePath.Replace('\\', '/'), @name = "filePathField" })
-                                        </div>                                   
-                                        @{ string imageLocation = "/Filestore" + Model.FilePath.Replace('\\', '/');
-                                            <img id="imagePreview" height="42" src="@imageLocation" width="42" alt="Preview" />
-                                        }
-                                        <div class="col-md-10">
-                                            @Html.HiddenFor(m => m.EditField, new { @class = "form-control", @value = "true" })
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
-                                            <div class="col-md-10">
-                                                @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            @Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownListFor(x => x.Category, new SelectList(Model.GetCategoryNamesList()), "Select a category", new { @style = "width:500px" })
-                                                @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Submit" class="btn btn-default" />
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    }
-                                }
+					}
             </div>
         </div>
     </div>

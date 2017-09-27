@@ -41,7 +41,7 @@ namespace ASPEx_2.Controllers
 			}
 			else
 			{
-                productModels.FilePath               = "";
+                productModels.FilePath               = " ";
             }
             return View(productModels);
         }
@@ -58,83 +58,39 @@ namespace ASPEx_2.Controllers
 
         [HttpGet]
         public ActionResult ShowProductView(string id)
-        {
-			Product				product             = Product.ExecuteCreate(Int32.Parse(id));
-			ProductModels		productModels		= new ProductModels();
+		{
+			IDNew = Int32.Parse(id);
 
-			if (product != null)
-			{
-                IDNew								= Int32.Parse(id);
-				productModels.Name					= product.Name;
-				productModels.Description			= product.Description;
-				productModels.Price					= product.Price;
-				productModels.FilePath				= product.ImageName;
-            }
-            return View(productModels);
-        }
-        #endregion
+			ProductModels productModels = new ProductModels();
 
-        #region Post methods
-        [HttpPost]
+			productModels.ShowProductFromId(id);
+			return View(productModels);
+		}
+		#endregion
+
+		#region Post methods
+		[HttpPost]
         public ActionResult EditProductView(ProductModels model)
 		{
-			string		filePathField			= "";
-			int			idOfCategoryField		= 0;
-			int			index					= 1;
-			model.SetCategoryID(model, ref idOfCategoryField, ref index);
-			if (model.FileUpload != null)
+			if (model.Validation())
 			{
-				filePathField					= model.CopyFileIntoFilestore(model);
+				model.Save(IDNew);
+
+				return RedirectToAction("ProductList", "ProductList");
 			}
-			else
-			{
-				filePathField					= model.FilePath;
-			}
-			if (model.EditField == null)
-			{
-				ViewBag.Message					= "Added " + model.Name + model.Description + " " + filePathField + " " + model.Price + " " + model.Category;
-
-				model.CreateAndInsertNewProduct(model, filePathField, idOfCategoryField);
-
-			}
-			else
-			{
-
-				Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
-																		model.Name,
-																		model.Description,
-																		model.Price,
-																		filePathField, 1, 50, 51);
-				record.Update(IDNew, record);
-
-			}
-
-			return RedirectToAction("ProductList", "ProductList");
-
+			ViewBag.NoImage = "You haven't selected an image";
+			return View(model);
 		}
 
 		[HttpPost]
         public ActionResult ProductList(string idField)
-        {
-            int						id                      = Int32.Parse(idField);
-            ShoppingCartModels		cart					= ShoppingCartModels.GetInstanceOfObject();
-            Product					productToBeUpdated		= Product.ExecuteCreate(id);
-            int						newQuantity             = productToBeUpdated.Status + 1;
-            int						idfield                 = Int32.Parse(idField);
-            Product					product                 = Product.ExecuteCreate(productToBeUpdated.CategoryID,
-																					productToBeUpdated.Name,
-																					productToBeUpdated.Description,
-																					productToBeUpdated.Price,
-																					productToBeUpdated.ImageName,
-																					newQuantity,
-																					productToBeUpdated.CreatedAccountID,
-																					productToBeUpdated.ModifiedAccountID);
+		{
+			ProductModels		product			= new ProductModels();
+			product.AddProductToShoppingCart(idField);
 
-            cart.AddProductToCart(id);
-            product.Update(idfield, product);
-            return PartialView("_AddedCorrectlyView");
-        }
-        #endregion
-    }
+			return PartialView("_AddedCorrectlyView");
+		}
+		#endregion
+	}
 
 }

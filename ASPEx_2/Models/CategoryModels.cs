@@ -14,6 +14,7 @@ namespace ASPEx_2.Models
 
         [Required]
         [Display(Name = "Name")]
+		[StringLength(100)]
         public string Name { get; set; }
 
         [Required]
@@ -22,8 +23,6 @@ namespace ASPEx_2.Models
 
         public HttpPostedFileBase FileUpload { get; set; }
 
-        [Required]
-        [Display(Name = "Path")]
         public string FilePath { get; set; }
 
         [Required]
@@ -33,7 +32,7 @@ namespace ASPEx_2.Models
 		#region Model methods
 
 		/// <summary>
-		/// 
+		/// Create a new record and insert into database
 		/// </summary>
 		/// <param name="model"></param>
 		/// <param name="filePathField"></param>
@@ -93,6 +92,43 @@ namespace ASPEx_2.Models
 			categoryModels.FilePath			= category.ImageName;
 			categoryModels.EditField		= "true";
 		}
+		public bool Validation()
+		{
+			if((this.EditField == null) && (this.FileUpload == null)){
+				return false;
+			}
+			return true; 
+		}
+
+
+		public void Save(int IDNew)
+		{
+			string		filePathField		= "";
+			if (this.FileUpload != null)
+			{
+				filePathField				= this.CopyFileIntoFilestore(this);
+			}
+			else
+			{
+				filePathField				= this.FilePath;
+			}
+			if (this.EditField == null)
+			{
+				this.CreateNewRecord(this, filePathField);
+			}
+			else
+			{
+				Category		record		= Category.ExecuteCreate(this.Name,
+																	 this.Description,
+																	 filePathField,
+																	 1,
+																	 50,
+																	 51);
+
+				record.Update(IDNew, record);
+			}
+		}
+
 		#endregion
 
 		#region Class constructor

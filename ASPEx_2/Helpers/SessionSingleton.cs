@@ -28,7 +28,7 @@ namespace ASPEx_2.Helpers
         }
         #endregion
 
-    #region Session variables
+		#region Session variables
         public Account CurrentUserSession { get; set; }
         public int CurrentUserRole { get; set; }
         public ShoppingCartModels CurrentUserShoppingCart { get; set; }
