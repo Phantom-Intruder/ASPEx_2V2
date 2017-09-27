@@ -40,7 +40,8 @@
                 @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                     {
                         <td>
-                            <a href="EditProductView?id=@product.ID">Edit</a>    <a href="DeleteProductView?id=@product.ID">Delete</a>
+						
+                            <a href="~/Product/Edit?id=@product.ID">Edit</a>    <a href="~/Product/Delete?id=@product.ID">Delete</a>
                         </td>
                     }
                     else

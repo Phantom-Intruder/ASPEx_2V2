@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Web;
-
+using ECommerce.Tables.Utility.System;
 namespace ASPEx_2.Models
 {
     public class CategoryModels
@@ -56,13 +56,14 @@ namespace ASPEx_2.Models
 		private string CopyFileIntoFilestore()
 		{
 			string						filePathField;
-			HttpPostedFileBase			file		= this.FileUpload;
+			HttpPostedFileBase			file						= this.FileUpload;
 
-			string[]			directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category");
-			int					folderNumber		= directories.Length;
-			folderNumber							= folderNumber + 1;
-			string				targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Category\" + folderNumber;
-			string				destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+			string						directoryWithFolder			= System.IO.Path.Combine(Config.StorageUrl, Config.FOLDER_CATEGORY);
+			string[]					directories					= Directory.GetDirectories(directoryWithFolder);
+			int							folderNumber				= directories.Length;
+			folderNumber											= folderNumber + 1;
+			string						targetPath					= directoryWithFolder + "\\"+ folderNumber;
+			string						destFile					= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
 			if (!System.IO.Directory.Exists(targetPath))
 			{
 				System.IO.Directory.CreateDirectory(targetPath);
@@ -74,7 +75,7 @@ namespace ASPEx_2.Models
 			}
 
 
-			filePathField							= @"/Category/" + folderNumber + "/" + folderNumber + ".png";
+			filePathField											= "/" + Config.FOLDER_CATEGORY + "/" + folderNumber + "/" + folderNumber + ".png";
 			return filePathField;
 		}
 
@@ -86,10 +87,10 @@ namespace ASPEx_2.Models
 		{
 			Category		category		= Category.ExecuteCreate(Int32.Parse(id));
 
-			this.Name				= category.Name;
-			this.Description		= category.Description;
-			this.FilePath			= category.ImageName;
-			this.EditField		= "true";
+			this.Name						= category.Name;
+			this.Description				= category.Description;
+			this.FilePath					= category.ImageName;
+			this.EditField					= "true";
 		}
 		public bool Validation()
 		{

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using ECommerce.Tables.Content;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using ECommerce.Tables;
-using ECommerce.Tables.Content;
 using System.IO;
+using System.Web;
+using ECommerce.Tables.Utility.System;
 
 namespace ASPEx_2.Models
 {
-    public class ProductModels
+	public class ProductModels
     {
         #region Properties
         private List<ECommerce.Tables.Content.Product> ProductsList { get; set; }
@@ -82,14 +81,15 @@ namespace ASPEx_2.Models
 		/// <returns></returns>
 		private string CopyFileIntoFilestore()
 		{
-			string filePathField;
-			HttpPostedFileBase		file				= this.FileUpload;
+			string					filePathField;
+			HttpPostedFileBase		file						= this.FileUpload;
 
-			string[]				directories			= Directory.GetDirectories(@"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product");
-			int						folderNumber		= directories.Length;
-			folderNumber								= folderNumber + 1;
-			string					targetPath			= @"C:\inetpub\wwwroot\ASP\ASPEx_2\Filestore\Product\" + folderNumber;
-			string					destFile			= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+			string					directoryWithFolder			= System.IO.Path.Combine(Config.StorageUrl, Config.FOLDER_PRODUCT);
+			string[]				directories					= Directory.GetDirectories(directoryWithFolder);
+			int						folderNumber				= directories.Length;
+			folderNumber										= folderNumber + 1;
+			string					targetPath					= directoryWithFolder + "\\" + folderNumber;
+			string					destFile					= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
 			if (!System.IO.Directory.Exists(targetPath))
 			{
 				System.IO.Directory.CreateDirectory(targetPath);
@@ -99,7 +99,7 @@ namespace ASPEx_2.Models
 			{
 				Console.WriteLine("Source path does not exist!");
 			}
-			filePathField								= @"/Product/" + folderNumber + "/" + folderNumber + ".png";
+			filePathField								= "/" + Config.FOLDER_PRODUCT + "/" + folderNumber + "/" + folderNumber + ".png";
 			return filePathField;
 		}
 
