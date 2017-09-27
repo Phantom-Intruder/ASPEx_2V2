@@ -160,7 +160,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		public void SaveAllDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveAllDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
@@ -185,7 +185,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		public void SaveProductDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveProductDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
@@ -210,7 +210,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="adminViewModels"></param>
 		/// <param name="dataTable"></param>
-		public void SaveCategoryDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
+		private void SaveCategoryDataToTable(AdminViewModels adminViewModels, DataTable dataTable)
 		{
 			dataTable.Columns.Add(Constants.CATEGORY_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));
 			dataTable.Columns.Add(Constants.UNITS_SOLD_COLUMN, Type.GetType(Constants.DATA_TYPE_STRING));

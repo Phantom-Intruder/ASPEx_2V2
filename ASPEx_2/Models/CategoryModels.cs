@@ -36,7 +36,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <param name="filePathField"></param>
-		public void CreateNewRecord(CategoryModels model, string filePathField)
+		private void CreateNewRecord(CategoryModels model, string filePathField)
 		{
 			Category		record		= Category.ExecuteCreate(model.Name,
 																 model.Description,
@@ -53,7 +53,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public string CopyFileIntoFilestore(CategoryModels model)
+		private string CopyFileIntoFilestore(CategoryModels model)
 		{
 			string		filePathField;
 			var			file				= model.FileUpload;
@@ -99,7 +99,6 @@ namespace ASPEx_2.Models
 			}
 			return true; 
 		}
-
 
 		public void Save(int IDNew)
 		{

@@ -65,7 +65,7 @@ namespace ASPEx_2.Models
 		/// <param name="model"></param>
 		/// <param name="filePathField"></param>
 		/// <param name="idOfCategoryField"></param>
-		public void CreateAndInsertNewProduct(ProductModels model, string filePathField, int idOfCategoryField)
+		private void CreateAndInsertNewProduct(ProductModels model, string filePathField, int idOfCategoryField)
 		{
 
 			Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
@@ -81,7 +81,7 @@ namespace ASPEx_2.Models
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public string CopyFileIntoFilestore(ProductModels model)
+		private string CopyFileIntoFilestore(ProductModels model)
 		{
 			string filePathField;
 			var			file				= model.FileUpload;
@@ -110,7 +110,7 @@ namespace ASPEx_2.Models
 		/// <param name="model"></param>
 		/// <param name="idOfCategoryField"></param>
 		/// <param name="index"></param>
-		public void SetCategoryID(ProductModels model, ref int idOfCategoryField, ref int index)
+		private void SetCategoryID(ProductModels model, ref int idOfCategoryField, ref int index)
 		{
 			foreach (string name in model.GetCategoryNamesList())
 			{

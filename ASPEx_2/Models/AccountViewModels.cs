@@ -127,22 +127,22 @@ namespace ASPEx_2.Models
 		/// </summary>
 		public void CreateAndInsertAccount()
 		{
-			var salt = GetHashCode().ToString();
-			var encodingPasswordString = Helper.EncodePassword(this.Password, salt);
-			Account record = Account.ExecuteCreate(this.FirstName,
-																						this.LastName,
-																						this.Email,
-																						encodingPasswordString,
-																						salt,
-																						this.ContactNumber,
-																						this.ShippingAddress,
-																						this.Country,
-																						1,
-																						this.Role,
-																						this.CreatedAccountID,
-																						this.ModifiedAccountID);
+			var			salt								= GetHashCode().ToString();
+			var			encodingPasswordString				= Helper.EncodePassword(this.Password, salt);
+			Account			record							= Account.ExecuteCreate(this.FirstName,
+																					this.LastName,
+																					this.Email,
+																					encodingPasswordString,
+																					salt,
+																					this.ContactNumber,
+																					this.ShippingAddress,
+																					this.Country,
+																					1,
+																					this.Role,
+																					this.CreatedAccountID,
+																					this.ModifiedAccountID);
 			record.Insert();
-			SessionSingleton.Current.CurrentUserSession = record;
+			SessionSingleton.Current.CurrentUserSession			= record;
 		}
 		#endregion
 	}
