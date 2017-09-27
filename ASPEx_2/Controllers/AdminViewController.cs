@@ -23,8 +23,9 @@ namespace ASPEx_2.Controllers
         // GET: AdminView
         public ActionResult AdminView()
         {
-            AdminViewModels adminViewModels         = AdminViewModels.GetInstanceOfObject();
-
+			
+			AdminViewModels adminViewModels         = AdminViewModels.GetInstanceOfObject();
+			
             return View(adminViewModels);
         }
         #endregion

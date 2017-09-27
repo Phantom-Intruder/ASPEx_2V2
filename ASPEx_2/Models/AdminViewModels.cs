@@ -94,7 +94,7 @@ namespace ASPEx_2.Models
         /// <summary>
         /// Get list of items 
         /// </summary>
-        /// <returnsGet list of items ></returns>
+        /// <returns>Get list of items</returns>
         public List<KeyValuePair<string, int>> GetListOfItems()
         {
             return this.listOfItems;
@@ -121,7 +121,8 @@ namespace ASPEx_2.Models
             {
                 instanceOfObject        = new AdminViewModels();
             }
-
+			instanceOfObject.DestroyInstance();
+			instanceOfObject			= new AdminViewModels();
             return instanceOfObject;
         }
 

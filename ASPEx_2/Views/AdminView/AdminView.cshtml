@@ -63,11 +63,11 @@
 {
     <label for="job">Category filter:&nbsp;&nbsp;</label>
     <select id="job" name="categoryField">
-        @{int value = 1; }
+       
         @foreach (var item in Model.GetCategoriesList())
         {
-            <option value="@value">@item.Name</option>
-            value = value + 1;
+            <option value="@item.ID">@item.Name</option>
+           
         }        
     </select>
 
