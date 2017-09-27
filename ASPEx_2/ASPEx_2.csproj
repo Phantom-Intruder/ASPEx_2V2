@@ -200,13 +200,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminViewController.cs" />
-    <Compile Include="Controllers\CategoryListController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CheckoutViewController.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogOffTestController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ProductListController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -275,8 +275,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\ProductList\ProductList.cshtml" />
-    <Content Include="Views\CategoryList\CategoryList.cshtml" />
+    <Content Include="Views\Product\List.cshtml" />
+    <Content Include="Views\Category\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -298,24 +298,24 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\CategoryList\EditCategoryView.cshtml" />
-    <Content Include="Views\ProductList\EditProductView.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Home\_AddedView.cshtml" />
-    <Content Include="Views\CategoryList\DeleteCategoryView.cshtml" />
-    <Content Include="Views\ProductList\DeleteProductView.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
     <Content Include="Views\ShoppingCart\ShoppingCartView.cshtml" />
-    <Content Include="Views\ProductList\ShowProductView.cshtml" />
-    <Content Include="Views\CategoryList\ShowCategoryView.cshtml" />
+    <Content Include="Views\Product\Show.cshtml" />
+    <Content Include="Views\Category\ShowCategoryView.cshtml" />
     <Content Include="Views\Home\_AddedCorrectlyView.cshtml" />
     <Content Include="Views\ShoppingCart\_SavedShoppingCartView.cshtml" />
     <Content Include="Views\AdminView\AdminView.cshtml" />
     <Content Include="Views\CheckoutView\CheckoutView.cshtml" />
     <Content Include="Views\CheckoutView\_UserView.cshtml" />
     <Content Include="Views\CheckoutView\_ProductView.cshtml" />
-    <Content Include="Views\CategoryList\_AddedView.cshtml" />
-    <Content Include="Views\ProductList\_AddedCorrectlyView.cshtml" />
-    <Content Include="Views\ProductList\_AddedView.cshtml" />
-    <Content Include="Views\CategoryList\ShowProductView.cshtml" />
+    <Content Include="Views\Category\_AddedView.cshtml" />
+    <Content Include="Views\Product\_AddedCorrectlyView.cshtml" />
+    <Content Include="Views\Product\_AddedView.cshtml" />
+    <Content Include="Views\Category\ShowProductView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

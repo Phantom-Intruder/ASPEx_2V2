@@ -9,7 +9,7 @@
 <h2>Product List</h2>
 @{  if (SessionSingleton.Current.CurrentUserRole != 0)
     {
-        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "ProductList") + "'");" class="pull-right btn btn-info">Create new product </button>
+        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Product") + "'");" class="pull-right btn btn-info">Create new product </button>
     }
 }
 <br />
@@ -34,20 +34,20 @@
                     <td>@product.ID</td>
                     @{ if (product.Name.Length > 20)
                         {
-                            <td><a href="ShowProductView?id=@product.ID">@product.Name.Substring(0, 17) ...</td>
+                            <td><a href="Show?id=@product.ID">@product.Name.Substring(0, 17) ...</td>
                         }
                         else
                         {
-                            <td><a href="ShowProductView?id=@product.ID">@product.Name</td>
+                            <td><a href="Show?id=@product.ID">@product.Name</td>
                         }
                     }
                     @{ if (product.Description.Length > 25)
                         {
-                            <td><a href="ShowProductView?id=@product.ID">@product.Description.Substring(0, 17) ...</td>
+                            <td><a href="Show?id=@product.ID">@product.Description.Substring(0, 17) ...</td>
                         }
                         else
                         {
-                            <td><a href="ShowProductView?id=@product.ID">@product.Description</td>
+                            <td><a href="Show?id=@product.ID">@product.Description</td>
                         }
                     }
                     <td>@product.Price</td>
@@ -58,7 +58,7 @@
                     @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                         {
                             <td>
-                                <a href="EditProductView?id=@product.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="DeleteProductView?id=@product.ID"><i class="glyphicon glyphicon-trash"></i></a>
+                                <a href="Edit?id=@product.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="Delete?id=@product.ID"><i class="glyphicon glyphicon-trash"></i></a>
                             </td>
                         }
                         else

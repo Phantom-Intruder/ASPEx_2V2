@@ -10,7 +10,7 @@ namespace ASPEx_2.Helpers
         //Controllers 
         public const string         CONTROLLER_HOME                 = "Home";
         public const string         CONTROLLER_ADMIN                = "AdminView";
-        public const string         CONTROLLER_PRODUCT_LIST         = "ProductList";
+        public const string         CONTROLLER_PRODUCT_LIST         = "List";
         public const string         CONTROLLER_CART                 = "ShoppingCart";
         public const string         CONTROLLER_INDEX                = "Index";
 

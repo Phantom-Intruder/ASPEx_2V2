@@ -11,7 +11,7 @@
 <h2>Product List</h2>
 @{  if (SessionSingleton.Current.CurrentUserRole != 0)
     {
-        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditProductView", "ProductList") + "'");" class="pull-right btn btn-info">Create new product </button>
+        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Product") + "'");" class="pull-right btn btn-info">Create new product </button>
     }
 }
 <br />

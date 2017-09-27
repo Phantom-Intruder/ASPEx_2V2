@@ -14,7 +14,7 @@
 <div class="parent">
     <div id="formDiv" class="child">
         <div id="formSection" class="form-style-5">
-            @using (Html.BeginForm("EditCategoryView", "CategoryList", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
 

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace ASPEx_2.Controllers
 {
-    public class CategoryListController : Controller
+    public class CategoryController : Controller
     {
         #region Class fields
         public static int IDNew             = 0;
@@ -17,13 +17,13 @@ namespace ASPEx_2.Controllers
         
         #region Display views
         // GET: CategoryList
-        public ActionResult CategoryList()
+        public ActionResult List()
         {
             CategoryModels category         = new CategoryModels();
 
             return View(category);
         }
-        public ActionResult EditCategoryView()
+        public ActionResult Edit()
         {
             CategoryModels category         = new CategoryModels();
 
@@ -33,13 +33,13 @@ namespace ASPEx_2.Controllers
 
         #region Post methods
         [HttpPost]
-        public ActionResult EditCategoryView(CategoryModels model)
+        public ActionResult Edit(CategoryModels model)
         {
 			if (model.Validation())
 			{
 				model.Save(IDNew);
 
-				return RedirectToAction("CategoryList", "CategoryList");
+				return RedirectToAction("List", "Category");
 			}
 			ViewBag.NoImage			= "You haven't selected an image";
 			return View(model);
@@ -48,7 +48,7 @@ namespace ASPEx_2.Controllers
 
 		#region Get methods
 		[HttpGet]
-        public ActionResult EditCategoryView(string id)
+        public ActionResult Edit(string id)
         {
             CategoryModels categoryModels       = new CategoryModels();
 
@@ -66,7 +66,7 @@ namespace ASPEx_2.Controllers
         }
 
 		[HttpGet]
-        public ActionResult DeleteCategoryView(string id)
+        public ActionResult Delete(string id)
         {
             Category.Delete(Int32.Parse(id));
 

@@ -11,7 +11,7 @@
     <h2>Category List</h2>
     @{  if (SessionSingleton.Current.CurrentUserRole != 0)
         {
-            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("EditCategoryView", "CategoryList") + "'");" class="pull-right btn btn-info"> Create new category </button>
+            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Category") + "'");" class="pull-right btn btn-info"> Create new category </button>
         }
     }
     <br />
@@ -59,7 +59,7 @@
                 <td>
                 @{  if (SessionSingleton.Current.CurrentUserRole != 0)
                     {
-                        <a href="EditCategoryView?id=@category.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="DeleteCategoryView?id=@category.ID"><i class="glyphicon glyphicon-trash"></i></a>
+                        <a href="Edit?id=@category.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="Delete?id=@category.ID"><i class="glyphicon glyphicon-trash"></i></a>
                     }
                     
                 }</td>

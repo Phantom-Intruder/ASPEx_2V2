@@ -7,18 +7,18 @@ using System.Web.Mvc;
 
 namespace ASPEx_2.Controllers
 {
-    public class ProductListController : Controller
+    public class ProductController : Controller
     {
         public static int       IDNew       = 0;
         
         #region Display views
         // GET: ProductList
-        public ActionResult ProductList()
+        public ActionResult List()
         {
             ProductModels       product				= new ProductModels();
             return View(product);
         }
-        public ActionResult EditProductView()
+        public ActionResult Edit()
         {
             AdminViewModels		models              = AdminViewModels.GetInstanceOfObject();
             return View(models);
@@ -27,7 +27,7 @@ namespace ASPEx_2.Controllers
 
         #region Get methods
         [HttpGet]
-        public ActionResult EditProductView(string id)
+        public ActionResult Edit(string id)
         {
             ProductModels		productModels		= new ProductModels();
             ViewBag.Details							= "Enter details below";
@@ -49,7 +49,7 @@ namespace ASPEx_2.Controllers
 		
 
 		[HttpGet]
-        public ActionResult DeleteProductView(string id)
+        public ActionResult Delete(string id)
         {
             Product.Delete(Int32.Parse(id));
 
@@ -57,7 +57,7 @@ namespace ASPEx_2.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowProductView(string id)
+        public ActionResult Show(string id)
 		{
 			IDNew = Int32.Parse(id);
 
@@ -70,20 +70,20 @@ namespace ASPEx_2.Controllers
 
 		#region Post methods
 		[HttpPost]
-        public ActionResult EditProductView(ProductModels model)
+        public ActionResult Edit(ProductModels model)
 		{
 			if (model.Validation())
 			{
 				model.Save(IDNew);
 
-				return RedirectToAction("ProductList", "ProductList");
+				return RedirectToAction("List", "Product");
 			}
 			ViewBag.NoImage = "You haven't selected an image";
 			return View(model);
 		}
 
 		[HttpPost]
-        public ActionResult ProductList(string idField)
+        public ActionResult List(string idField)
 		{
 			ProductModels		product			= new ProductModels();
 			product.AddProductToShoppingCart(idField);
