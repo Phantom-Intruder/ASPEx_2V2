@@ -17,11 +17,12 @@ namespace ASPEx_2.Models
 
         [Required]
         [Display(Name = "Name")]
-		[StringLength(100)]
+		[StringLength(30)]
 		public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Description")]
+		[StringLength(35)]
+		[Display(Name = "Description")]
         public string Description { get; set; }
 
         [Required]

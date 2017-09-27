@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Product List";
+	ViewBag.Title = "Product List";
 }
 
 @model ASPEx_2.Models.ProductModels
@@ -8,86 +8,73 @@
 <br />
 <h2>Product List</h2>
 @{  if (SessionSingleton.Current.CurrentUserRole != 0)
-    {
-        <button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Product") + "'");" class="pull-right btn btn-info">Create new product </button>
-    }
+	{
+		<button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Product") + "'");" class="pull-right btn btn-info">Create new product </button>
+	}
 }
 <br />
 <div class="jumbotron">
-    <p>@ViewBag.Details</p>
+	<p>@ViewBag.Details</p>
 
-    <table id="table" class="table">
-        <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Description</td>
-            <td>Price</td>
-            <td>Image</td>
-            <td>Actions</td>
-        </tr>
-        @{int idLoop = 0; }
-         @foreach (var product in Model.GetProductsList())
-         {
-            <tr>
-                
+	<table id="table" class="table">
+		<tr>
+			<td>ID</td>
+			<td>Name</td>
+			<td>Description</td>
+			<td>Price</td>
+			<td>Image</td>
+			<td>Actions</td>
+		</tr>
+		@{int idLoop = 0; }
+		@foreach (var product in Model.GetProductsList())
+		{
+			<tr>
 
-                    <td>@product.ID</td>
-                    @{ if (product.Name.Length > 20)
-                        {
-                            <td><a href="Show?id=@product.ID">@product.Name.Substring(0, 17) ...</td>
-                        }
-                        else
-                        {
-                            <td><a href="Show?id=@product.ID">@product.Name</td>
-                        }
-                    }
-                    @{ if (product.Description.Length > 25)
-                        {
-                            <td><a href="Show?id=@product.ID">@product.Description.Substring(0, 17) ...</td>
-                        }
-                        else
-                        {
-                            <td><a href="Show?id=@product.ID">@product.Description</td>
-                        }
-                    }
-                    <td>@product.Price</td>
-                    @{ string filename= "/Filestore" + product.ImageName.Replace('\\', '/');
-                        <td><img height="100" width="100" src="@filename" /></td>
-                    }
-                
-                    @{  if (SessionSingleton.Current.CurrentUserRole != 0)
-                        {
-                            <td>
-                                <a href="Edit?id=@product.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="Delete?id=@product.ID"><i class="glyphicon glyphicon-trash"></i></a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                @{ idLoop++; string idName = "formSection" + idLoop;}
-                                <div id="@idName" class="form-style-5">
-                                    @using (Ajax.BeginForm(new AjaxOptions
-                                    {
-                                        HttpMethod = "post",
-                                        InsertionMode = InsertionMode.Replace,
-                                        UpdateTargetId = idName
-                                    }))
-                                    {
-                                        <input type="hidden" value="@product.ID" name="idField" />
-                                        <center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
-                                    }
-                                    </div>
-                            </td>
-                        }
-                   }
-                
-            
-</tr>
-            }
-    </table>
+
+				<td>@product.ID</td>
+
+				<td><a href="Show?id=@product.ID">@product.Name</a></td>
+
+				<td><a href="Show?id=@product.ID">@product.Description</td>
+					
+				<td>@product.Price</td>
+				@{ string filename = "/Filestore" + product.ImageName.Replace('\\', '/');
+					<td><img height="100" width="100" src="@filename" /></td>
+				}
+
+				@{  if (SessionSingleton.Current.CurrentUserRole != 0)
+					{
+						<td>
+							<a href="Edit?id=@product.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="Delete?id=@product.ID"><i class="glyphicon glyphicon-trash"></i></a>
+						</td>
+					}
+					else
+					{
+						<td>
+							@{ idLoop++; string idName = "formSection" + idLoop;}
+							<div id="@idName" class="form-style-5">
+								@using (Ajax.BeginForm(new AjaxOptions
+								{
+									HttpMethod = "post",
+									InsertionMode = InsertionMode.Replace,
+									UpdateTargetId = idName
+								}))
+								{
+									<input type="hidden" value="@product.ID" name="idField" />
+										<center><button class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></button></center>
+								}
+							</div>
+						</td>
+								}
+				}
+
+
+			</tr>
+								}
+	</table>
 </div>
 
 @section scripts{
 
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 }

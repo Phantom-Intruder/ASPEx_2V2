@@ -14,12 +14,13 @@ namespace ASPEx_2.Models
 
         [Required]
         [Display(Name = "Name")]
-		[StringLength(100)]
+		[StringLength(30)]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "Description")]
-        public string Description { get; set; }
+		[StringLength(35)]
+		public string Description { get; set; }
 
         public HttpPostedFileBase FileUpload { get; set; }
 
