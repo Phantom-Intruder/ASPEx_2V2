@@ -85,12 +85,12 @@ namespace ASPEx_2.Models
 			string					filePathField;
 			HttpPostedFileBase		file						= this.FileUpload;
 
-			string					directoryWithFolder			= System.IO.Path.Combine(Config.StorageUrl, Config.FOLDER_PRODUCT);
+			string					directoryWithFolder			= Volume.Toolkit.Paths.PathUtility.CombinePaths(Config.StorageUrl, Config.FOLDER_PRODUCT);
 			string[]				directories					= Directory.GetDirectories(directoryWithFolder);
 			int						folderNumber				= directories.Length;
 			folderNumber										= folderNumber + 1;
 			string					targetPath					= directoryWithFolder + "\\" + folderNumber;
-			string					destFile					= System.IO.Path.Combine(targetPath, "" + folderNumber + ".png");
+			string					destFile					= Volume.Toolkit.Paths.PathUtility.CombinePaths(targetPath, "" + folderNumber + ".png");
 			if (!System.IO.Directory.Exists(targetPath))
 			{
 				System.IO.Directory.CreateDirectory(targetPath);

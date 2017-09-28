@@ -133,6 +133,15 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="Volume.Data, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Volume.Data.1.0.2\lib\net\Volume.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Volume.Logger, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Volume.Logger.1.1.0\lib\net\Volume.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="Volume.Toolkit, Version=1.0.16.14895, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Volume.Toolkit.1.0.16\lib\net45\Volume.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -324,7 +333,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>

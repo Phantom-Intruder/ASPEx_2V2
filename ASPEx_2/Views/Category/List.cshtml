@@ -34,9 +34,9 @@
             {
             <tr>
                 <td>@category.ID</td>
-                <td><a href="ShowCategoryView?id=@category.ID">@category.Name</td>
+                <td><a href="ShowCategoryView?id=@category.ID">@category.Name</a></td>
                    
-                <td><a href="ShowCategoryView?id=@category.ID">@category.Description</td>
+                <td><a href="ShowCategoryView?id=@category.ID">@category.Description</a></td>
                 
                 @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/');
                 <td><img height="100" width="100" src="@filename" /></td>
