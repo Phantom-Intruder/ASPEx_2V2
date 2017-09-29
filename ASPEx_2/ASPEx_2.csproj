@@ -287,7 +287,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Product\List.cshtml" />
-    <Content Include="Views\Category\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -309,7 +308,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Home\_AddedView.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
@@ -329,6 +327,8 @@
     <Content Include="Views\Category\ShowProductView.cshtml" />
     <Content Include="Views\YasaCategory\Index.cshtml" />
     <Content Include="Views\YasaCategory\Editor.cshtml" />
+    <Content Include="Views\Category\List.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

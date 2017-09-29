@@ -11,7 +11,7 @@ namespace ASPEx_2.Models
 {
 	public class YasaCategoryModel
 	{
-		#region Memebers
+		#region Members
 
 		private int						id				= Constants.DEFAULT_VALUE_INT;
 		private string					name			= String.Empty;

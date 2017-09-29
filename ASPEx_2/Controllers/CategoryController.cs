@@ -43,35 +43,54 @@ namespace ASPEx_2.Controllers
         // GET: CategoryList
         public ActionResult List()
         {
-            CategoryModels		category					= new CategoryModels();
-			SessionSingleton.Current.CurrentCategory		= category;
-
-			return View(SessionSingleton.Current.CurrentCategory);
+            return View(CategoryModels.List());
         }
 
-        public ActionResult Edit()
+       public ActionResult Edit(int? id)
         {
-            CategoryModels		category					= new CategoryModels();
-			SessionSingleton.Current.CurrentCategory		= category;
+			CategoryModels				result				= null;
 
-			return View(SessionSingleton.Current.CurrentCategory);
+			if(this.TempSession != null &&
+				id.HasValue &&
+				this.TempSession.ID == id.Value)
+			{
+				result											= this.TempSession;
+			}
+			else
+			{
+				Session.Remove(Constants.SESSION_NAME_CATEGORY);
+				result											= CategoryModels.ExecuteCreate(id);
+				this.TempSession								= result;
+			}
+
+			if(result == null)
+			{
+				return new HttpNotFoundResult();
+			}
+
+            return View(result);
         }
+
         #endregion
 
         #region Post methods
-        [HttpPost]
-        public ActionResult Edit(CategoryModels model)
+        [ValidateAntiForgeryToken]
+		[HttpPost]
+		public ActionResult Edit(CategoryModels model)
         {
-			SessionSingleton.Current.CurrentCategory		= model;
-
-			if (SessionSingleton.Current.CurrentCategory.Validation())
+			if(ModelState.IsValid)
 			{
-				SessionSingleton.Current.CurrentCategory.Save(IDNew);
+				this.TempSession.Sync(model);
 
-				return RedirectToAction("List", "Category");
+				if(this.TempSession.Validate(ModelState))
+				{
+					this.TempSession.Save();
+					Session.Remove(Constants.SESSION_NAME_CATEGORY);
+					return RedirectToAction("List");
+				}
 			}
-			ViewBag.NoImage									= "You haven't selected an image";
-			return View(SessionSingleton.Current.CurrentCategory);
+			
+            return View(this.TempSession);
         }
 		#endregion
 

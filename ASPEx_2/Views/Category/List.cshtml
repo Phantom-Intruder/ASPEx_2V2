@@ -1,56 +1,50 @@
-﻿@{
-    ViewBag.Title = "Category list";
-}
+﻿@model IEnumerable<ASPEx_2.Models.CategoryModels>
 @using ASPEx_2.Helpers;
-@model ASPEx_2.Models.CategoryModels
 
-<link href="background.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "List";
+}
 
-<div id="MainPageDiv">
-    <br />
-    <h2>Category List</h2>
-    @{  if (SessionSingleton.Current.CurrentUserRole != 0)
-        {
-            <button id="createRight" onclick="@("window.location.href='" + @Url.Action("Edit", "Category") + "'");" class="pull-right btn btn-info"> Create new category </button>
+<h2>List</h2>
+
+<p class="pull-right">
+    @Html.ActionLink("Create new category", "Edit")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileUpload)
+        </th>
+        <th>
+            Actions
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        @{ string filename = "/Filestore" + item.ImageName.Replace('\\', '/');
+            <td><img height="100" width="100" src="@filename" /></td>
         }
-    }
-    <br />
-    <div class="jumbotron">
+        <td>
+<td>
+   @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+   @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+   @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
 
-        <table id="table" class="table">
-            <tr>
-                <td>ID</td>
-                <td>Name</td>
-                <td>Description</td>
-                <td>Image</td>
-                @{  if (SessionSingleton.Current.CurrentUserRole != 0)
-                    {
-                        <td>Actions</td>
-                    }
-                }
-                
-            </tr>
-            @foreach (var category in Model.GetCategoriesList())
-            {
-            <tr>
-                <td>@category.ID</td>
-                <td><a href="ShowCategoryView?id=@category.ID">@category.Name</a></td>
-                   
-                <td><a href="ShowCategoryView?id=@category.ID">@category.Description</a></td>
-                
-                @{ string filename= "/Filestore" + category.ImageName.Replace('\\', '/');
-                <td><img height="100" width="100" src="@filename" /></td>
-                }
-                <td>
-                @{  if (SessionSingleton.Current.CurrentUserRole != 0)
-                    {
-                        <a href="Edit?id=@category.ID"><i class="glyphicon glyphicon-edit"></i></a>    <a href="Delete?id=@category.ID"><i class="glyphicon glyphicon-trash"></i></a>
-                    }
-                    
-                }</td>
-            </tr>
-                    }
-        </table>
-
-    </div>
-</div>
+</table>

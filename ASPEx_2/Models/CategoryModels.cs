@@ -6,6 +6,7 @@ using System.IO;
 using System.Web;
 using ECommerce.Tables.Utility.System;
 using ASPEx_2.Helpers;
+using System.Web.Mvc;
 
 namespace ASPEx_2.Models
 {
@@ -22,17 +23,29 @@ namespace ASPEx_2.Models
 		#endregion
 
         #region Properties
-        private      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
+
+		[Key]
+		public int ID
+		{
+			get { return this.id; }
+		}
 
         [Required]
         [Display(Name = "Name")]
 		[StringLength(30)]
-        public string Name { get; set; }
+        public string Name {
+			get { return this.name; }
+			set { this.name = value; }
+		}
 
         [Required]
-        [Display(Name = "Description")]
-		[StringLength(35)]
-		public string Description { get; set; }
+		[Display(Name = "Description")]
+		[DataType(DataType.MultilineText)]
+		public string Description
+		{
+			get { return this.description; }
+			set { this.description = value; }
+		}
 
         public HttpPostedFileBase FileUpload { get; set; }
 
@@ -146,14 +159,108 @@ namespace ASPEx_2.Models
 		#region Class constructor
 		public CategoryModels()
         {
-            this.CategoriesList         = ECommerce.Tables.Content.Category.List();
+            
         }
+
+		private CategoryModels(Category entity)
+		{
+			this.id				= entity.ID;
+			this.name			= entity.Name;
+			this.description	= entity.Description;
+			this.fileName		= entity.ImageName;
+			this.entity			= entity;
+
+		}
+
         #endregion
+
+		#region Execute Create
+
+		public static CategoryModels ExecuteCreate(int? id)
+		{
+			CategoryModels				result				= null;
+
+			if(id.HasValue)
+			{
+				Category					entity				= Category.ExecuteCreate(id.Value);
+
+				if(entity != null)
+				{
+					result										= new CategoryModels(entity);
+				}
+			}
+			else
+			{
+				result											= new CategoryModels();
+			}
+
+			return result;
+		}
+
+		#endregion
+
+		#region List 
+
+		public static List<CategoryModels> List()
+		{
+			List<CategoryModels>					result				= new List<CategoryModels>();
+			List<Category>							list				= Category.List();
+
+			foreach (Category item in list)
+			{
+				result.Add(new CategoryModels(item));
+			}
+
+			return result;
+		}
+
+		#endregion
+
+		#region Methods
+
+		#region Validate
+		
+		public bool Validate(ModelStateDictionary state)
+		{
+			bool			result					= true;
+
+			if(String.IsNullOrEmpty(this.fileName))
+			{
+				result								&= false;
+				state.AddModelError("Filename", "Please upload an image");
+			}
+
+			return  true;
+		}
+
+		#endregion
+
+		#region Sync
+
+		public void Sync(CategoryModels model)
+		{
+			this.name				= model.Name;
+			this.description		= model.Description;
+		}
+
+		#endregion
+
+		#region Save
+
+		public void Save()
+		{
+
+		}
+
+		#endregion 
+
+
+		#endregion
 
         #region Getters
         public List<ECommerce.Tables.Content.Category> GetCategoriesList()
         {
-            return this.CategoriesList;
+            return ECommerce.Tables.Content.Category.List();
         }
         #endregion
     }
