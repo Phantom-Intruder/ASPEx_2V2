@@ -211,6 +211,7 @@
     <Compile Include="Controllers\AdminViewController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CheckoutViewController.cs" />
+    <Compile Include="Controllers\YasaCategoryController.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogOffTestController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\ProductModels.cs" />
     <Compile Include="Models\ShoppingCartModels.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\YasaCategoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -325,6 +327,8 @@
     <Content Include="Views\Product\_AddedCorrectlyView.cshtml" />
     <Content Include="Views\Product\_AddedView.cshtml" />
     <Content Include="Views\Category\ShowProductView.cshtml" />
+    <Content Include="Views\YasaCategory\Index.cshtml" />
+    <Content Include="Views\YasaCategory\Editor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

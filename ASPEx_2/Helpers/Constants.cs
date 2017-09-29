@@ -39,5 +39,17 @@ namespace ASPEx_2.Helpers
         public const string         SESSION_SINGLETON_NAME          = "Singleton_502E69E5-668B-E011-951F-00155DF26207";
 
 
-    }
+		#region  Default Values 
+
+		internal const int			DEFAULT_VALUE_INT				= -1;
+
+		#endregion
+
+		#region Session Name
+
+		internal const string		SESSION_NAME_CATEGORY			= "_AdminCategory";
+		
+		#endregion
+
+	}
 }

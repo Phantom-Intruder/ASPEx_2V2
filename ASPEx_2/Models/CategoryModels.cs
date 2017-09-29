@@ -5,10 +5,22 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Web;
 using ECommerce.Tables.Utility.System;
+using ASPEx_2.Helpers;
+
 namespace ASPEx_2.Models
 {
     public class CategoryModels
     {
+		#region Members
+
+		private int						id				= Constants.DEFAULT_VALUE_INT;
+		private string					name			= String.Empty;
+		private string					description		= String.Empty;
+		private string					fileName		= String.Empty;
+		private Category				entity			= null;
+
+		#endregion
+
         #region Properties
         private      List<ECommerce.Tables.Content.Category>         CategoriesList { get; set; }
 

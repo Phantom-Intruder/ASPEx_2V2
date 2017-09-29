@@ -15,6 +15,29 @@ namespace ASPEx_2.Controllers
         #region Class fields
         public static int IDNew             = 0;
         #endregion
+
+		#region Properties
+
+		public CategoryModels TempSession
+		{
+			get
+			{
+				CategoryModels					result				=  null;
+
+				if(Session[Constants.SESSION_NAME_CATEGORY] != null)
+				{
+					result												= Session[Constants.SESSION_NAME_CATEGORY] as CategoryModels;
+				}
+
+				return  result;
+			}
+			set
+			{
+				Session[Constants.SESSION_NAME_CATEGORY]				= value;
+			}
+		}
+
+		#endregion
         
         #region Display views
         // GET: CategoryList
@@ -25,6 +48,7 @@ namespace ASPEx_2.Controllers
 
 			return View(SessionSingleton.Current.CurrentCategory);
         }
+
         public ActionResult Edit()
         {
             CategoryModels		category					= new CategoryModels();
