@@ -10,51 +10,77 @@ namespace ASPEx_2.Controllers
 {
     public class ProductController : Controller
     {
+		#region Class fields
         public static int       IDNew       = 0;
-        
-        #region Display views
-        // GET: ProductList
-        public ActionResult List()
-        {
-            ProductModels       product					= new ProductModels();
-			SessionSingleton.Current.CurrentProduct		= product;
+		#endregion
 
-			return View(SessionSingleton.Current.CurrentProduct);
-        }
-        public ActionResult Edit()
-        {
-            AdminViewModels		models              = AdminViewModels.GetInstanceOfObject();
+		#region Properties
 
-            return View(models);
-        }
-        #endregion
-
-        #region Get methods
-        [HttpGet]
-        public ActionResult Edit(string id)
-        {
-            ProductModels		productModels				= new ProductModels();
-			SessionSingleton.Current.CurrentProduct			= productModels;
-
-			
-			ViewBag.Details									= "Enter details below";
-			if (id != null)
+		public ProductModels TempSession
+		{
+			get
 			{
-				Product			product						= Product.ExecuteCreate(Int32.Parse(id));
-            
-				IDNew										= Int32.Parse(id);
-				ViewBag.Message								= "Added " + product.Name;
-				SessionSingleton.Current.CurrentProduct.CreateProduct(product);
+				ProductModels					result					=  null;
+
+				if(Session[Constants.SESSION_NAME_CATEGORY] != null)
+				{
+					result												= Session[Constants.SESSION_NAME_CATEGORY] as ProductModels;
+				}
+
+				return  result;
+			}
+			set
+			{
+				Session[Constants.SESSION_NAME_CATEGORY]				= value;
+			}
+		}
+
+		#endregion
+
+		#region Display views
+		// GET: ProductList
+		public ActionResult List()
+        {
+            return View(ProductModels.List());
+        }
+        public ActionResult Edit(int? id)
+        {
+			ProductModels				result					= null;
+
+			if(this.TempSession != null &&
+				id.HasValue &&
+				this.TempSession.ID == id.Value)
+			{
+				result = this.TempSession;
+				CheckIfIdHasValue(id, result);
 			}
 			else
 			{
-				SessionSingleton.Current.CurrentProduct.FilePath               = " ";
-            }
-			return View(SessionSingleton.Current.CurrentProduct);
+				Session.Remove(Constants.SESSION_NAME_CATEGORY);				
+				result											= ProductModels.ExecuteCreate(id);
+				CheckIfIdHasValue(id, result);
+				this.TempSession								= result;
+			}
+
+			if(result == null)
+			{
+				return new HttpNotFoundResult();
+			}
+
+            return View(result);
+        }
+
+		private static void CheckIfIdHasValue(int? id, ProductModels result)
+		{
+			if (id.HasValue)
+			{
+				result.EditField = "true";
+			}
 		}
+        #endregion
 
-		
-
+        #region Get methods
+        
 		[HttpGet]
         public ActionResult Delete(string id)
         {
@@ -64,7 +90,7 @@ namespace ASPEx_2.Controllers
         }
 
         [HttpGet]
-        public ActionResult Show(string id)
+        public ActionResult Details(string id)
 		{
 			IDNew = Int32.Parse(id);
 
@@ -77,19 +103,24 @@ namespace ASPEx_2.Controllers
 		#endregion
 
 		#region Post methods
+		[ValidateAntiForgeryToken]
 		[HttpPost]
-        public ActionResult Edit(ProductModels model)
-		{
-			SessionSingleton.Current.CurrentProduct			= model;
-			if (SessionSingleton.Current.CurrentProduct.Validation())
+		public ActionResult Edit(ProductModels model)
+        {
+			if(ModelState.IsValid)
 			{
-				SessionSingleton.Current.CurrentProduct.Save(IDNew);
+				this.TempSession.Sync(model);
 
-				return RedirectToAction("List", "Product");
+				if(this.TempSession.Validate(ModelState))
+				{
+					this.TempSession.Save();
+					Session.Remove(Constants.SESSION_NAME_CATEGORY);
+					return RedirectToAction("List");
+				}
 			}
-			ViewBag.NoImage									= "You haven't selected an image";
-			return View(SessionSingleton.Current.CurrentProduct);
-		}
+			
+            return View(this.TempSession);
+        }
 
 		[HttpPost]
         public ActionResult List(string idField)

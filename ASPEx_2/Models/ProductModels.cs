@@ -5,41 +5,85 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Web;
 using ECommerce.Tables.Utility.System;
+using ASPEx_2.Helpers;
+using System.Web.Mvc;
 
 namespace ASPEx_2.Models
 {
 	public class ProductModels
     {
+		#region Members
+		private int						id						= Constants.DEFAULT_VALUE_INT;
+		private string					name					= String.Empty;
+		private string					description				= String.Empty;
+		private string					fileName				= String.Empty;
+		private	string					category				= String.Empty;
+		private decimal					price					= 0;
+		private List<string>			categoryNamesList		= new List<string>();
+		private Product					entity					= null;
+		private HttpPostedFileBase		fileBase				= null;
+		#endregion
+
         #region Properties
         private List<ECommerce.Tables.Content.Product> ProductsList { get; set; }
-        private List<ECommerce.Tables.Content.Category> CategoryList { get; set; }
-
+        
+		[Key]
+		public int ID
+		{
+			get { return this.id; }
+		}
 
         [Required]
         [Display(Name = "Name")]
 		[StringLength(30)]
-		public string Name { get; set; }
+        public string Name {
+			get { return this.name; }
+			set { this.name = value; }
+		}
 
         [Required]
-		[StringLength(35)]
 		[Display(Name = "Description")]
-        public string Description { get; set; }
+		[DataType(DataType.MultilineText)]
+		public string Description
+		{
+			get { return this.description; }
+			set { this.description = value; }
+		}
 
         [Required]
         [Display(Name = "Price")]
-        public decimal Price { get; set; }
+        public decimal Price
+		{
+			get { return this.price; }
+			set { this.price = value; }
+		}
 
         [Required]
         [Display(Name = "Category")]
-        public string Category { get; set; }
+        public string Category
+		{
+			get { return this.category; }
+			set { this.category = value; }
+		}
 
-        public HttpPostedFileBase FileUpload { get; set; }
+        public HttpPostedFileBase FileUpload {
+			get { return this.fileBase; }
+			set { this.fileBase = value; }
+		}
+
+		[Required]
+        public List<string> CategoryNamesList
+		{
+			get { return this.categoryNamesList; }
+			set { this.categoryNamesList = value; }
+		}
 
         [Required]
-        [Display(Name = "Path")]
-        public string FilePath { get; set; }
+        public string FilePath {
+			get { return this.fileName; }
+			set { this.fileName = value; }
+		}
 
-        [Required]
         public string EditField { get; set; }
 		#endregion
 
@@ -211,40 +255,164 @@ namespace ASPEx_2.Models
 			cart.AddProductToCart(id);
 			product.Update(idfield, product);
 		}
-		#endregion
-
-		#region Class members
-		[Required]
-        private List<string> CategoryNamesList      = new List<string>();
-        #endregion
-
-        #region Class constructor 
-        public ProductModels()
+		public List<string> GetCategoryNamesList()
         {
-            this.ProductsList       = ECommerce.Tables.Content.Product.List();
-            this.CategoryList       = ECommerce.Tables.Content.Category.List();
-        }
-        #endregion
-
-        #region Getters
-        public List<ECommerce.Tables.Content.Product> GetProductsList()
-        {
-            return this.ProductsList;
-        }
-
-        public List<ECommerce.Tables.Content.Category> GetCategoryList()
-        {
-            return this.CategoryList;
-        }
-
-        public List<string> GetCategoryNamesList()
-        {
-            foreach (Category item in CategoryList)
+			CategoryNamesList		= new List<string>();
+            foreach (Category item in ECommerce.Tables.Content.Category.List())
             {
                 CategoryNamesList.Add(item.Name);
             }
             return this.CategoryNamesList;
         }
+		#endregion
+
+        #region Class constructor 
+        public ProductModels()
+        {
+            
+        }
+
+		private ProductModels(Product entity)
+		{
+
+			this.id								= entity.ID;
+			this.name							= entity.Name;
+			this.description					= entity.Description;
+			this.fileName						= entity.ImageName;
+			this.price							= entity.Price;
+			this.category						= entity.ExecuteCreateCategoryByCategoryID().Name;
+			this.categoryNamesList				= GetCategoryNamesList();
+			this.entity							= entity;
+
+		}
+        #endregion
+
+		#region Execute Create
+
+		public static ProductModels ExecuteCreate(int? id)
+		{
+			ProductModels 				result				= null;
+
+			if(id.HasValue)
+			{
+				Product					entity				= Product.ExecuteCreate(id.Value);
+
+				if(entity != null)
+				{
+					result										= new ProductModels(entity);
+				}
+			}
+			else
+			{
+				result											= new ProductModels();
+			}
+
+			return result;
+		}
+
+		#endregion
+
+		#region List 
+
+		public static List<ProductModels> List()
+		{
+			List<ProductModels>						result				= new List<ProductModels>();
+			List<Product>							list				= Product.List();
+
+			foreach (Product item in list)
+			{
+				result.Add(new ProductModels(item));
+			}
+
+			return result;
+		}
+
+		#endregion
+
+		#region Methods
+
+		#region Validate
+		
+		public bool Validate(ModelStateDictionary state)
+		{
+			bool			result					= true;
+
+			if(String.IsNullOrEmpty(this.fileName))
+			{
+				result								&= false;
+				state.AddModelError("Filename", "Please upload an image");
+			}
+
+			return  true;
+		}
+
+		#endregion
+
+		#region Sync
+
+		public void Sync(ProductModels model)
+		{
+			this.name				= model.Name;
+			this.description		= model.Description;
+			this.fileBase			= model.FileUpload;
+			this.fileName			= model.FilePath;
+			this.category			= model.category;
+			this.price				= model.price;
+			this.categoryNamesList	= model.categoryNamesList;
+		}
+
+		#endregion
+
+		#region Save
+
+		public void Save()
+		{
+			string		filePathField			= String.Empty;
+			int			idOfCategoryField		= 0;
+			int			index					= 1;
+
+			this.SetCategoryID(ref idOfCategoryField, ref index);
+			if (this.fileBase != null)
+			{
+				filePathField					= this.CopyFileIntoFilestore();
+			}
+			else
+			{
+				filePathField					= this.FilePath;
+			}
+			if (this.EditField == null)
+			{
+				this.CreateAndInsertNewProduct(filePathField, idOfCategoryField);
+
+			}
+			else
+			{
+				Product			record			= Product.ExecuteCreate(Int32.Parse(idOfCategoryField + ""),
+																					this.Name,
+																					this.Description,
+																					this.Price,
+																					filePathField, 1, 50, 51);
+				record.Update(this.ID, record);
+
+			}
+		}
+
+		#endregion 
+
+
+		#endregion
+
+        #region Getters
+        public List<ECommerce.Tables.Content.Product> GetProductsList()
+        {
+            return ECommerce.Tables.Content.Product.List();
+        }
+
+        public List<ECommerce.Tables.Content.Category> GetCategoryList()
+        {
+            return ECommerce.Tables.Content.Category.List();
+        }
+		
 		#endregion
 	}
 }

@@ -7,23 +7,22 @@ using System.Web;
 using ECommerce.Tables.Utility.System;
 using ASPEx_2.Helpers;
 using System.Web.Mvc;
+using ASPEx_2.Controllers;
 
 namespace ASPEx_2.Models
 {
     public class CategoryModels
     {
 		#region Members
-
 		private int						id				= Constants.DEFAULT_VALUE_INT;
 		private string					name			= String.Empty;
 		private string					description		= String.Empty;
 		private string					fileName		= String.Empty;
 		private Category				entity			= null;
-
+		private HttpPostedFileBase		fileBase		= null;
 		#endregion
 
         #region Properties
-
 		[Key]
 		public int ID
 		{
@@ -47,11 +46,17 @@ namespace ASPEx_2.Models
 			set { this.description = value; }
 		}
 
-        public HttpPostedFileBase FileUpload { get; set; }
+        public HttpPostedFileBase FileUpload {
+			get { return this.fileBase; }
+			set { this.fileBase = value; }
+		}
 
-        public string FilePath { get; set; }
+		[Required]
+        public string FilePath {
+			get { return this.fileName; }
+			set { this.fileName = value; }
+		}
 
-        [Required]
         public string EditField { get; set; }
 		#endregion
 
@@ -82,7 +87,7 @@ namespace ASPEx_2.Models
 		private string CopyFileIntoFilestore()
 		{
 			string						filePathField;
-			HttpPostedFileBase			file						= this.FileUpload;
+			HttpPostedFileBase			file						= this.fileBase;
 			
 			string						directoryWithFolder			= Volume.Toolkit.Paths.PathUtility.CombinePaths(Config.StorageUrl, Config.FOLDER_CATEGORY);
 			string[]					directories					= Directory.GetDirectories(directoryWithFolder);
@@ -117,41 +122,6 @@ namespace ASPEx_2.Models
 			this.Description				= category.Description;
 			this.FilePath					= category.ImageName;
 			this.EditField					= "true";
-		}
-		public bool Validation()
-		{
-			if((this.EditField == null) && (this.FileUpload == null)){
-				return false;
-			}
-			return true; 
-		}
-
-		public void Save(int IDNew)
-		{
-			string		filePathField		= "";
-			if (this.FileUpload != null)
-			{
-				filePathField				= this.CopyFileIntoFilestore();
-			}
-			else
-			{
-				filePathField				= this.FilePath;
-			}
-			if (this.EditField == null)
-			{
-				this.CreateNewRecord(filePathField);
-			}
-			else
-			{
-				Category		record		= Category.ExecuteCreate(this.Name,
-																	 this.Description,
-																	 filePathField,
-																	 1,
-																	 50,
-																	 51);
-
-				record.Update(IDNew, record);
-			}
 		}
 
 		#endregion
@@ -241,6 +211,8 @@ namespace ASPEx_2.Models
 		{
 			this.name				= model.Name;
 			this.description		= model.Description;
+			this.fileBase			= model.FileUpload;
+			this.fileName			= model.FilePath;
 		}
 
 		#endregion
@@ -249,7 +221,30 @@ namespace ASPEx_2.Models
 
 		public void Save()
 		{
+			string		filePathField		= String.Empty;
+			if (this.fileBase != null)
+			{
+				filePathField				= this.CopyFileIntoFilestore();
+			}
+			else
+			{
+				filePathField				= this.FilePath;
+			}
+			if (this.EditField == null)
+			{
+				this.CreateNewRecord(filePathField);
+			}
+			else
+			{
+				Category		record		= Category.ExecuteCreate(this.Name,
+																	 this.Description,
+																	 filePathField,
+																	 1,
+																	 50,
+																	 51);
 
+				record.Update(this.ID, record);
+			}
 		}
 
 		#endregion 

@@ -48,18 +48,20 @@ namespace ASPEx_2.Controllers
 
        public ActionResult Edit(int? id)
         {
-			CategoryModels				result				= null;
+			CategoryModels				result					= null;
 
 			if(this.TempSession != null &&
 				id.HasValue &&
 				this.TempSession.ID == id.Value)
 			{
-				result											= this.TempSession;
+				result = this.TempSession;
+				CheckIfIdHasValue(id, result);
 			}
 			else
 			{
-				Session.Remove(Constants.SESSION_NAME_CATEGORY);
+				Session.Remove(Constants.SESSION_NAME_CATEGORY);				
 				result											= CategoryModels.ExecuteCreate(id);
+				CheckIfIdHasValue(id, result);
 				this.TempSession								= result;
 			}
 
@@ -71,10 +73,18 @@ namespace ASPEx_2.Controllers
             return View(result);
         }
 
-        #endregion
+		private static void CheckIfIdHasValue(int? id, CategoryModels result)
+		{
+			if (id.HasValue)
+			{
+				result.EditField = "true";
+			}
+		}
 
-        #region Post methods
-        [ValidateAntiForgeryToken]
+		#endregion
+
+		#region Post methods
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public ActionResult Edit(CategoryModels model)
         {
@@ -96,26 +106,6 @@ namespace ASPEx_2.Controllers
 
 		#region Get methods
 		[HttpGet]
-        public ActionResult Edit(string id)
-        {
-            CategoryModels		categoryModels							= new CategoryModels();
-			SessionSingleton.Current.CurrentCategory					= categoryModels;
-
-			if (id != null) { 
-
-				IDNew													= Int32.Parse(id);
-
-				SessionSingleton.Current.CurrentCategory.EditCategoryOfID(id);
-			}
-			else
-            {
-				SessionSingleton.Current.CurrentCategory.FilePath		= " ";
-            }
-
-            return View(SessionSingleton.Current.CurrentCategory);
-        }
-
-		[HttpGet]
         public ActionResult Delete(string id)
         {
             Category.Delete(Int32.Parse(id));
@@ -124,7 +114,7 @@ namespace ASPEx_2.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowCategoryView(string id)
+        public ActionResult Details(string id)
         {
             CategoryProductModels model;
             if (id != null)
